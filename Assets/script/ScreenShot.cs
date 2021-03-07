@@ -1,48 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System.IO;
 
 public class ScreenShot : MonoBehaviour
 {
-    private Vector3 axispoint;
-    private bool rotFlg = false;
-
     void Start()
     {
-        gameObject.GetComponent<RectTransform>().pivot = new Vector2(1.0f, 0.5f);
-        transform.position = new Vector3(Screen.width, Screen.height * 0.5f, 0.0f);
+
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(TurnOnScreenShotEx());
-        }
+            // マテリアルにテクスチャをセットするにはシェーダーを変更する必要がある
+            string shader = "Legacy Shaders/Diffuse";
+            gameObject.GetComponent<Renderer>().material.shader = Shader.Find(shader);
 
-        // スクショ撮影後、回転を始める
-        if (rotFlg)
-        {
-            transform.Rotate(new Vector3(0.0f, -0.05f));
+            // スクショしてみた！
+            StartCoroutine(SelectAreaScreenShot(new Vector2Int(0, 0), 100, 100));
         }
     }
 
-    // スクショし、その画像を画面に貼る
-    private IEnumerator TurnOnScreenShotEx()
+    
+    // 指定した範囲のスクショを取り、このスクリプトをアタッチしているオブジェクトに貼る
+    // 引数でスクショしたい範囲の左下の点と範囲の幅を渡す（※範囲の指定はスクリーン座標で）
+    private IEnumerator SelectAreaScreenShot(Vector2Int leftBottom, int width, int height)
     {
+        // スクショは描画後にしか行えないので、描画後に実行
         yield return new WaitForEndOfFrame();
 
+        // スクリーン全体をスクショし、そのデータを保持
         Vector2Int size = new Vector2Int(Screen.width, Screen.height);
-        Texture2D tex = new Texture2D(size.x, size.y, TextureFormat.ARGB32, false);
+        Texture2D screeTex = new Texture2D(size.x, size.y, TextureFormat.ARGB32, false);
+        screeTex.ReadPixels(new Rect(0, 0, size.x, size.y), 0, 0);
+        screeTex.Apply();
 
-        // 引数で指定した矩形内をスクショし、そのデータを自身(tex)に格納
-        tex.ReadPixels(new Rect(0.0f, 0.0f, size.x, size.y), 0, 0);
-        tex.Apply();
+        // 上で撮ったスクショデータから指定した範囲のピクセルを取得
+        Color[] colors = screeTex.GetPixels(leftBottom.x, leftBottom.y, width, height);
 
-        gameObject.GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
-        gameObject.GetComponent<Image>().color = Color.white;
-        rotFlg = true;
+        // 取得したピクセルデータでテクスチャを作成
+        Texture2D tex2 = new Texture2D(width, height, TextureFormat.ARGB32, false);
+        tex2.SetPixels(colors);
+        tex2.Apply();
+
+        // オブジェクトのマテリアルにテクスチャをセット
+        gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", tex2);
     }
 }
