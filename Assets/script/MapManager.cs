@@ -6,7 +6,7 @@ public class MapManager : MonoBehaviour
 {
     void Start()
     {
-        gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
+       // gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
     }
 
     void Update()
@@ -26,7 +26,7 @@ public class MapManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        Vector2Int size = new Vector2Int(Screen.width, Screen.width);
+        Vector2Int size = new Vector2Int(Screen.width, Screen.height);
         Texture2D tex = new Texture2D(size.x, size.y, TextureFormat.ARGB32, false);
 
         // 引数で指定した矩形内をスクショし、そのデータを tex に格納
