@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScreenShot : MonoBehaviour
 {
@@ -17,9 +18,19 @@ public class ScreenShot : MonoBehaviour
             string shader = "Legacy Shaders/Diffuse";
             gameObject.GetComponent<Renderer>().material.shader = Shader.Find(shader);
 
+
+            // このスクリプトがアタッチされているオブジェクトのサイズでスクショを撮る
+            RectTransform trans = gameObject.GetComponent<RectTransform>();
+            Vector2 pos = new Vector2(trans.position.x, trans.position.y);
+            Vector2 scale = new Vector2(trans.localScale.x, trans.localScale.y);
+
+            Vector2 leftBottom = RectTransformUtility.WorldToScreenPoint(Camera.main, pos - scale / 2.0f);
+            Vector2 rightTop = RectTransformUtility.WorldToScreenPoint(Camera.main, pos + scale / 2.0f);
+
             // スクショしてみた！
-            StartCoroutine(SelectAreaScreenShot(new Vector2Int(0, 0), 100, 100));
+            StartCoroutine(SelectAreaScreenShot(new Vector2Int((int)leftBottom.x, (int)leftBottom.y), (int)(rightTop.x - leftBottom.x), (int)(rightTop.y - leftBottom.y)));
         }
+
     }
 
     
