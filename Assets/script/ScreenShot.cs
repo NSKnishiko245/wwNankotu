@@ -15,8 +15,8 @@ public class ScreenShot : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // マテリアルにテクスチャをセットするにはシェーダーを変更する必要がある
-            string shader = "Legacy Shaders/Diffuse";
-            gameObject.GetComponent<Renderer>().material.shader = Shader.Find(shader);
+            //string shader = "Legacy Shaders/Diffuse";
+            //gameObject.GetComponent<Renderer>().material.shader = Shader.Find(shader);
 
 
             // このスクリプトがアタッチされているオブジェクトのサイズでスクショを撮る
