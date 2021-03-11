@@ -10,7 +10,12 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     public GameObject[] m_tileObj;  //タイル
-    public GameObject[] m_OriObj;    //折り目
+    public OrimeObj[] m_OriObj;    //折り目
+
+    float[] angle;
+
+    int cnt=0;
+
 
     bool m_isInputSp = false;
     bool m_isInputRight = false;
@@ -18,8 +23,10 @@ public class StageManager : MonoBehaviour
     bool m_isInputAny = false;
 
     //回転用
+    bool m_LeftStart = false;
+    bool m_RightStart = false;
     bool rotStart = false;
-    float speed = 3.0f;
+    float speed = 1.0f;
     float rotAngle = 180f;
     float variation;
     float rot;
@@ -28,6 +35,13 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         variation = rotAngle / speed;
+        
+        //折り目の本数分
+        angle = new float[m_OriObj.Length];
+        for(int i = 0; i < m_OriObj.Length; i++)
+        {
+            angle[i] = 0.0f;
+        }
     }
 
     // Update is called once per frame
@@ -36,6 +50,21 @@ public class StageManager : MonoBehaviour
         m_isInputSp = false;
         m_isInputRight = false;
         m_isInputLeft = false;
+
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            cnt++;
+            Debug.Log(cnt);
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            cnt--;
+            Debug.Log(cnt);
+        }
+
+
+
         //回転中じゃなったら
         if (!rotStart)
         {
@@ -43,9 +72,8 @@ public class StageManager : MonoBehaviour
             {
                 m_isInputSp = true;
             }
-            else if (Input.GetKey(KeyCode.R))
+            if (Input.GetKey(KeyCode.R))
             {
-                //親子関係をリセット
                 ParentReset();
             }
             if (!m_isInputAny)
@@ -54,13 +82,15 @@ public class StageManager : MonoBehaviour
                 {
                     m_isInputRight = true;
                     m_isInputAny = true;
-                    OnBtn(m_OriObj[1]);
+
+                     OnBtn(m_OriObj[cnt]);
                 }
                 else if (Input.GetKey(KeyCode.LeftArrow))
                 {
                     m_isInputLeft = true;
                     m_isInputAny = true;
-                    OnBtn(m_OriObj[1]);
+
+                     OnBtn(m_OriObj[cnt]);
                 }
                 else
                 {
@@ -77,6 +107,7 @@ public class StageManager : MonoBehaviour
                 ParentSetLefttoRight();
                 //回転
                 //RotationOri(m_OriObj[1]);
+                m_LeftStart = true;
             }
             else if (m_isInputRight)
             {
@@ -84,10 +115,21 @@ public class StageManager : MonoBehaviour
                 ParentSetRighttoLeft();
                 //回転
                 //RotationOri(m_OriObj[1]);
+                m_RightStart = true;
             }
         }
+
         //回転
-        RotationOriLeft(m_OriObj[1]);
+        if (m_LeftStart)
+        {
+            RotationOriLeft(m_OriObj[cnt]);
+        }
+        else if (m_RightStart)
+        {
+            RotationOriRight(m_OriObj[cnt]);
+        }
+
+        //Debug.Log(angle);
     }
 
 
@@ -121,27 +163,49 @@ public class StageManager : MonoBehaviour
             m_OriObj[i].transform.parent = this.gameObject.transform;
         }
     }
-    
+
     //折り目を180度回転(折り目のオブジェクト)
-    private void RotationOriLeft(GameObject obj)
+    private void RotationOriLeft(OrimeObj obj)
     {
         if (rotStart)
         {
-            obj.transform.Rotate(0, variation * Time.deltaTime,0);
+            obj.transform.Rotate(0, variation * Time.deltaTime, 0);
             rot += variation * Time.deltaTime;
+            angle[obj.m_Number] += variation * Time.deltaTime;
             if (rot >= rotAngle)
             {
+                m_LeftStart = false;
                 rotStart = false;
-                obj.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                m_isInputAny = false;
+                obj.transform.localRotation = Quaternion.Euler(0, angle[obj.m_Number], 0);
+               // ParentReset();
             }
         }
     }
 
-    private void OnBtn(GameObject obj)
+    private void RotationOriRight(OrimeObj obj)
+    {
+        if (rotStart)
+        {
+            obj.transform.Rotate(0, -variation * Time.deltaTime, 0);
+            rot += variation * Time.deltaTime;
+            angle[obj.m_Number] += -variation * Time.deltaTime;
+            if (rot >= rotAngle)
+            {
+                m_RightStart = false;
+                rotStart = false;
+                m_isInputAny = false;
+                obj.transform.localRotation = Quaternion.Euler(0, angle[obj.m_Number], 0);
+                //ParentReset();
+            }
+        }
+    }
+
+    private void OnBtn(OrimeObj obj)
     {
         //回転角度を初期化する。
         rot = 0f;
-        obj.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        obj.transform.localRotation = Quaternion.Euler(0, angle[obj.m_Number], 0);
         rotStart = true;
     }
 }
