@@ -14,6 +14,9 @@ public class StageManager : MonoBehaviour
 
     float[] angle;
 
+    //遅延用スクリーンショットをする為にわざと１フレームずらす
+    int m_frameCnt = 1;
+
     int cnt=0;
 
 
@@ -26,7 +29,7 @@ public class StageManager : MonoBehaviour
     bool m_LeftStart = false;
     bool m_RightStart = false;
     bool rotStart = false;
-    float speed = 1.0f;
+    float speed = 2.0f;
     float rotAngle = 180f;
     float variation;
     float rot;
@@ -108,6 +111,7 @@ public class StageManager : MonoBehaviour
                 //回転
                 //RotationOri(m_OriObj[1]);
                 m_LeftStart = true;
+                m_frameCnt = 1;
             }
             else if (m_isInputRight)
             {
@@ -116,17 +120,26 @@ public class StageManager : MonoBehaviour
                 //回転
                 //RotationOri(m_OriObj[1]);
                 m_RightStart = true;
+                m_frameCnt = 1;
             }
         }
 
         //回転
         if (m_LeftStart)
         {
-            RotationOriLeft(m_OriObj[cnt]);
+            if (m_frameCnt <= 0)
+            {
+                RotationOriLeft(m_OriObj[cnt]);
+            }
+            m_frameCnt--;
         }
         else if (m_RightStart)
         {
-            RotationOriRight(m_OriObj[cnt]);
+            if (m_frameCnt <= 0)
+            {
+                RotationOriRight(m_OriObj[cnt]);
+            }
+            m_frameCnt--;
         }
 
         //Debug.Log(angle);
@@ -169,11 +182,20 @@ public class StageManager : MonoBehaviour
     {
         if (rotStart)
         {
+
             obj.transform.Rotate(0, variation * Time.deltaTime, 0);
             rot += variation * Time.deltaTime;
-            angle[obj.m_Number] += variation * Time.deltaTime;
+            SetObjChildActive(m_tileObj[0], false);
+            SetObjChildActive(m_tileObj[1], false);
+            SetObjChildActive(m_tileObj[2], false);
+           // SetObjChildActive(m_tileObj[3], false);
             if (rot >= rotAngle)
             {
+                SetObjChildActive(m_tileObj[0], true);
+                SetObjChildActive(m_tileObj[1], true);
+                SetObjChildActive(m_tileObj[2], true);
+               // SetObjChildActive(m_tileObj[3], true);
+                angle[obj.m_Number] += 180;
                 m_LeftStart = false;
                 rotStart = false;
                 m_isInputAny = false;
@@ -189,9 +211,18 @@ public class StageManager : MonoBehaviour
         {
             obj.transform.Rotate(0, -variation * Time.deltaTime, 0);
             rot += variation * Time.deltaTime;
-            angle[obj.m_Number] += -variation * Time.deltaTime;
+            // angle[obj.m_Number] += -variation * Time.deltaTime;
+            SetObjChildActive(m_tileObj[0], false);
+            SetObjChildActive(m_tileObj[1], false);
+            SetObjChildActive(m_tileObj[2], false);
+            //SetObjChildActive(m_tileObj[3], false);
             if (rot >= rotAngle)
             {
+                SetObjChildActive(m_tileObj[0], true);
+                SetObjChildActive(m_tileObj[1], true);
+                SetObjChildActive(m_tileObj[2], true);
+               // SetObjChildActive(m_tileObj[3], true);
+                angle[obj.m_Number] -= 180;
                 m_RightStart = false;
                 rotStart = false;
                 m_isInputAny = false;
@@ -207,5 +238,11 @@ public class StageManager : MonoBehaviour
         rot = 0f;
         obj.transform.localRotation = Quaternion.Euler(0, angle[obj.m_Number], 0);
         rotStart = true;
+    }
+
+    //子オブジェクトを非アクティブに
+    private void SetObjChildActive(GameObject obj,bool flg)
+    {
+        obj.transform.Find("block").gameObject.SetActive(flg);
     }
 }
