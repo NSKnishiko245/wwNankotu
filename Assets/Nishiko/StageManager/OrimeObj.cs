@@ -18,7 +18,7 @@ public class OrimeObj : MonoBehaviour
         
     }
 
-    int GetObjNumber()
+    public int GetObjNumber()
     {
         return m_Number;
     }
