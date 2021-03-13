@@ -22,20 +22,39 @@ public class Cbar : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    //private void OnTriggerEnter(Collision collision)
+    //{
+    //    if (collision.transform.tag == "Player")
+    //    {
+    //        stay = true;
+    //        Debug.Log("aaaaa");
+    //    }
+    //}
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.transform.tag == "Player")
+    //    {
+    //        stay = false;
+    //    }
+    //}
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.transform.tag == "Player")
+        if (other.tag == "Player")
         {
+            other.gameObject.GetComponent<Player>().SetHitNum(this.gameObject.GetComponent<OrimeObj>().GetObjNumber());
             stay = true;
             Debug.Log("aaaaa");
         }
     }
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.transform.tag == "Player")
+        if (other.tag == "Player")
         {
+            //other.gameObject.GetComponent<Player>().SetHitNum(99);
+
             stay = false;
+            Debug.Log("aaaaa");
         }
     }
-
 }
