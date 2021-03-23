@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Nishiko/ProtoStage.unity
+    guid: d25e995da73ace0409f0c2be638c9581
   m_configObjects: {}

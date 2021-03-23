@@ -20,7 +20,7 @@ public class ScreenShot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 5"))
         {
             // このスクリプトがアタッチされているオブジェクトのサイズでスクショを撮る
             RectTransform trans = gameObject.GetComponent<RectTransform>();

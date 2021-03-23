@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
         }
 
         //ジャンプ処理（Aボタン押下）
-        if(Input.GetKeyDown("joystick button 1"))
+        if(Input.GetKeyDown("joystick button 0"))
         {
             if (Jumpflg)
             {

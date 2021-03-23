@@ -72,7 +72,7 @@ public class StageManager : MonoBehaviour
         //プレイヤーの触れているオブジェクトNoが折り目の数以下なら
         if (m_player.GetHitOriobjNum() >= 0 && m_player.GetHitOriobjNum() < m_OriObj.Length)
         {
-            float tri = Input.GetAxis("L_R_Trigger");
+           // float tri = Input.GetAxis("L_R_Trigger");
             //回転中じゃなったら
             if (!rotStart)
             {
@@ -84,9 +84,11 @@ public class StageManager : MonoBehaviour
                 {
                     ParentReset();
                 }
+
+                float tri = Input.GetAxis("L_R_Trigger");
                 if (!m_isInputAny)
                 {
-                    if (Input.GetKeyDown(KeyCode.RightArrow)||tri>=1)
+                    if (Input.GetKeyDown(KeyCode.RightArrow)||tri >= 1)
                     {
                         m_isInputRight = true;
                         m_isInputAny = true;
@@ -94,8 +96,9 @@ public class StageManager : MonoBehaviour
 
                         //OnBtn(m_OriObj[cnt]);
                         OnBtn(m_OriObj[m_player.GetHitOriobjNum()]);
+
                     }
-                    else if (Input.GetKeyDown(KeyCode.LeftArrow)|| tri <= -1)
+                    else if (Input.GetKeyDown(KeyCode.LeftArrow)|| tri <=-1)
                     {
                         m_isInputLeft = true;
                         m_isInputAny = true;
@@ -112,7 +115,7 @@ public class StageManager : MonoBehaviour
             }
         }
         //スペース押された状態
-        if (m_isInputSp)
+       // if (m_isInputSp)
         {
             if (m_isInputLeft)
             { 
@@ -130,7 +133,7 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        if (m_frame <= 0)
+        if (m_frame < 0)
         {
             //回転
             if (m_LeftStart)
@@ -143,7 +146,7 @@ public class StageManager : MonoBehaviour
             }
         }
         m_frame--;
-        //Debug.Log(angle[2]);
+        Debug.Log(Input.GetAxisRaw("Horizontal2"));
     }
 
 
@@ -198,8 +201,8 @@ public class StageManager : MonoBehaviour
             obj.transform.Rotate(0, variation * Time.deltaTime, 0);
             rot += variation * Time.deltaTime;
             //angle[obj.m_Number] += variation * Time.deltaTime;
-            //SetChildActive(m_tileObj[0], false);
-            //SetChildActive(m_tileObj[1], false);
+           // SetChildActive(m_tileObj[0], false);
+          //  SetChildActive(m_tileObj[1], false);
             //SetChildActive(m_tileObj[2], false);
             //SetChildActive(m_tileObj[3], false);
             //SetChildActive(m_tileObj[4], false);
@@ -208,12 +211,12 @@ public class StageManager : MonoBehaviour
             {
                
 
-                SetChildActive(m_tileObj[0], true);
-                SetChildActive(m_tileObj[1], true);
-                SetChildActive(m_tileObj[2], true);
-                SetChildActive(m_tileObj[3], true);
-                SetChildActive(m_tileObj[4], true);
-                SetChildActive(m_tileObj[5], true);
+                //SetChildActive(m_tileObj[0], true);
+                //SetChildActive(m_tileObj[1], true);
+                //SetChildActive(m_tileObj[2], true);
+                //SetChildActive(m_tileObj[3], true);
+                //SetChildActive(m_tileObj[4], true);
+                //SetChildActive(m_tileObj[5], true);
                 TileReset();
                 m_LeftStart = false;
                 rotStart = false;
@@ -232,20 +235,20 @@ public class StageManager : MonoBehaviour
             obj.transform.Rotate(0, -variation * Time.deltaTime, 0);
             rot += variation * Time.deltaTime;
             //angle[obj.m_Number] += -variation * Time.deltaTime;
-            //SetChildActive(m_tileObj[0], false);
-            //SetChildActive(m_tileObj[1], false);
+           // SetChildActive(m_tileObj[0], false);
+           // SetChildActive(m_tileObj[1], false);
             //SetChildActive(m_tileObj[2], false);
             //SetChildActive(m_tileObj[3], false);
             //SetChildActive(m_tileObj[4], false);
             //SetChildActive(m_tileObj[5], false);
             if (rot >= rotAngle)
             {
-                SetChildActive(m_tileObj[0], true);
-                SetChildActive(m_tileObj[1], true);
-                SetChildActive(m_tileObj[2], true);
-                SetChildActive(m_tileObj[3], true);
-                SetChildActive(m_tileObj[4], true);
-                SetChildActive(m_tileObj[5], true);
+                //SetChildActive(m_tileObj[0], true);
+                //SetChildActive(m_tileObj[1], true);
+                //SetChildActive(m_tileObj[2], true);
+                //SetChildActive(m_tileObj[3], true);
+                //SetChildActive(m_tileObj[4], true);
+                //SetChildActive(m_tileObj[5], true);
                 TileReset();
                 m_RightStart = false;
                 rotStart = false;
