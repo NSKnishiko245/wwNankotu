@@ -227,6 +227,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stageManagerver2
       objectReference: {fileID: 0}
+    - target: {fileID: 3832388294138064522, guid: bca39ee7f6be8904897123e755df1360, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3832388294138064523, guid: bca39ee7f6be8904897123e755df1360, type: 3}
       propertyPath: m_player
       value: 

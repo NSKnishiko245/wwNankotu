@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Cbar : MonoBehaviour
 {
-    private bool stay;      //ìñÇΩÇ¡ÇƒÇ¢ÇÈÇ©ÅH
+    //ìñÇΩÇ¡ÇƒÇ¢ÇÈÇ©ÅH
+    public bool stay { get; private set; }
      
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,7 @@ public class Cbar : MonoBehaviour
         GetComponent<Renderer>().material.color = new Color(1, 0, 0);
         if (stay == false)
         {
-            GetComponent<Renderer>().material.color = new Color(1, 1, 1);
+            GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f);
         }
     }
 
@@ -42,19 +43,14 @@ public class Cbar : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            other.gameObject.GetComponent<Player>().SetHitNum(this.gameObject.GetComponent<OrimeObj>().GetObjNumber());
             stay = true;
-            Debug.Log("aaaaa");
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
-            //other.gameObject.GetComponent<Player>().SetHitNum(99);
-
             stay = false;
-            Debug.Log("aaaaa");
         }
     }
 }

@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public float Jump;
 
     private int m_hitOriNum = 0;
+    private List<int> m_HitOriNumList = new List<int>();
 
     private Rigidbody rb;
     private Vector3 pos;
@@ -65,7 +66,7 @@ public class Player : MonoBehaviour
         }
 
         //ジャンプ処理（Aボタン押下）
-        if(Input.GetKeyDown("joystick button 0"))
+        if(Input.GetKeyDown("joystick button 1"))
         {
             if (Jumpflg)
             {
@@ -109,10 +110,26 @@ public class Player : MonoBehaviour
     public void SetHitNum(int num)
     {
         m_hitOriNum = num;
+        //Debug.Log(num);
+
     }
-   
+    public void test(int num)
+    {
+        m_HitOriNumList.Add(num);
+    }
+
+    public void ResetHitOriNumList()
+    {
+        m_HitOriNumList.Clear();
+    }
+
+
     public int GetHitOriobjNum()
     {
         return m_hitOriNum;
+    }
+    public List<int> GetHitOriNumList()
+    {
+        return m_HitOriNumList;
     }
 }
