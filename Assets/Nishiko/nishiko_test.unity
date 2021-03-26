@@ -283,17 +283,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -27.255, y: 0, z: 0}
---- !u!114 &520602888 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8581441424736117789, guid: 5ebc2a45cc4bf0141ba2e816e9d9847c, type: 3}
-  m_PrefabInstance: {fileID: 25266708}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d337dd8e3b2a1f149934f98f02e73981, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1939751718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -485,9 +474,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8590c764e107fb545a5e19bbbf42ce98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player: {fileID: 520602888}
-  particleObject: {fileID: 6797351756067995477, guid: 447ba65fbd439914ba066b4908615494, type: 3}
+  Player: {fileID: 0}
   MapManager: {fileID: 4838369205229319199}
+  particleObject: {fileID: 6797351756067995477, guid: 447ba65fbd439914ba066b4908615494, type: 3}
   stageNum: 1
 --- !u!4 &4795527226974126960
 Transform:
