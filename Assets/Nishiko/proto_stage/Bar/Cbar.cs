@@ -7,10 +7,13 @@ public class Cbar : MonoBehaviour
     // 目標の角度
     private float Angle_Destination = 0.0f;
     // 角速度を目標角の何割にするか
-    private float Angle_Speed = 0.1f;
+    private float Angle_Speed = 1.0f;
 
     //当たっているか？
     public bool IsHit{ get; private set; }
+
+    // ステージが反転したかどうか
+    public bool ReverseRotateFlg { private get; set; }
 
     // 回転状態
     public enum ROTATESTATE
@@ -21,25 +24,30 @@ public class Cbar : MonoBehaviour
         ROTATE_RIGHT,   // 右回転を始める
         REROTATE,       // 元に戻す回転中
     }
-    public ROTATESTATE RotateState{ get; private set; }
+    public ROTATESTATE RotateState { get; private set; }
 
     // 回転命令（これを外部から呼ぶことで回転させる）
-    public void Rotation_Left() { RotateState = ROTATESTATE.ROTATE_LEFT; }
-    public void Rotation_Right() { RotateState = ROTATESTATE.ROTATE_RIGHT; }
-    public void Rotation_Reset() { RotateState = ROTATESTATE.REROTATE; }
-
+    public void Rotation(ROTATESTATE state)
+    {
+        RotateState = state;
+        RotationInfo_Update();
+    }
 
     void Start()
     {
         IsHit = false;
+        ReverseRotateFlg = false;
         RotateState = ROTATESTATE.NEUTRAL;
         GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f);
     }
 
     void Update()
     {
-        RotationInfo_Update();
-        Rotation_Update();
+        if (!(RotateState == ROTATESTATE.NEUTRAL || RotateState == ROTATESTATE.ROTATED))
+        {
+            // 回転処理
+            Rotation_Update();
+        }
     }
 
     // 回転状態の更新
@@ -49,23 +57,24 @@ public class Cbar : MonoBehaviour
         switch (RotateState)
         {
             case ROTATESTATE.ROTATE_LEFT:
-                Angle_Destination = 180.0f;
-                AngleSpeedJudge();
+                Angle_Destination = -180.0f;
+                if (ReverseRotateFlg) Angle_Destination *= -1.0f;
                 break;
             case ROTATESTATE.ROTATE_RIGHT:
-                Angle_Destination = -180.0f;
-                AngleSpeedJudge();
+                Angle_Destination = 180.0f;
+                if (ReverseRotateFlg) Angle_Destination *= -1.0f;
                 break;
             case ROTATESTATE.REROTATE:
                 Angle_Destination = 0.0f;
-                AngleSpeedJudge();
                 break;
         }
+        AngleSpeedJudge();
     }
     // 角速度の符号決定
     private void AngleSpeedJudge()
     {
-        if (transform.localEulerAngles.y > Angle_Destination)
+        Angle_Speed = Mathf.Abs(Angle_Speed);
+        if (transform.localRotation.ToEuler().y > Angle_Destination)
         {
             Angle_Speed *= -1.0f;
         }
@@ -75,15 +84,16 @@ public class Cbar : MonoBehaviour
     private void Rotation_Update()
     {
         // 現在の角度が目標の角度に到達していなければ回転を続ける
-        if (Mathf.Abs(Mathf.Abs(transform.eulerAngles.y) - Mathf.Abs(Angle_Destination)) > 0.02f)
+        if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) > 0.02f)
         {
             // 回転
             transform.Rotate(0.0f, Angle_Speed, 0.0f);
 
             // 目標の値を超えた場合は補正
-            if (Mathf.Abs(Mathf.Abs(transform.eulerAngles.y) - Mathf.Abs(Angle_Destination)) < 0.02f)
+            if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) < 0.02f)
             {
-                transform.eulerAngles = new Vector3(0.0f, Angle_Destination, 0.0f);
+                transform.localRotation = Quaternion.Euler(0.0f, -Angle_Destination, 0.0f);
+                Debug.Log(transform.localRotation.y);
                 // 回転終了時に回転状態を更新
                 if (RotateState != ROTATESTATE.REROTATE)
                 {

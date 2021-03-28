@@ -16,9 +16,21 @@ public class Player : MonoBehaviour
     private Vector3 pos;
     private bool Jumpflg;
 
+    private bool inputFlg = true;
+
+    // バーとの接触時の補正動作
+    //public enum AUTOMOVE
+    //{
+    //    NEUTRAL,
+    //    MOVE_LEFT,
+    //    MOVE_RIGHT
+    //}
+    //public AUTOMOVE AutoMove { private get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
+        //AutoMove = AUTOMOVE.NEUTRAL;
         pos = transform.position;
         rb = GetComponent<Rigidbody>();
     }
@@ -26,8 +38,14 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if (AutoMove != AUTOMOVE.NEUTRAL)
+        //{
+        //    AutoMovePlayer();
+        //}
+
         //キーボード操作
         float x = Input.GetAxis("Horizontal");
+        if (!inputFlg) x = 0.0f;
         //移動処理
         if (x>0)
         {
@@ -37,33 +55,25 @@ public class Player : MonoBehaviour
         {
             transform.position -= transform.right * Speed * Time.deltaTime;
         }
-
-        //ジャンプ処理
-        if (Jumpflg)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                rb.velocity = transform.up * Jump;
-                Jumpflg = false;
-            }
-        }
-        if (rb.velocity.magnitude == 0f)
-        {
-            Jumpflg = true;
-        }
-
+        
 
         //コントローラー操作
-        float lsh = Input.GetAxis("L_Stick_H");
-        float lsv = Input.GetAxis("L_Stick_V");
-        if(lsh>1)
-        {
-            transform.position += transform.right * Speed * Time.deltaTime;
-        }
-        else if(lsh<-1)
-        {
-            transform.position -= transform.right * Speed * Time.deltaTime;
-        }
+        //float lsh = Input.GetAxis("L_Stick_H");
+        //float lsv = Input.GetAxis("L_Stick_V");
+
+        //if (!inputFlg)
+        //{
+        //    lsh = lsv = 0.0f;
+        //}
+
+        //if(lsh>1)
+        //{
+        //    transform.position += transform.right * Speed * Time.deltaTime;
+        //}
+        //else if(lsh<-1)
+        //{
+        //    transform.position -= transform.right * Speed * Time.deltaTime;
+        //}
 
         //ジャンプ処理（Aボタン押下）
         if(Input.GetKeyDown("joystick button 1"))
@@ -78,32 +88,7 @@ public class Player : MonoBehaviour
         {
             Jumpflg = true;
         }
-
-        //LT・RTトリガー押下確認用
-        float tri = Input.GetAxis("L_R_Trigger");
-        if (tri > 0)
-        {
-           // Debug.Log("L trigger:" + tri);
-        }
-        else if (tri < 0)
-        {
-            //Debug.Log("R trigger:" + tri);
-        }
-        else
-        {
-            //Debug.Log(" trigger:none");
-        }
-
-        //フィールドを元に戻す（Xボタン押下）変更する可能性大
-        if (Input.GetKeyDown("joystick button 2"))
-        {
-            //Debug.Log("X Button:on");
-        }
-        else
-        {
-            //Debug.Log("X Button:none");
-        }
-        //Debug.Log(m_hitOriNum);
+        
     }
 
     //触れている折り目のオブジェクトの番号をセット
@@ -131,5 +116,40 @@ public class Player : MonoBehaviour
     public List<int> GetHitOriNumList()
     {
         return m_HitOriNumList;
+    }
+
+
+    // バーを回転させる時のプレイヤーをバーから離していく処理
+    //public void AutoMovePlayer()
+    //{
+    //    Vector3 distance = Vector3.zero;
+    //    if (AutoMove == AUTOMOVE.MOVE_LEFT)     distance = Vector3.right;
+    //    if (AutoMove == AUTOMOVE.MOVE_RIGHT)    distance = Vector3.left;
+
+    //    Ray ray = new Ray(transform.position, distance);
+    //    if (Physics.Raycast(ray, out RaycastHit hit, transform.localScale.x / 2.0f))
+    //    {
+    //        if (hit.collider.CompareTag("Bar"))
+    //        {
+    //            Debug.Log("move");
+    //            transform.Translate(distance);
+    //        }
+    //        else
+    //        {
+    //            AutoMove = AUTOMOVE.NEUTRAL;
+    //        }
+    //    }
+    //}
+
+
+    public void TurnOnRigidbody()
+    {
+        GetComponent<Rigidbody>().isKinematic = false;
+        inputFlg = true;
+    }
+    public void TurnOffRigidbody()
+    {
+        GetComponent<Rigidbody>().isKinematic = true;
+        inputFlg = false;
     }
 }

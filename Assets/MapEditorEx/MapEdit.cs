@@ -26,7 +26,7 @@ public class MapEdit : MonoBehaviour
     public List<GameObject> TileList { get; private set; }
 
 
-    private Vector2Int MapSize = new Vector2Int(16, 12);
+    private Vector2Int MapSize = new Vector2Int(16, 8);
     private int BarNum;
 
     private Vector3 BarScale;
@@ -37,7 +37,6 @@ public class MapEdit : MonoBehaviour
     private float NoInputBottom;
 
     private GameObject StageGrid = null;
-    private int[] FirstEndBarNum = new int[2];
 
     string PrefabPath;
 
@@ -66,8 +65,6 @@ public class MapEdit : MonoBehaviour
 
         // プレハブのロード
         Block = new List<GameObject>();
-        if (!File.Exists(PrefabPath + "-1.prefab")) return;
-        Block.Add(Resources.Load("Prefabs/-1") as GameObject);
         for (int i = 1; true; i++)
         {
             if (!File.Exists(PrefabPath + i.ToString() + ".prefab")) return;
@@ -157,10 +154,6 @@ public class MapEdit : MonoBehaviour
         {
             ReloadMap_Bar();
         }
-        else
-        {
-            SearchFirstEndBarNum();
-        }
         ReloadMap_Block();
     }
 
@@ -232,7 +225,6 @@ public class MapEdit : MonoBehaviour
 
     private void ReloadMap_Block()
     {
-        Debug.Log(FirstEndBarNum[1]);
         // 初期化時は左上のセル位置をセット
         Vector2Int cellPos_leftTop = new Vector2Int(-MapSize.x / 2, (MapSize.y / 2) - 1);
         Vector2Int cellPos = cellPos_leftTop;
@@ -240,23 +232,7 @@ public class MapEdit : MonoBehaviour
         {
             for (int x = 0; x < MapSize.x; x++)
             {
-                // ゲームモードにおける生成時はエリア外を示すブロックを配置
-                if (mode == Mode.Game)
-                {
-                    if (FirstEndBarNum[0] == x)
-                    {
-                        CreateBlock(cellPos, -1);
-                    }
-                    else if (FirstEndBarNum[1] - 1 == x)
-                    {
-                        CreateBlock(new Vector2Int(cellPos.x, cellPos.y), -1);
-                    }
-                    else if (BlockMap[y, x] != 0)
-                    {
-                        CreateBlock(cellPos, BlockMap[y, x]);
-                    }
-                }
-                else if (BlockMap[y, x] != 0)
+                if (BlockMap[y, x] != 0)
                 {
                     CreateBlock(cellPos, BlockMap[y, x]);
                 }
@@ -264,6 +240,7 @@ public class MapEdit : MonoBehaviour
                 {
                     DeleteBlock(cellPos);
                 }
+
                 cellPos.x++;
             }
             cellPos.x = cellPos_leftTop.x;
@@ -333,22 +310,6 @@ public class MapEdit : MonoBehaviour
             }
         }
     }
-    private void SearchFirstEndBarNum()
-    {
-        int barCnt = -1;
-        for (int i = 0; i < BarNum; i++)
-        {
-            if (BarMap[i] == 1)
-            {
-                if (barCnt < 0)
-                {
-                    FirstEndBarNum[0] = i;
-                }
-                barCnt = i;
-            }
-        }
-        FirstEndBarNum[1] = barCnt;
-    }
 
 
     // ステージサイズ変更時にボタンオブジェクトから呼び出されるメソッド
@@ -410,10 +371,10 @@ public class MapEdit : MonoBehaviour
                 }
             }
         }
-        Destroy(BarList[BarList.Count - 1]);
-        BarList.Remove(BarList[BarList.Count - 1]);
-        Destroy(BarList[0]);
-        BarList.Remove(BarList[0]);
+        //Destroy(BarList[BarList.Count - 1]);
+        //BarList.Remove(BarList[BarList.Count - 1]);
+        //Destroy(BarList[0]);
+        //BarList.Remove(BarList[0]);
     }
 }
 
