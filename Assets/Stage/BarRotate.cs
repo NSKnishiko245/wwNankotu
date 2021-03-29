@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cbar : MonoBehaviour
+public class BarRotate : MonoBehaviour
 {
     // ñ⁄ïWÇÃäpìx
     private float Angle_Destination = 0.0f;
@@ -16,7 +16,7 @@ public class Cbar : MonoBehaviour
     public bool ReverseRotateFlg { private get; set; }
 
     // âÒì]èÛë‘
-    public enum ROTATESTATE
+    public enum ROTSTATEINNERDATA
     {
         NEUTRAL,        // í èÌèÛë‘
         ROTATED,        // âÒì]çœÇ›
@@ -24,12 +24,29 @@ public class Cbar : MonoBehaviour
         ROTATE_RIGHT,   // âEâÒì]ÇénÇﬂÇÈ
         REROTATE,       // å≥Ç…ñﬂÇ∑âÒì]íÜ
     }
-    public ROTATESTATE RotateState { get; private set; }
+    public enum ROTSTATEOUTERDATA
+    {
+        ROTATE_LEFT,    // ç∂âÒì]ÇénÇﬂÇÈ
+        ROTATE_RIGHT,   // âEâÒì]ÇénÇﬂÇÈ
+        REROTATE,       // å≥Ç…ñﬂÇ∑âÒì]íÜ
+    }
+    public ROTSTATEINNERDATA RotateState { get; private set; }
 
     // âÒì]ñΩóﬂÅiÇ±ÇÍÇäOïîÇ©ÇÁåƒÇ‘Ç±Ç∆Ç≈âÒì]Ç≥ÇπÇÈÅj
-    public void Rotation(ROTATESTATE state)
+    public void Rotation(ROTSTATEOUTERDATA state)
     {
-        RotateState = state;
+        switch (state)
+        {
+            case ROTSTATEOUTERDATA.ROTATE_LEFT:
+                RotateState = ROTSTATEINNERDATA.ROTATE_LEFT;
+                break;
+            case ROTSTATEOUTERDATA.ROTATE_RIGHT:
+                RotateState = ROTSTATEINNERDATA.ROTATE_RIGHT;
+                break;
+            case ROTSTATEOUTERDATA.REROTATE:
+                RotateState = ROTSTATEINNERDATA.REROTATE;
+                break;
+        }
         RotationInfo_Update();
     }
 
@@ -37,13 +54,13 @@ public class Cbar : MonoBehaviour
     {
         IsHit = false;
         ReverseRotateFlg = false;
-        RotateState = ROTATESTATE.NEUTRAL;
+        RotateState = ROTSTATEINNERDATA.NEUTRAL;
         GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f);
     }
 
     void Update()
     {
-        if (!(RotateState == ROTATESTATE.NEUTRAL || RotateState == ROTATESTATE.ROTATED))
+        if (!(RotateState == ROTSTATEINNERDATA.NEUTRAL || RotateState == ROTSTATEINNERDATA.ROTATED))
         {
             // âÒì]èàóù
             Rotation_Update();
@@ -56,15 +73,15 @@ public class Cbar : MonoBehaviour
         // âÒì]ëOÇ…ñ⁄ïWÇÃäpìxÇåàíË
         switch (RotateState)
         {
-            case ROTATESTATE.ROTATE_LEFT:
+            case ROTSTATEINNERDATA.ROTATE_LEFT:
                 Angle_Destination = -180.0f;
                 if (ReverseRotateFlg) Angle_Destination *= -1.0f;
                 break;
-            case ROTATESTATE.ROTATE_RIGHT:
+            case ROTSTATEINNERDATA.ROTATE_RIGHT:
                 Angle_Destination = 180.0f;
                 if (ReverseRotateFlg) Angle_Destination *= -1.0f;
                 break;
-            case ROTATESTATE.REROTATE:
+            case ROTSTATEINNERDATA.REROTATE:
                 Angle_Destination = 0.0f;
                 break;
         }
@@ -93,15 +110,14 @@ public class Cbar : MonoBehaviour
             if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) < 0.02f)
             {
                 transform.localRotation = Quaternion.Euler(0.0f, -Angle_Destination, 0.0f);
-                Debug.Log(transform.localRotation.y);
                 // âÒì]èIóπéûÇ…âÒì]èÛë‘ÇçXêV
-                if (RotateState != ROTATESTATE.REROTATE)
+                if (RotateState != ROTSTATEINNERDATA.REROTATE)
                 {
-                    RotateState = ROTATESTATE.ROTATED;
+                    RotateState = ROTSTATEINNERDATA.ROTATED;
                 }
                 else
                 {
-                    RotateState = ROTATESTATE.NEUTRAL;
+                    RotateState = ROTSTATEINNERDATA.NEUTRAL;
                 }
             }
         }

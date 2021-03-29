@@ -26,7 +26,7 @@ public class MapEdit : MonoBehaviour
     public List<GameObject> TileList { get; private set; }
 
 
-    private Vector2Int MapSize = new Vector2Int(16, 8);
+    private Vector2Int MapSize = new Vector2Int(16, 10);
     private int BarNum;
 
     private Vector3 BarScale;
@@ -149,7 +149,7 @@ public class MapEdit : MonoBehaviour
             }
         }
 
-        // 読み込んだマップを見て再ロード
+        // 読み込んだマップを見てオブジェクトを再ロード
         if (mode == Mode.Edit)
         {
             ReloadMap_Bar();
@@ -160,21 +160,22 @@ public class MapEdit : MonoBehaviour
     private void CreateBlock(Vector2Int cellpos, int blockIdx)
     {
         // 指定したブロックのプレハブが存在しない場合は中断
-        if (blockIdx > Block.Count - 1) return;
+        if (blockIdx > Block.Count) return;
 
         // マウスの位置から、その位置に対応したマップの要素数に変換
         Vector2Int elementNum = GetElementNumFormCellPos(cellpos, MapSize);
 
-        // マップにブロックを登録
-        BlockMap[elementNum.y, elementNum.x] = blockIdx;
 
-        if (blockIdx < 0)
-        {
-            blockIdx = 0;
-        }
+        // プレイヤーブロックはeditモードの時のみ生成
         // 一度指定された場所のオブジェクトを削除、のち生成
+        GameObject obj = Instantiate(Block[blockIdx - 1], new Vector3(cellpos.x + 0.5f, cellpos.y + 0.5f, 0.0f), new Quaternion(0, 0, 0, 1));
+        if (Block[blockIdx - 1].transform.tag == "Player" && mode == Mode.Game)
+        {
+            obj.GetComponent<MeshRenderer>().enabled = false;
+            obj.GetComponent<BoxCollider>().enabled = false;
+        }
         Destroy(BlockList[elementNum.y, elementNum.x]);
-        GameObject obj = Instantiate(Block[blockIdx], new Vector3(cellpos.x + 0.5f, cellpos.y + 0.5f, 0.0f), new Quaternion(0, 0, 0, 1));
+        BlockMap[elementNum.y, elementNum.x] = blockIdx;
         BlockList[elementNum.y, elementNum.x] = obj;
     }
     private void DeleteBlock(Vector2Int cellpos)
@@ -184,6 +185,23 @@ public class MapEdit : MonoBehaviour
         // マップからブロックを削除
         BlockMap[elementNum.y, elementNum.x] = 0;
         Destroy(BlockList[elementNum.y, elementNum.x]);
+    }
+    private void DeletePlayerBlock()
+    {
+        for (int y = 0; y < BlockList.GetLength(0); y++)
+        {
+            for (int x = 0; x < BlockList.GetLength(1); x++)
+            {
+                if (BlockMap[y, x] != 0)
+                {
+                    if (BlockList[y, x].transform.tag == "Player")
+                    {
+                        Destroy(BlockList[y, x]);
+                        BlockMap[y, x] = 0;
+                    }
+                }
+            }
+        }
     }
     private void CreateBar(Vector3 pos, Vector3 scale)
     {
@@ -267,16 +285,25 @@ public class MapEdit : MonoBehaviour
         if (Input.mousePosition.y > Screen.height * NoInputBottom)
         {
             // ブロックの設置
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) || (Input.GetMouseButton(0) && Input.GetKey(KeyCode.Space)))
             {
                 Vector2Int cellpos = GetCellPosFromMousePos();
                 if (IsOutArea(cellpos, MapSize))
                 {
+                    // プレイヤーブロックの配置時、既に存在する場合は古い方を削除
+                    if (BlockIndex <= Block.Count)
+                    {
+                        if (Block[BlockIndex - 1].transform.tag == "Player")
+                        {
+                            DeletePlayerBlock();
+                        }
+                    }
+                    // 指定のブロックを配置
                     CreateBlock(cellpos, BlockIndex);
                 }
             }
             // ブロックの削除
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && Input.GetKey(KeyCode.Space)))
             {
                 Vector2Int cellpos = GetCellPosFromMousePos();
                 if (IsOutArea(cellpos, MapSize))

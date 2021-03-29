@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
 
     private bool inputFlg = true;
 
+    public float BorderLine_l;
+    public float BorderLine_r;
+
     // ƒo[‚Æ‚ÌÚGŽž‚Ì•â³“®ì
     //public enum AUTOMOVE
     //{
@@ -47,13 +50,22 @@ public class Player : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         if (!inputFlg) x = 0.0f;
         //ˆÚ“®ˆ—
+        Vector3 moveValue = transform.right * Speed * Time.deltaTime;
         if (x>0)
         {
-            transform.position += transform.right * Speed * Time.deltaTime;
+            transform.position += moveValue;
+            if (transform.position.x + transform.localScale.x / 2.0f >= BorderLine_r)
+            {
+                transform.position -= moveValue;
+            }
         }
         else if (x<0)
         {
-            transform.position -= transform.right * Speed * Time.deltaTime;
+            transform.position -= moveValue;
+            if (transform.position.x - transform.localScale.x / 2.0f <= BorderLine_l)
+            {
+                transform.position += moveValue;
+            }
         }
         
 
@@ -142,12 +154,14 @@ public class Player : MonoBehaviour
     //}
 
 
-    public void TurnOnRigidbody()
+    public void TurnOnMove()
     {
         GetComponent<Rigidbody>().isKinematic = false;
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
+        transform.localEulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
         inputFlg = true;
     }
-    public void TurnOffRigidbody()
+    public void TurnOffMove()
     {
         GetComponent<Rigidbody>().isKinematic = true;
         inputFlg = false;

@@ -10,6 +10,9 @@ public class StageRotate : MonoBehaviour
     private float rotate_speed = 1.0f;
     public bool isReverse { get; private set; }
 
+    private float rotStartInterval = 0.5f;
+    private float timer = 0.0f;
+
     void Start()
     {
         isReverse = false;
@@ -20,6 +23,9 @@ public class StageRotate : MonoBehaviour
     {
         if (isRotNow)
         {
+            timer += Time.deltaTime;
+            if (timer < rotStartInterval) return;
+
             transform.Rotate(rotate_speed, 0.0f, 0.0f);
             if (!isReverse)
             {
@@ -39,6 +45,10 @@ public class StageRotate : MonoBehaviour
                     isReverse = false;
                 }
             }
+        }
+        else
+        {
+            timer = 0.0f;
         }
     }
 }
