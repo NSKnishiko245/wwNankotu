@@ -7,7 +7,7 @@ public class BarRotate : MonoBehaviour
     // 目標の角度
     private float Angle_Destination = 0.0f;
     // 角速度を目標角の何割にするか
-    private float Angle_Speed = 1.0f;
+    private float Angle_Speed = 2.0f;
 
     //当たっているか？
     public bool IsHit{ get; private set; }
@@ -126,12 +126,18 @@ public class BarRotate : MonoBehaviour
     // プレイヤーに対する衝突検知
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player") IsHit = true;
-        GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f);
+        if (other.tag == "Player")
+        {
+            IsHit = true;
+            GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player") IsHit = false;
-        GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f);
+        if (other.tag == "Player")
+        {
+            IsHit = false;
+            GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f);
+        }
     }
 }

@@ -7,7 +7,7 @@ public class StageRotate : MonoBehaviour
     public bool isRotNow { get; private set; }
     public void TurnOnRotate() { isRotNow = true; }
 
-    private float rotate_speed = 1.0f;
+    private float rotate_speed = 180.0f;
     public bool isReverse { get; private set; }
 
     private float rotStartInterval = 0.5f;
@@ -26,7 +26,7 @@ public class StageRotate : MonoBehaviour
             timer += Time.deltaTime;
             if (timer < rotStartInterval) return;
 
-            transform.Rotate(rotate_speed, 0.0f, 0.0f);
+            transform.Rotate(rotate_speed * Time.deltaTime, 0.0f, 0.0f);
             if (!isReverse)
             {
                 if (transform.eulerAngles.x >= 180)
@@ -50,5 +50,12 @@ public class StageRotate : MonoBehaviour
         {
             timer = 0.0f;
         }
+    }
+
+    public void Init()
+    {
+        transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
+        isRotNow = false;
+        isReverse = false;
     }
 }

@@ -7,7 +7,8 @@ public class Button : MonoBehaviour
 {
     public GameObject StageCountText;
     public GameObject MapManager;
-    
+    public GameObject StageManager;
+
     // テキストの数字を上げる
     public void StageCount_Increment()
     {
@@ -27,6 +28,25 @@ public class Button : MonoBehaviour
             LoadMap();
         }
     }
+    public void StageCount_Increment_Game()
+    {
+        int num = int.Parse(StageCountText.GetComponent<Text>().text);
+        num++;
+        StageCountText.GetComponent<Text>().text = num.ToString();
+        LoadMap();
+        StageManager.GetComponent<StageManager>().ResetStage(int.Parse(StageCountText.GetComponent<Text>().text));
+    }
+    public void StageCount_Decrement_Game()
+    {
+        int num = int.Parse(StageCountText.GetComponent<Text>().text);
+        if (num > 1)
+        {
+            num--;
+            StageCountText.GetComponent<Text>().text = num.ToString();
+            LoadMap();
+            StageManager.GetComponent<StageManager>().ResetStage(int.Parse(StageCountText.GetComponent<Text>().text));
+        }
+    }
 
     // 現在作成しているステージを外部ファイル(CSV)に書き出す
     public void OnClick_Save()
@@ -35,7 +55,15 @@ public class Button : MonoBehaviour
     }
     public void LoadMap()
     {
-        MapManager.GetComponent<MapEdit>().LoadMap(int.Parse(StageCountText.GetComponent<Text>().text));
+        if (MapManager.GetComponent<MapEdit>().mode == Mode.Edit)
+        {
+            MapManager.GetComponent<MapEdit>().LoadMap(int.Parse(StageCountText.GetComponent<Text>().text));
+        }
+        else
+        {
+            MapManager.GetComponent<MapEdit>().CreateStage_Game(int.Parse(StageCountText.GetComponent<Text>().text));
+            StageManager.GetComponent<StageManager>().ResetStage(int.Parse(StageCountText.GetComponent<Text>().text));
+        }
     }
 
 

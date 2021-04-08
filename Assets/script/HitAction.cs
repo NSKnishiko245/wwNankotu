@@ -18,7 +18,7 @@ public class HitAction : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         isHit = true;
     }

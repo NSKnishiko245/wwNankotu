@@ -25,7 +25,8 @@ public class StageManager : MonoBehaviour
     public int stageNum = 1;
     private bool initFlg = true;
 
-    
+    private bool isInputOff = false;
+
     private int HitBarIdx   = -1;   // プレイヤーと衝突したバー
     private int LeftBarIdx  = -1;   // 一番左のバー
     private int RightBarIdx = -1;   // 一番右のバー
@@ -34,6 +35,11 @@ public class StageManager : MonoBehaviour
     {
         L_TRIGGER = -1,
         R_TRIGGER = 1,
+    }
+    private enum STICKSTATE
+    {
+        L_DOWN = -1,
+        R_DOWN = 1,
     }
     private enum WARPSTATE
     {
@@ -50,23 +56,11 @@ public class StageManager : MonoBehaviour
         BlockNum_Map = MapManager.GetComponent<MapEdit>().BlockMap;
         Tile_List = MapManager.GetComponent<MapEdit>().TileList;
         Bar_List = MapManager.GetComponent<MapEdit>().BarList;
-
         // マップからプレイヤーの初期位置を捜し、プレイヤーを配置
-        for (int y = 0; y < Block_Map.GetLength(0); y++)
-        {
-            for (int x = 0; x < Block_Map.GetLength(1); x++)
-            {
-                if (BlockNum_Map[y, x] != 0)
-                {
-                    if (Block_Map[y, x].transform.tag == "Player")
-                    {
-                        Player.transform.position = Block_Map[y, x].transform.position;
-                    }
-                }
-            }
-        }
-
+        RespawnPlayer();
         // ステージ内オブジェクトを１つのオブジェクトの子供にする
+        // ステージの初期化
+        GetComponent<StageRotate>().Init();
         ParentReset();
     }
 
@@ -78,36 +72,54 @@ public class StageManager : MonoBehaviour
             initFlg = false;
         }
 
-        // プレイヤーと衝突中のバーの要素番号を取得
-        HitBarIdx = GetHitBarIndex();
-        LeftBarIdx = GetLeftBarIndex();
-        RightBarIdx = GetRightBarIndex();
+        // 左スティックの入力値を取得
+        float L_Stick_Value = Input.GetAxis("Horizontal");
+
+        HitBarIdx = GetHitBarIndex();       // プレイヤーと衝突中のバーを取得
+        LeftBarIdx = GetLeftBarIndex();     // ステージの一番左のバーを取得
+        RightBarIdx = GetRightBarIndex();   // ステージの一番右のバーを取得
 
         // ステージが停止している時、プレイヤーを動かせる
         if (isStopStage())
         {
+            // プレイヤーの更新、プレイヤーにおける移動可能領域の設定など
             Player.GetComponent<Player>().TurnOnMove();
-            Player.GetComponent<Player>().BorderLine_l = Bar_List[LeftBarIdx].transform.position.x;
-            Player.GetComponent<Player>().BorderLine_r = Bar_List[RightBarIdx].transform.position.x;
+            if (Bar_List.Count > 0)
+            {
+                Player.GetComponent<Player>().BorderLine_l = Bar_List[LeftBarIdx].transform.position.x;
+                Player.GetComponent<Player>().BorderLine_r = Bar_List[RightBarIdx].transform.position.x;
+            }
             Player.transform.parent = null;
 
             // プレイヤーが左端のバーに接触した場合
             if (isLeftBar(HitBarIdx))
             {
-                // 右側へワープ可能かどうか
-                if (WarpCheck(WARPSTATE.TO_RIGHT))
+                if (L_Stick_Value == (int)STICKSTATE.L_DOWN && isInputOff)
                 {
-                    WarpPlayer(WARPSTATE.TO_RIGHT); // 右側へワープ
+                    // 右側へワープ可能かどうか
+                    if (WarpCheck(WARPSTATE.TO_RIGHT))
+                    {
+                        WarpPlayer(WARPSTATE.TO_RIGHT); // 右側へワープ
+                    }
                 }
+                if (L_Stick_Value == 0) isInputOff = true;
             }
             // プレイヤーが右端のバーに接触した場合
             else if (isRightBar(HitBarIdx))
             {
-                // 左側へワープ可能かどうか
-                if (WarpCheck(WARPSTATE.TO_LEFT))
+                if (L_Stick_Value == (int)STICKSTATE.R_DOWN && isInputOff)
                 {
-                    WarpPlayer(WARPSTATE.TO_LEFT);  // 左側へワープ
+                    // 左側へワープ可能かどうか
+                    if (WarpCheck(WARPSTATE.TO_LEFT))
+                    {
+                        WarpPlayer(WARPSTATE.TO_LEFT);  // 左側へワープ
+                    }
                 }
+                if (L_Stick_Value == 0) isInputOff = true;
+            }
+            else
+            {
+                isInputOff = false;
             }
         }
         else
@@ -115,10 +127,6 @@ public class StageManager : MonoBehaviour
             // ステージが動いている時はプレイヤーを停止
             Player.GetComponent<Player>().TurnOffMove();
         }
-
-
-        // トリガーからの入力情報を取得
-        //float triggerValue = Input.GetAxis("L_R_Trigger");
 
         // 右スティックからの入力情報を取得
         float R_Stick_Value = Input.GetAxis("Horizontal2");
@@ -148,6 +156,15 @@ public class StageManager : MonoBehaviour
                     RotateBar(i, BarRotate.ROTSTATEOUTERDATA.REROTATE);
                 }
             }
+        }
+
+        if (GetComponent<StageRotate>().isRotNow)
+        {
+            Player.GetComponent<MeshRenderer>().enabled = false;
+        }
+        else
+        {
+            Player.GetComponent<MeshRenderer>().enabled = true;
         }
     }
 
@@ -370,6 +387,28 @@ public class StageManager : MonoBehaviour
             }
         }
         return true;
+    }
+    // マップからプレイヤーナンバーを捜しその位置にプレイヤーを配置
+    private void RespawnPlayer()
+    {
+        for (int y = 0; y < Block_Map.GetLength(0); y++)
+        {
+            for (int x = 0; x < Block_Map.GetLength(1); x++)
+            {
+                if (BlockNum_Map[y, x] != 0)
+                {
+                    if (Block_Map[y, x].transform.tag == "Player")
+                    {
+                        Player.transform.position = Block_Map[y, x].transform.position;
+                    }
+                }
+            }
+        }
+    }
+    public void ResetStage(int stage_idx)
+    {
+        stageNum = stage_idx;
+        initFlg = true;
     }
     
 

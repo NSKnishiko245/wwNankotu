@@ -9,31 +9,27 @@ public class Player : MonoBehaviour
     [Header("プレイヤーのジャンプ力")]
     public float Jump;
 
-    private int m_hitOriNum = 0;
-    private List<int> m_HitOriNumList = new List<int>();
-
     private Rigidbody rb;
     private Vector3 pos;
     private bool Jumpflg;
 
     private bool inputFlg = true;
+    private float inputValue_x = 0.0f;
 
     public float BorderLine_l;
     public float BorderLine_r;
 
-    // バーとの接触時の補正動作
-    //public enum AUTOMOVE
-    //{
-    //    NEUTRAL,
-    //    MOVE_LEFT,
-    //    MOVE_RIGHT
-    //}
-    //public AUTOMOVE AutoMove { private get; set; }
+    private enum PLAYERHITBOX
+    {
+        RIGHT,
+        LEFT,
+        BOTTOM,
+    }
 
+    
     // Start is called before the first frame update
     void Start()
     {
-        //AutoMove = AUTOMOVE.NEUTRAL;
         pos = transform.position;
         rb = GetComponent<Rigidbody>();
     }
@@ -41,52 +37,29 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (AutoMove != AUTOMOVE.NEUTRAL)
-        //{
-        //    AutoMovePlayer();
-        //}
-
         //キーボード操作
-        float x = Input.GetAxis("Horizontal");
-        if (!inputFlg) x = 0.0f;
+        inputValue_x = Input.GetAxis("Horizontal");
+
+        // 入力をなしにする場合
+        if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.02f) inputValue_x = 0.0f;
+
         //移動処理
         Vector3 moveValue = transform.right * Speed * Time.deltaTime;
-        if (x>0)
+        if (inputValue_x > 0)
         {
-            transform.position += moveValue;
-            if (transform.position.x + transform.localScale.x / 2.0f >= BorderLine_r)
-            {
-                transform.position -= moveValue;
-            }
-        }
-        else if (x<0)
-        {
-            transform.position -= moveValue;
-            if (transform.position.x - transform.localScale.x / 2.0f <= BorderLine_l)
+            if (transform.position.x + transform.localScale.x / 2.0f < BorderLine_r)
             {
                 transform.position += moveValue;
             }
         }
+        else if (inputValue_x < 0)
+        {
+            if (transform.position.x - transform.localScale.x / 2.0f > BorderLine_l)
+            {
+                transform.position -= moveValue;
+            }
+        }
         
-
-        //コントローラー操作
-        //float lsh = Input.GetAxis("L_Stick_H");
-        //float lsv = Input.GetAxis("L_Stick_V");
-
-        //if (!inputFlg)
-        //{
-        //    lsh = lsv = 0.0f;
-        //}
-
-        //if(lsh>1)
-        //{
-        //    transform.position += transform.right * Speed * Time.deltaTime;
-        //}
-        //else if(lsh<-1)
-        //{
-        //    transform.position -= transform.right * Speed * Time.deltaTime;
-        //}
-
         //ジャンプ処理（Aボタン押下）
         if(Input.GetKeyDown("joystick button 1"))
         {
@@ -100,60 +73,9 @@ public class Player : MonoBehaviour
         {
             Jumpflg = true;
         }
-        
+        HitTest();
     }
-
-    //触れている折り目のオブジェクトの番号をセット
-    public void SetHitNum(int num)
-    {
-        m_hitOriNum = num;
-        //Debug.Log(num);
-
-    }
-    public void test(int num)
-    {
-        m_HitOriNumList.Add(num);
-    }
-
-    public void ResetHitOriNumList()
-    {
-        m_HitOriNumList.Clear();
-    }
-
-
-    public int GetHitOriobjNum()
-    {
-        return m_hitOriNum;
-    }
-    public List<int> GetHitOriNumList()
-    {
-        return m_HitOriNumList;
-    }
-
-
-    // バーを回転させる時のプレイヤーをバーから離していく処理
-    //public void AutoMovePlayer()
-    //{
-    //    Vector3 distance = Vector3.zero;
-    //    if (AutoMove == AUTOMOVE.MOVE_LEFT)     distance = Vector3.right;
-    //    if (AutoMove == AUTOMOVE.MOVE_RIGHT)    distance = Vector3.left;
-
-    //    Ray ray = new Ray(transform.position, distance);
-    //    if (Physics.Raycast(ray, out RaycastHit hit, transform.localScale.x / 2.0f))
-    //    {
-    //        if (hit.collider.CompareTag("Bar"))
-    //        {
-    //            Debug.Log("move");
-    //            transform.Translate(distance);
-    //        }
-    //        else
-    //        {
-    //            AutoMove = AUTOMOVE.NEUTRAL;
-    //        }
-    //    }
-    //}
-
-
+    
     public void TurnOnMove()
     {
         GetComponent<Rigidbody>().isKinematic = false;
@@ -165,5 +87,41 @@ public class Player : MonoBehaviour
     {
         GetComponent<Rigidbody>().isKinematic = true;
         inputFlg = false;
+    }
+
+    private void HitTest()
+    {
+        if (transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit)
+        {
+            if (inputValue_x < 0 && IsClimb())
+            {
+                if (transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().isHit)
+                {
+                    transform.position += Vector3.up * transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().HitBlockHeight;
+                    transform.position += Vector3.left * 0.2f;
+                    transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().ResetHitFlg();
+                }
+            }
+            if (inputValue_x > 0 && IsClimb())
+            {
+                if (transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().isHit)
+                {
+                    transform.position += Vector3.up * transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().HitBlockHeight;
+                    transform.position += Vector3.right * 0.2f;
+                    transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().ResetHitFlg();
+                }
+            }
+        }
+    }
+
+    private bool IsClimb()
+    {
+        Vector3 ray_pos = transform.position;
+        Ray ray = new Ray(ray_pos, Vector3.up);
+        if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
+        {
+            if (hit.transform.tag == "Block") return false;
+        }
+        return true;
     }
 }

@@ -54,9 +54,10 @@ public class MapEdit : MonoBehaviour
         BarMap = new List<int>(new int[BarNum]);
         BarScale = new Vector3(0.2f, MapSize.y, 0.2f);
 
+        TileList = new List<GameObject>();
+        BarList = new List<GameObject>();
         if (mode == Mode.Edit)
         {
-            BarList = new List<GameObject>();
             for (int i = 0; i < BarNum; i++)
             {
                 CreateBar(new Vector3(-(BarNum / 2) + (i * 1.0f), 0.0f, 0.0f), BarScale);
@@ -76,12 +77,14 @@ public class MapEdit : MonoBehaviour
     {
         if (mode == Mode.Edit)
         {
+
             // エディター更新処理
             InputForEdit();
 
-            // 一度だけグリッドオブジェクトを取得
+            // 初めて更新処理に入った時、ステージをロードしグリッドオブジェクトを取得
             if (StageGrid == null)
             {
+                LoadMap(1);
                 StageGrid = GameObject.Find("StageGrid");
             }
         }
@@ -356,9 +359,19 @@ public class MapEdit : MonoBehaviour
     // ゲームシーン用のステージ生成
     public void CreateStage_Game(int stageNum)
     {
+        for (int i = 0; i < TileList.Count; i++)
+        {
+            Destroy(TileList[i]);
+        }
+        TileList.Clear();
+        for (int i = 0; i < BarList.Count; i++)
+        {
+            Destroy(BarList[i]);
+        }
+        BarList.Clear();
+
+
         LoadMap(stageNum);
-        BarList = new List<GameObject>();
-        TileList = new List<GameObject>();
         for (int i = 0; i < BarNum; i++)
         {
             if (BarMap[i] != 0)
@@ -398,10 +411,6 @@ public class MapEdit : MonoBehaviour
                 }
             }
         }
-        //Destroy(BarList[BarList.Count - 1]);
-        //BarList.Remove(BarList[BarList.Count - 1]);
-        //Destroy(BarList[0]);
-        //BarList.Remove(BarList[0]);
     }
 }
 
