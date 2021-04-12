@@ -11,4 +11,40 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/StageMake/Game_Proto.unity
     guid: c912dedca7981114ebc861b5bd1880ff
+  - enabled: 1
+    path: Assets/hibik work/Scene/TitleScene.unity
+    guid: e0366c00a847346408f7fb00b8cc13a6
+  - enabled: 1
+    path: Assets/hibik work/Scene/SelectScene.unity
+    guid: 2d489cd0b39c3be4ea293f9f10c56978
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage1Scene.unity
+    guid: 6af18d0741ab8bb4eb89cfc911b8a3f2
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage2Scene.unity
+    guid: 0b9eb91629fd4494880e09af02f6cbfa
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage3Scene.unity
+    guid: b4f3ec033e9ef984e94cdbd1fcc00c7a
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage4Scene.unity
+    guid: 3b048c5fd372d3743aeb8fdcbd12f4ae
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage5Scene.unity
+    guid: 402ce4cdff8717e4fbdfc3e0ca8421b4
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage6Scene.unity
+    guid: 6d6a2695dadc4a44b8d1806471d7c600
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage7Scene.unity
+    guid: 36ae0c130c3ceef41b0270149a0c881d
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage8Scene.unity
+    guid: 581b1b586ee7a4f458e455195e0c7da3
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage9Scene.unity
+    guid: 30d3a5dc58db2f147ba9aa1913f1af7e
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage10Scene.unity
+    guid: 92039318d0edb444690addcd6acc2561
   m_configObjects: {}
