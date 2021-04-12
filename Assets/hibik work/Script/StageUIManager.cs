@@ -118,7 +118,7 @@ public class StageUIManager : MonoBehaviour
             retryGear.GetComponent<GearRotation>().SetRotFlg(false);
 
             // 決定でシーン遷移
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
                 SceneManager.LoadScene("SelectScene");
             }
@@ -131,7 +131,7 @@ public class StageUIManager : MonoBehaviour
             retryGear.GetComponent<GearRotation>().SetRotFlg(true);
 
             // 決定でシーン遷移
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
                 // 現在のScene名を取得する
                 Scene loadScene = SceneManager.GetActiveScene();

@@ -25,7 +25,7 @@ public class StageSelectManager : MonoBehaviour
         int stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetMoveNum();
 
         // ƒV[ƒ“‘JˆÚ
-        if (Input.GetKeyDown(KeyCode.Return) || (Input.GetKeyDown("joystick button 1")))
+        if (Input.GetKeyDown(KeyCode.Return) || (Input.GetKeyDown("joystick button 0")))
         {
             selectDecSource.Play();
             sceneChangeFlg = true;

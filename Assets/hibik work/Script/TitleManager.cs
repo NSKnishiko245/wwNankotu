@@ -17,7 +17,7 @@ public class TitleManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) || (Input.GetKeyDown("joystick button 1")))
+        if (Input.GetKeyDown(KeyCode.Return) || (Input.GetKeyDown("joystick button 0")))
         {
             sceneChangeFlg = true;
         }

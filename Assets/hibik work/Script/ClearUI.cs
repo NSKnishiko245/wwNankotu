@@ -142,7 +142,7 @@ public class ClearUI : MonoBehaviour
             selectUnderGear.GetComponent<GearRotation>().SetRotFlg(true);
             nextGear.GetComponent<GearRotation>().SetRotFlg(false);
             nextUnderGear.GetComponent<GearRotation>().SetRotFlg(false);
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
                 SceneManager.LoadScene("SelectScene");
             }
@@ -154,7 +154,7 @@ public class ClearUI : MonoBehaviour
             nextGear.GetComponent<GearRotation>().SetRotFlg(true);
             nextUnderGear.GetComponent<GearRotation>().SetRotFlg(true);
 
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
                 int nextStageNum = stageUIManager.GetComponent<StageUIManager>().GetStageNum() + 1;
                 SceneManager.LoadScene("Stage" + nextStageNum + "Scene");
