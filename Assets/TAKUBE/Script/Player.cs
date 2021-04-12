@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     public float BorderLine_l;
     public float BorderLine_r;
 
+    public bool IsHitGoalBlock { get; private set; }
+
     private enum PLAYERHITBOX
     {
         RIGHT,
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour
     {
         pos = transform.position;
         rb = GetComponent<Rigidbody>();
+        IsHitGoalBlock = false;
     }
 
     // Update is called once per frame
@@ -123,5 +126,13 @@ public class Player : MonoBehaviour
             if (hit.transform.tag == "Block") return false;
         }
         return true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "GoalBlock")
+        {
+            IsHitGoalBlock = true;
+        }
     }
 }

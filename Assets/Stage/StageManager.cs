@@ -18,6 +18,8 @@ public class StageManager : MonoBehaviour
     private List<GameObject> Tile_List;
     private List<GameObject> Bar_List;
 
+    public GameObject UnderBorder;
+
     //パーティクル描画用
     public GameObject particleObject;
 
@@ -30,6 +32,9 @@ public class StageManager : MonoBehaviour
     private int HitBarIdx   = -1;   // プレイヤーと衝突したバー
     private int LeftBarIdx  = -1;   // 一番左のバー
     private int RightBarIdx = -1;   // 一番右のバー
+
+    public bool IsGameOver { get; private set; }
+    public bool IsGameClear { get; private set; }
 
     private enum CONTROLLERSTATE
     {
@@ -62,6 +67,9 @@ public class StageManager : MonoBehaviour
         // ステージの初期化
         GetComponent<StageRotate>().Init();
         ParentReset();
+
+        // フラグ初期化
+        IsGameClear = IsGameOver = false;
     }
 
     void Update()
@@ -135,18 +143,18 @@ public class StageManager : MonoBehaviour
         if (CanYouRotate())
         {
             // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
-            if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER)
+            if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.J))
             {
                 RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_LEFT);
             }
-            if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER)
+            if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.L))
             {
                 RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_RIGHT);
             }
         }
 
         // 回転済みのステージを戻す処理
-        if (Input.GetKeyDown("joystick button 9"))
+        if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
         {
             // 回転済みのバーを検出したら元に戻す回転処理を開始
             for (int i = 0; i < Bar_List.Count; i++)
@@ -158,13 +166,24 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        if (GetComponent<StageRotate>().isRotNow)
+        //if (GetComponent<StageRotate>().isRotNow)
+        //{
+        //    Player.GetComponent<MeshRenderer>().enabled = false;
+        //}
+        //else
+        //{
+        //    Player.GetComponent<MeshRenderer>().enabled = true;
+        //}
+
+        // ゲームクリア検知
+        if (Player.GetComponent<Player>().IsHitGoalBlock)
         {
-            Player.GetComponent<MeshRenderer>().enabled = false;
+            IsGameClear = true;
         }
-        else
+        // ゲームオーバー検知
+        if (UnderBorder.GetComponent<HitAction>().isHit)
         {
-            Player.GetComponent<MeshRenderer>().enabled = true;
+            IsGameOver = true;
         }
     }
 

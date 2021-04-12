@@ -138,17 +138,11 @@ public class RotationBar : MonoBehaviour
     }
 
 
-
-
-
-
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == "Player")
         {
             m_isPlayerHit = true;
-            Debug.Log("aaaaaaa");
         }
     }
     private void OnCollisionExit(Collision collision)
