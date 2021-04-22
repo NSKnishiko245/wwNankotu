@@ -7,6 +7,10 @@ TagManager:
   - Block
   - Bar
   - GoalBlock
+  - GimicMoveBlock
+  - GimicMoveBar
+  - GimicMoveCol
+  - GimicClearBlock
   layers:
   - Default
   - TransparentFX
