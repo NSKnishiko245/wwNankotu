@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class GoldGear : MonoBehaviour
 {
+    [SerializeField] private GameObject stageUIManager;
+    private int stageNum;
 
     public ParticleSystem m_particle;//取得時のエフェクト
 
@@ -61,8 +63,14 @@ public class GoldGear : MonoBehaviour
 
     private void DestroyGear()
     {
+        // ここでスコア加算
+        stageNum = stageUIManager.GetComponent<StageUIManager>().GetStageNum();
+        StageSelectManager.score[stageNum].isGold = true;
+
+
         Instantiate(m_particle, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
         Destroy(this.gameObject);
+
     }
     private void OnCollisionEnter(Collision collision)
     {

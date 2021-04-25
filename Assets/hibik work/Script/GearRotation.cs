@@ -7,7 +7,7 @@ public class GearRotation : MonoBehaviour
     [SerializeField, Range(-5, 5)]
     private float rotSpeed = -0.2f;  // ‰ñ“]‘¬“x
 
-    private bool rotFlg = true; // true:‰ñ“]‚·‚é
+    [SerializeField] private bool rotFlg = true; // true:‰ñ“]‚·‚é
 
     private void Update()
     {

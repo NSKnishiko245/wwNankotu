@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class StageUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject eventSystem;
+    [SerializeField] private GameObject player;
     [SerializeField] private GameObject stageManager;
     [SerializeField] private GameObject stageUIManager;
     [SerializeField] private GameObject editCanvas;
@@ -14,6 +15,8 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private GameObject selectGear;
     [SerializeField] private GameObject retryGear;
 
+    [SerializeField] private int stageDisplayCntInit;   // ステージを表示するまでの時間
+    private int stageDisplayCnt;
     [SerializeField] private int stageNum;          // ステージ番号
     [SerializeField] private bool editFlg = false;  // true:エディット表示
 
@@ -33,50 +36,67 @@ public class StageUIManager : MonoBehaviour
     private void Awake()
     {
         if (!editFlg) editCanvas.SetActive(false);
+
+        // ステージを表示するまでの時間をセット
+        stageDisplayCnt = stageDisplayCntInit;
+        // ステージを非表示
+        player.SetActive(false);
+        stageManager.SetActive(false);
     }
 
     private void Update()
     {
-        if (stageManager.GetComponent<StageManager>().IsGameClear)
+        if (stageDisplayCnt == 0)
+        {
+            // ステージを表示
+            player.SetActive(true);
+            stageManager.SetActive(true);
+        }
+        else stageDisplayCnt--;
+
+        if (stageManager.GetComponent<StageManager>().IsGameClear || Input.GetKeyDown(KeyCode.C))
         {
             stageUIManager.GetComponent<ClearUI>().ClearFlgOn();
         }
 
-        // 決定でシーン遷移
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown("joystick button 6"))
-        {
-            SceneManager.LoadScene("SelectScene");
-        }
+        //// 決定でシーン遷移
+        //if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown("joystick button 6"))
+        //{
+        //    SceneManager.LoadScene("SelectScene");
+        //}
 
-        if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown("joystick button 7"))
-        {
-            // 現在のScene名を取得する
-            Scene loadScene = SceneManager.GetActiveScene();
-            // Sceneの読み直し
-            SceneManager.LoadScene(loadScene.name);
-        }
+        //if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown("joystick button 7"))
+        //{
+        //    // 現在のScene名を取得する
+        //    Scene loadScene = SceneManager.GetActiveScene();
+        //    // Sceneの読み直し
+        //    SceneManager.LoadScene(loadScene.name);
+        //}
 
         // メニュー表示中
         if (menuFlg)
         {
-            //stageManager.SetActive(false);
             MenuOperation(); // メニュー画面の操作
 
+            // ステージを非表示
+            player.SetActive(false);
+            stageManager.SetActive(false);
+
             // メニューを非表示にする
-            if (Input.GetKeyDown(KeyCode.M))
+            if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 3"))
             {
                 menuFlg = false;
                 // ページを戻す
                 eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
-                stageManager.SetActive(true);
-
+                // ステージを表示するまでの時間をセット
+                stageDisplayCnt = stageDisplayCntInit;
             }
         }
         // メニュー非表示中
         else
         {
             // メニューを表示する
-            if (Input.GetKeyDown(KeyCode.M))
+            if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 3"))
             {
                 // クリア後は表示しない
                 if (!stageUIManager.GetComponent<ClearUI>().GetCLearFlg())

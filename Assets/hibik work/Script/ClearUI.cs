@@ -16,13 +16,14 @@ public class ClearUI : MonoBehaviour
     private GameObject nextGear;
     private GameObject nextUnderGear;
 
-    [SerializeField] private AudioClip bgm;
     AudioSource audioSource;
     [SerializeField] private AudioSource resultSeSource;
 
     private bool clearFlg = false;
     private bool firstClearFlg = true;
-    private bool firstAnimFlg = false;
+    //private bool firstAnimFlg = false;
+    [SerializeField] private float OperationTime;
+    private int OperationCnt = 0;
 
     private enum STATUS
     {
@@ -67,15 +68,8 @@ public class ClearUI : MonoBehaviour
                 resultSeSource.Play();
                 firstClearFlg = false;
             }
-
-            if (!firstAnimFlg)
-            {
-                FirstAnimation();
-            }
-            else
-            {
-                Operation();
-            }
+            if (OperationCnt < OperationTime * 60) OperationCnt++;
+            else Operation();
         }
     }
 
@@ -84,45 +78,11 @@ public class ClearUI : MonoBehaviour
         if (!clearFlg)
         {
             clearFlg = true;
-            audioSource.PlayOneShot(bgm);
         }
     }
     public bool GetCLearFlg()
     {
         return clearFlg;
-    }
-
-    private void FirstAnimation()
-    {
-        Vector2 pos = stageClearImage.GetComponent<RectTransform>().anchoredPosition;
-        
-
-        if (pos.y > 400)
-        {
-            pos.y -= 10;
-        }
-
-        stageClearImage.GetComponent<RectTransform>().anchoredPosition = pos;
-
-        pos = stageSelectImage.GetComponent<RectTransform>().anchoredPosition;
-
-        if (pos.y < -280)
-        {
-            pos.y += 10;
-        }
-        stageSelectImage.GetComponent<RectTransform>().anchoredPosition = pos;
-
-        pos = nextStageImage.GetComponent<RectTransform>().anchoredPosition;
-
-        if (pos.y < -280)
-        {
-            pos.y += 10;
-        }
-        else
-        {
-            firstAnimFlg = true;
-        }
-        nextStageImage.GetComponent<RectTransform>().anchoredPosition = pos;
     }
 
     private void Operation()

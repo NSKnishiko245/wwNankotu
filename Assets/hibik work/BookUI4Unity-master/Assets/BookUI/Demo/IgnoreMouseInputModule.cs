@@ -9,19 +9,23 @@ public class IgnoreMouseInputModule : BaseInputModule
 {
     private float m_PrevActionTime;
     private Vector2 m_LastMoveVector;
-    private int m_ConsecutiveMoveCount = 0;
-
-    private int m_moveNum = 0;
     private Vector2 movement = Vector2.zero;
-    private bool nextPageFlg = false;
-    private bool backPageFlg = false;
-
-    [SerializeField] private AudioClip se01;
-    AudioSource audioSource;
+    private int m_ConsecutiveMoveCount = 0;
 
     private GameObject m_CurrentFocusedGameObject;
 
     protected IgnoreMouseInputModule() { }
+
+    // 自身が作成した変数
+    //========================================
+    [SerializeField] private int pageNum;      // 現在のページ　※開始するページを入力する
+    [SerializeField] private int maxPageNum;   // ページの最大値
+
+    private bool nextPageFlg = false;       // true:次のページへ進む
+    private bool backPageFlg = false;       // true:前のページに戻る
+
+    [SerializeField] private AudioSource pageSeSource;
+    //========================================
 
     [SerializeField]
     private string m_HorizontalAxis = "Horizontal";
@@ -52,20 +56,6 @@ public class IgnoreMouseInputModule : BaseInputModule
 
     [SerializeField]
     private bool m_ForceModuleActive;
-
-    public int GetMoveNum()
-    {
-        return m_moveNum;
-    }
-
-    public void NextPage()
-    {
-        nextPageFlg = true;
-    }
-    public void BackPage()
-    {
-        backPageFlg = true;
-    }
 
     public bool forceModuleActive
     {
@@ -224,56 +214,13 @@ public class IgnoreMouseInputModule : BaseInputModule
     {
         float time = Time.unscaledTime;
 
+        // 編集箇所
+        //========================================
         //Vector2 movement = GetRawMoveVector();
         movement = Vector2.zero;
-
-        if (SceneManager.GetActiveScene().name == "SelectScene")
-        {
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("joystick button 5"))
-            {
-                if (m_moveNum < 11)
-                {
-                    movement.x++;
-                    m_moveNum++;
-                    nextPageFlg = false;
-
-                    audioSource = eventSystem.GetComponent<AudioSource>();
-                    audioSource.PlayOneShot(se01);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("joystick button 4") || backPageFlg)
-            {
-                if (m_moveNum > 0)
-                {
-                    movement.x--;
-                    m_moveNum--;
-                    backPageFlg = false;
-
-                    audioSource = eventSystem.GetComponent<AudioSource>();
-                    audioSource.PlayOneShot(se01);
-                }
-            }
-        }
-        else
-        {
-            if (nextPageFlg)
-            {
-                movement.x++;
-                m_moveNum++;
-                nextPageFlg = false;
-                audioSource = eventSystem.GetComponent<AudioSource>();
-                audioSource.PlayOneShot(se01);
-            }
-            if (backPageFlg)
-            {
-                movement.x--;
-                m_moveNum--;
-                backPageFlg = false;
-
-                audioSource = eventSystem.GetComponent<AudioSource>();
-                audioSource.PlayOneShot(se01);
-            }
-        }
+        if (pageNum < maxPageNum && nextPageFlg) PageChange("next");
+        if (pageNum > 0 && backPageFlg) PageChange("back");
+        //========================================
 
         if (Mathf.Approximately(movement.x, 0f) && Mathf.Approximately(movement.y, 0f))
         {
@@ -332,4 +279,44 @@ public class IgnoreMouseInputModule : BaseInputModule
     {
         return m_CurrentFocusedGameObject;
     }
+
+    // 自身が作成した関数
+    //========================================
+    public int GetPageNum()
+    {
+        return pageNum;
+    }
+
+    public void NextPage()
+    {
+        nextPageFlg = true;
+    }
+
+    public void BackPage()
+    {
+        backPageFlg = true;
+    }
+
+    // ページ変更　next:次のページ　back:前のページ
+    public void PageChange(string str)
+    {
+        //Debug.Log(str);
+        pageSeSource.Play();
+        nextPageFlg = false;
+        backPageFlg = false;
+
+        switch (str)
+        {
+            case "next":
+                pageNum++;
+                movement.x++;
+                break;
+
+            case "back":
+                pageNum--;
+                movement.x--;
+                break;
+        }
+    }
+    //========================================
 }
