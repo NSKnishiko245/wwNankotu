@@ -54,7 +54,7 @@ public class BarRotate : MonoBehaviour
     {
         IsHit = false;
         ReverseRotateFlg = false;
-        RotateState = ROTSTATEINNERDATA.NEUTRAL;
+        //RotateState = ROTSTATEINNERDATA.NEUTRAL;
         GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f);
     }
 
@@ -139,5 +139,10 @@ public class BarRotate : MonoBehaviour
             IsHit = false;
             GetComponent<Renderer>().material.color = new Color(0.5f, 0.5f, 0.5f);
         }
+    }
+
+    public void CopyBarState(GameObject bar)
+    {
+        bar.GetComponent<BarRotate>().RotateState = RotateState;
     }
 }

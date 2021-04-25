@@ -50,14 +50,14 @@ public class Player : MonoBehaviour
         Vector3 moveValue = transform.right * Speed * Time.deltaTime;
         if (inputValue_x > 0)
         {
-            if (transform.position.x + transform.localScale.x / 2.0f < BorderLine_r)
+            //if (transform.position.x + transform.localScale.x / 2.0f < BorderLine_r)
             {
                 transform.position += moveValue;
             }
         }
         else if (inputValue_x < 0)
         {
-            if (transform.position.x - transform.localScale.x / 2.0f > BorderLine_l)
+            //if (transform.position.x - transform.localScale.x / 2.0f > BorderLine_l)
             {
                 transform.position -= moveValue;
             }
