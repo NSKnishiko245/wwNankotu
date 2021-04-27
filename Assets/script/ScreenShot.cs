@@ -8,38 +8,37 @@ public class ScreenShot : MonoBehaviour
     private Texture DefaultTexture;
     private Vector2 DefaultScale;
 
+    private bool IsFinishedScreenShot;
+    public bool isFinishedScreenShot()
+    {
+        if (IsFinishedScreenShot)
+        {
+            IsFinishedScreenShot = false;
+            return true;
+        }
+        return false;
+    }
+
     void Start()
     {
         // 初期のTextureを保持しておく（画像リセット用）
         DefaultTexture = new Texture2D(0, 0, TextureFormat.ARGB32, false);
-        DefaultTexture = GetComponent<Renderer>().material.GetTexture("_MainTex");
+
+
+        DefaultTexture = GetComponent<Renderer>().material.GetTexture("_BaseMap");
+        
 
         // 親子関係が形成されるとスケールが変わるので、初めに取得しておく
-        DefaultScale = new Vector2(transform.localScale.x, transform.localScale.y);
+        DefaultScale = new Vector2(transform.parent.localScale.x, transform.parent.localScale.y);
+
+        IsFinishedScreenShot = false;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 5"))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            // このスクリプトがアタッチされているオブジェクトのサイズでスクショを撮る
-            RectTransform trans = gameObject.GetComponent<RectTransform>();
-            Vector2 pos = new Vector2(trans.position.x, trans.position.y);
 
-            // quadの左下の点と右上の点を取得
-            Vector2 leftBottom = pos - DefaultScale / 2.0f;
-            Vector2 rightTop = pos + DefaultScale / 2.0f;
-            // 裏を向いている時は補正
-            if (gameObject.transform.localRotation.y != 0.0f)
-            {
-                leftBottom.x -= DefaultScale.x;
-                rightTop.x += DefaultScale.x;
-            }
-            leftBottom = RectTransformUtility.WorldToScreenPoint(Camera.main, leftBottom);
-            rightTop = RectTransformUtility.WorldToScreenPoint(Camera.main, rightTop);
-
-            // スクショしてみた！
-            StartCoroutine(SelectAreaScreenShot(new Vector2Int((int)leftBottom.x, (int)leftBottom.y), (int)(rightTop.x - leftBottom.x), (int)(rightTop.y - leftBottom.y)));
         }
     }
 
@@ -66,12 +65,46 @@ public class ScreenShot : MonoBehaviour
         tex2.Apply();
 
         // オブジェクトのマテリアルにテクスチャをセット
-        gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", tex2);
+        gameObject.GetComponent<Renderer>().material.SetTexture("_BaseMap", tex2);
+
+        IsFinishedScreenShot = true;
     }
 
     // 初期テクスチャにリセット
     public void ResetTexture()
     {
-        gameObject.GetComponent<Renderer>().material.SetTexture("_MainTex", DefaultTexture);
+        DefaultTexture = Resources.Load("Prefabs/Material/tileTex") as Texture2D;
+        gameObject.GetComponent<Renderer>().material.SetTexture("_BaseMap", DefaultTexture);
+    }
+
+    public void TurnOnScreenShot()
+    {
+        transform.localEulerAngles = new Vector3(0, 0, 0);
+
+        // このスクリプトがアタッチされているオブジェクトのサイズでスクショを撮る
+        RectTransform trans = gameObject.GetComponent<RectTransform>();
+        Vector2 pos = new Vector2(trans.parent.position.x, trans.parent.position.y);
+
+        // quadの左下の点と右上の点を取得
+        Vector2 leftBottom = pos - DefaultScale / 2.0f;
+        Vector2 rightTop = pos + DefaultScale / 2.0f;
+        // 裏を向いている時は補正
+        if (gameObject.transform.parent.localRotation.y != 0.0f)
+        {
+            leftBottom.x -= DefaultScale.x;
+            rightTop.x += DefaultScale.x;
+        }
+        leftBottom = RectTransformUtility.WorldToScreenPoint(Camera.main, leftBottom);
+        rightTop = RectTransformUtility.WorldToScreenPoint(Camera.main, rightTop);
+
+        // スクショしてみた！
+        StartCoroutine(SelectAreaScreenShot(new Vector2Int((int)leftBottom.x, (int)leftBottom.y), (int)(rightTop.x - leftBottom.x), (int)(rightTop.y - leftBottom.y)));
+
+        IsFinishedScreenShot = false;
+    }
+
+    public void TurnTexture()
+    {
+        transform.Rotate(180, 0, 0);
     }
 }
