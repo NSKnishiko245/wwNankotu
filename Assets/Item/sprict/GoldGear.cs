@@ -7,16 +7,15 @@ using UnityEngine;
 public class GoldGear : MonoBehaviour
 {
     [SerializeField] private GameObject stageUIManager;
-    private int stageNum;
 
     public ParticleSystem m_particle;//取得時のエフェクト
 
     private Animator m_anim;   //取得時のアニメーション
-    
+
     private bool m_getflg = false;  //プレイヤーとふれたら
     private bool m_animend = false;
     private Vector3 _startPos;
-    public float speed=1.0f;
+    public float speed = 1.0f;
 
     //二点間の距離を入れる
     private float distance_two;
@@ -42,9 +41,9 @@ public class GoldGear : MonoBehaviour
 
             distance_two = Vector3.Distance(_startPos, m_objPlayer.transform.position);
 
-           float present_Locatoin = (Time.time * speed) / distance_two;
+            float present_Locatoin = (Time.time * speed) / distance_two;
             //transform.position = Vector3.Lerp(_startPos, _targetPos, CalcMoveRatio());
-           this.transform.position = Vector3.Lerp(transform.position, m_objPlayer.transform.position, present_Locatoin);
+            this.transform.position = Vector3.Lerp(transform.position, m_objPlayer.transform.position, present_Locatoin);
             Debug.Log(m_objPlayer.transform.position);
         }
     }
@@ -64,8 +63,7 @@ public class GoldGear : MonoBehaviour
     private void DestroyGear()
     {
         // ここでスコア加算
-        stageNum = stageUIManager.GetComponent<StageUIManager>().GetStageNum();
-        StageSelectManager.score[stageNum].isGold = true;
+        StageSelectManager.score[StageManager.stageNum].isGold = true;
 
 
         Instantiate(m_particle, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
@@ -77,7 +75,7 @@ public class GoldGear : MonoBehaviour
         if (collision.transform.tag == "Player")
         {
             m_getflg = true;
-            m_anim.SetBool("GetFlg",m_getflg);
+            m_anim.SetBool("GetFlg", m_getflg);
             if (m_animend)
             {
                 DestroyGear();

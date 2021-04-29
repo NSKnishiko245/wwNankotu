@@ -12,9 +12,6 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private AudioSource selectDecSource;
 
     [SerializeField] private GameObject eventSystem;
-
-    [SerializeField] private int stageNum = 0;
-
     [SerializeField] private float sceneChangeTime; // シーン遷移までの時間
     private int sceneChangeCnt = 0;                 // シーン遷移のカウンタ
     private bool sceneChangeFlg = false;            // true:シーン遷移開始
@@ -33,6 +30,7 @@ public class StageSelectManager : MonoBehaviour
         public bool isCopper;
     }
     public static Score[] score = new Score[11];
+    public static int[] silverConditions = new int[11];
 
     private void Awake()
     {
@@ -42,16 +40,8 @@ public class StageSelectManager : MonoBehaviour
         silverImage = GameObject.FindGameObjectsWithTag("SilverImage");
         copperImage = GameObject.FindGameObjectsWithTag("CopperImage");
 
-        ScoreReset();
-        score[1].isGold = true;
-        score[1].isSilver = true;
-        score[1].isCopper = true;
-        score[2].isGold = true;
-        score[2].isSilver = false;
-        score[2].isCopper = true;
-        score[3].isGold = true;
-        score[3].isSilver = true;
-        score[3].isCopper = false;
+        //ScoreReset();            
+        SilverConditionsSet();
     }
 
     private void Update()
@@ -98,9 +88,9 @@ public class StageSelectManager : MonoBehaviour
             if (sceneChangeCnt > sceneChangeTime * 60)
             {
                 // 現在のページ取得(ステージ番号)
-                stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+                StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
                 // ステージに遷移
-                if (stageNum > 0) SceneManager.LoadScene("Stage" + stageNum + "Scene");
+                if (StageManager.stageNum > 0) SceneManager.LoadScene("StageScene");
                 // 遷移しなければフラグを無効
                 sceneChangeFlg = false;
             }
@@ -111,34 +101,40 @@ public class StageSelectManager : MonoBehaviour
     private void ScoreDisplay()
     {
         // 現在のページ取得(ステージ番号)
-        stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+        StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
 
         for (int i = 0; i < goldImage.Length; i++)
         {
-            if (score[stageNum].isGold) goldImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if (score[StageManager.stageNum].isGold) goldImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             else goldImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         }
 
         for (int i = 0; i < silverImage.Length; i++)
         {
-            if (score[stageNum].isSilver) silverImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if (score[StageManager.stageNum].isSilver) silverImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             else silverImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         }
 
         for (int i = 0; i < copperImage.Length; i++)
         {
-            if (score[stageNum].isCopper) copperImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if (score[StageManager.stageNum].isCopper) copperImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             else copperImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         }
     }
 
-    private void ScoreReset()
+    // 銀メダルの獲得条件をセット(ステージを折った回数)
+    private void SilverConditionsSet()
     {
-        for (int i = 0; i < 11; i++)
-        {
-            score[i].isGold = false;
-            score[i].isSilver = false;
-            score[i].isCopper = false;
-        }
+        silverConditions[0] = 3;
+        silverConditions[1] = 5;
+        silverConditions[2] = 20;
+        silverConditions[3] = 20;
+        silverConditions[4] = 20;
+        silverConditions[5] = 20;
+        silverConditions[6] = 20;
+        silverConditions[7] = 20;
+        silverConditions[8] = 20;
+        silverConditions[9] = 20;
+        silverConditions[10] = 20;
     }
 }

@@ -18,8 +18,6 @@ public class ScoreAnimation : MonoBehaviour
     [SerializeField] private GameObject[] medal = new GameObject[3];
     private Animator[] medalAnim = new Animator[3];
 
-    private int stageNum;   // ステージ番号
-
     // クリア後のカメラの位置調整用(ゴールからの差をセットする)
     [SerializeField] private Vector3 cameraAdjustmentPos;
     private Vector3 cameraNowPos;       // カメラの現在座標
@@ -63,15 +61,13 @@ public class ScoreAnimation : MonoBehaviour
 
         for (int i = 0; i < 3; i++) medalAnim[i] = medal[i].GetComponent<Animator>();
 
-        stageNum = stageUIManager.GetComponent<StageUIManager>().GetStageNum();
-
         cameraNowPos = mainCamera.transform.position;
         cameraMoveCnt = cameraMoveSpeed;
 
         // メダルの動作確認用
-        //StageSelectManager.score[stageNum].isCopper = true;
-        //StageSelectManager.score[stageNum].isSilver = true;
-        //StageSelectManager.score[stageNum].isGold = true;
+        //StageSelectManager.score[StageManager.stageNum].isCopper = true;
+        //StageSelectManager.score[StageManager.stageNum].isSilver = true;
+        //StageSelectManager.score[StageManager.stageNum].isGold = true;
     }
 
     //==============================================================
@@ -112,7 +108,7 @@ public class ScoreAnimation : MonoBehaviour
         if (firstClearFlg)
         {
             // ゴールの位置を取得
-            goalPos = GameObject.Find("3(Clone)").transform.position;
+            goalPos = GameObject.Find("4(Clone)").transform.position;
 
             // カメラの移動先の座標をセット
             cameraTargetPos = goalPos + cameraAdjustmentPos;
@@ -170,15 +166,15 @@ public class ScoreAnimation : MonoBehaviour
                 if (medalNum < 3)
                 {
                     // アニメーション開始
-                    if (StageSelectManager.score[stageNum].isCopper && medalNum == 0)
+                    if (StageSelectManager.score[StageManager.stageNum].isCopper && medalNum == 0)
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
                     }
-                    if (StageSelectManager.score[stageNum].isSilver && medalNum == 1)
+                    if (StageSelectManager.score[StageManager.stageNum].isSilver && medalNum == 1)
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
                     }
-                    if (StageSelectManager.score[stageNum].isGold && medalNum == 2)
+                    if (StageSelectManager.score[StageManager.stageNum].isGold && medalNum == 2)
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
                     }
@@ -200,9 +196,9 @@ public class ScoreAnimation : MonoBehaviour
         if (medalRotationStartCnt == 0)
         {
             // 全てのメダルを取得していると回転する
-            if (StageSelectManager.score[stageNum].isCopper &&
-                StageSelectManager.score[stageNum].isSilver &&
-                StageSelectManager.score[stageNum].isGold)
+            if (StageSelectManager.score[StageManager.stageNum].isCopper &&
+                StageSelectManager.score[StageManager.stageNum].isSilver &&
+                StageSelectManager.score[StageManager.stageNum].isGold)
             {
                 for (int i = 0; i < 3; i++) medal[i].GetComponent<GearRotation>().SetRotFlg(true);
             }

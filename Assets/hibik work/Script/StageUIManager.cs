@@ -17,7 +17,6 @@ public class StageUIManager : MonoBehaviour
 
     [SerializeField] private int stageDisplayCntInit;   // ステージを表示するまでの時間
     private int stageDisplayCnt;
-    [SerializeField] private int stageNum;          // ステージ番号
     [SerializeField] private bool editFlg = false;  // true:エディット表示
 
     private bool menuFlg = false;                　 // true:メニュー表示中
@@ -56,22 +55,10 @@ public class StageUIManager : MonoBehaviour
 
         if (stageManager.GetComponent<StageManager>().IsGameClear || Input.GetKeyDown(KeyCode.C))
         {
+            Debug.Log("clear");
+            SilverMedalConditions();
             stageUIManager.GetComponent<ClearUI>().ClearFlgOn();
         }
-
-        //// 決定でシーン遷移
-        //if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown("joystick button 6"))
-        //{
-        //    SceneManager.LoadScene("SelectScene");
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown("joystick button 7"))
-        //{
-        //    // 現在のScene名を取得する
-        //    Scene loadScene = SceneManager.GetActiveScene();
-        //    // Sceneの読み直し
-        //    SceneManager.LoadScene(loadScene.name);
-        //}
 
         // メニュー表示中
         if (menuFlg)
@@ -161,9 +148,15 @@ public class StageUIManager : MonoBehaviour
         }
     }
 
-    // ステージ番号取得
-    public int GetStageNum()
+    // 銀メダル取得
+    private void SilverMedalConditions()
     {
-        return stageNum;
+        if (StageSelectManager.silverConditions[StageManager.stageNum] >=
+            stageManager.GetComponent<StageManager>().rotateNum)
+        {
+            StageSelectManager.score[StageManager.stageNum].isSilver = true;
+            Debug.Log("銀メダル取得のノルマ" + StageSelectManager.silverConditions[1]);
+            Debug.Log("ステージを折った回数" + stageManager.GetComponent<StageManager>().rotateNum);
+        }
     }
 }

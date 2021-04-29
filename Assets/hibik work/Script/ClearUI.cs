@@ -21,7 +21,6 @@ public class ClearUI : MonoBehaviour
 
     private bool clearFlg = false;
     private bool firstClearFlg = true;
-    //private bool firstAnimFlg = false;
     [SerializeField] private float OperationTime;
     private int OperationCnt = 0;
 
@@ -56,11 +55,6 @@ public class ClearUI : MonoBehaviour
 
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.C))
-        //{
-        //    ClearFlgOn();
-        //}
-
         if (clearFlg)
         {
             if (firstClearFlg)
@@ -78,6 +72,7 @@ public class ClearUI : MonoBehaviour
         if (!clearFlg)
         {
             clearFlg = true;
+            StageSelectManager.score[StageManager.stageNum].isCopper = true;
         }
     }
     public bool GetCLearFlg()
@@ -116,8 +111,8 @@ public class ClearUI : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
-                int nextStageNum = stageUIManager.GetComponent<StageUIManager>().GetStageNum() + 1;
-                SceneManager.LoadScene("Stage" + nextStageNum + "Scene");
+                StageManager.stageNum++;
+                SceneManager.LoadScene("StageScene");
             }
         }
     }

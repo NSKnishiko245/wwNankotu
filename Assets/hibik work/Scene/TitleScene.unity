@@ -424,6 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleBgmSource: {fileID: 299466703}
   titleStartSource: {fileID: 299466702}
+  mainCamera: {fileID: 1276711463}
   sceneChangeTime: 3
 --- !u!114 &299466705
 MonoBehaviour:
@@ -848,6 +849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotSpeed: -0.2
+  rotFlg: 1
 --- !u!1 &1276711463
 GameObject:
   m_ObjectHideFlags: 0
