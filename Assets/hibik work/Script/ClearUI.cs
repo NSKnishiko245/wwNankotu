@@ -112,7 +112,7 @@ public class ClearUI : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
                 StageManager.stageNum++;
-                SceneManager.LoadScene("StageScene");
+                SceneManager.LoadScene("Stage1Scene");
             }
         }
     }

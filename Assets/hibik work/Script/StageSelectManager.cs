@@ -90,7 +90,7 @@ public class StageSelectManager : MonoBehaviour
                 // 現在のページ取得(ステージ番号)
                 StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
                 // ステージに遷移
-                if (StageManager.stageNum > 0) SceneManager.LoadScene("StageScene");
+                if (StageManager.stageNum > 0) SceneManager.LoadScene("Stage1Scene");
                 // 遷移しなければフラグを無効
                 sceneChangeFlg = false;
             }

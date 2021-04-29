@@ -47,7 +47,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/hibik work/Scene/StageScene.unity
     guid: bd6e53ed4b0fd254c9e725869f72d9b0
+  - enabled: 1
+    path: Assets/hibik work/Scene/Stage1Scene.unity
+    guid: 6af18d0741ab8bb4eb89cfc911b8a3f2
   m_configObjects: {}

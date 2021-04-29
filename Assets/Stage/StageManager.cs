@@ -10,7 +10,7 @@ using System.IO;
 
 public class StageManager : MonoBehaviour
 {
-    public Player Player;
+    public GameObject Player;
 
     public GameObject MapManager;
 
@@ -101,9 +101,7 @@ public class StageManager : MonoBehaviour
         Tile_subList = new List<GameObject>();
         Bar_subList = new List<GameObject>();
 
-        //BigParent = new GameObject();
         RotateState = ROTATESTATE.NEUTRAL;
-
         rotateNum = 0;
     }
 
@@ -123,7 +121,7 @@ public class StageManager : MonoBehaviour
         RightBarIdx = GetRightBarIndex();   // ステージの一番右のバーを取得
 
         // ステージが停止している時、プレイヤーを動かせる
-        if (isStopStage())
+        if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMove)
         {
             // プレイヤーの更新、プレイヤーにおける移動可能領域の設定など
             Player.GetComponent<Player>().TurnOnMove();
@@ -167,7 +165,6 @@ public class StageManager : MonoBehaviour
         // 右スティックからの入力情報を取得
         float R_Stick_Value = Input.GetAxis("Horizontal2");
 
-
         // ステージの状況を見て回転できるかどうかを判断
         if (CanYouRotate())
         {
@@ -176,12 +173,14 @@ public class StageManager : MonoBehaviour
             {
                 RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_LEFT);
                 RotateState = ROTATESTATE.L_ROTATE;
+                ScreenShot();
                 rotateNum++;
             }
             if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.L))
             {
                 RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_RIGHT);
                 RotateState = ROTATESTATE.R_ROTATE;
+                ScreenShot();
                 rotateNum++;
             }
         }
@@ -196,12 +195,11 @@ public class StageManager : MonoBehaviour
                 {
                     RotateBar(i, BarRotate.ROTSTATEOUTERDATA.REROTATE);
                     RotateState = ROTATESTATE.NEUTRAL;
-                    Debug.Log("rerot");
+                    SetAllBlockActive(false);
                     rotateNum++;
                 }
             }
         }
-
 
         if (Player.transform.position.x < Bar_List[LeftBarIdx].transform.position.x || Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
         {
@@ -224,6 +222,50 @@ public class StageManager : MonoBehaviour
         {
             IsGameOver = true;
         }
+
+        for (int i = 0; i < Tile_List.Count; i++)
+        {
+            if (Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().isFinishedScreenShot())
+            {
+                SetAllBlockActive(false);
+                Player.transform.Find("modelMan").gameObject.SetActive(true);
+                break;
+            }
+        }
+
+        // ワープエフェクトの位置更新
+        for (int i = 0; i < Bar_List.Count; i++)
+        {
+            ParticleSystem ps = Bar_List[i].transform.GetChild(0).GetComponent<ParticleSystem>();
+            if (isLeftBar(i) || isRightBar(i))
+            {
+                if (!ps.isPlaying)
+                {
+                    ps.gameObject.SetActive(true);
+                    ps.Play();
+                }
+            }
+            else
+            {
+                ps.gameObject.SetActive(false);
+                ps.Stop();
+            }
+        }
+
+        if (!isStopStage())
+        {
+            for (int i = 0; i < Bar_List.Count; i++)
+            {
+                ParticleSystem ps = Bar_List[i].transform.GetChild(0).GetComponent<ParticleSystem>();
+                ps.Stop();
+                ps.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            ParentReset();
+        }
+
     }
 
     // バーの回転処理
@@ -414,6 +456,7 @@ public class StageManager : MonoBehaviour
                 return false;
             }
         }
+        SetAllBlockActive(true);
         return true;
     }
     // マップからプレイヤーナンバーを捜しその位置にプレイヤーを配置
@@ -447,6 +490,7 @@ public class StageManager : MonoBehaviour
         for (int i = 0; i < Tile_List.Count; i++)
         {
             GameObject tile = GameObject.Instantiate(Tile_List[i]);
+            tile.transform.Find("TileChild").GetComponent<ScreenShot>().TurnTexture();
             tile.transform.parent = BigParent.transform;
 
             foreach (Transform child in tile.GetComponentsInChildren<Transform>())
@@ -528,7 +572,6 @@ public class StageManager : MonoBehaviour
     }
     private void DeleteCopy()
     {
-
         //for (int i = 0; i < Tile_List.Count; i++) Destroy(Tile_List[i]);
         Tile_subList.Clear();
 
@@ -538,5 +581,34 @@ public class StageManager : MonoBehaviour
         Destroy(BigParent);
 
         Destroy(yugami);
+    }
+
+    private void SetAllBlockActive(bool activeFlg)
+    {
+        foreach (var obj in Tile_List)
+        {
+            foreach (Transform childTransform in obj.transform)
+            {
+                if (childTransform.tag == "Block" || childTransform.tag == "GoalBlock")
+                {
+                    childTransform.gameObject.SetActive(activeFlg);
+                }
+            }
+        }
+
+        foreach (var obj in Bar_List)
+        {
+            obj.GetComponent<MeshRenderer>().enabled = activeFlg;
+        }
+    }
+
+    private void ScreenShot()
+    {
+        for (int i = 0; i < Tile_List.Count; i++)
+        {
+            Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+            Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().TurnOnScreenShot();
+        }
+        Player.transform.Find("modelMan").gameObject.SetActive(false);
     }
 }

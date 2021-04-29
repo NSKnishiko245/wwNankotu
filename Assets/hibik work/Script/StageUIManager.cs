@@ -155,8 +155,8 @@ public class StageUIManager : MonoBehaviour
             stageManager.GetComponent<StageManager>().rotateNum)
         {
             StageSelectManager.score[StageManager.stageNum].isSilver = true;
-            Debug.Log("銀メダル取得のノルマ" + StageSelectManager.silverConditions[1]);
-            Debug.Log("ステージを折った回数" + stageManager.GetComponent<StageManager>().rotateNum);
+            Debug.Log("ノルマ" + StageSelectManager.silverConditions[1]);
+            Debug.Log("折った回数" + stageManager.GetComponent<StageManager>().rotateNum);
         }
     }
 }
