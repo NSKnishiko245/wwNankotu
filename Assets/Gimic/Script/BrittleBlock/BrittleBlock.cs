@@ -9,14 +9,12 @@ using UnityEngine;
 
 public class BrittleBlock : MonoBehaviour
 {
-    public GameObject m_objBlock;
-
     [Header("消滅時に使うEffect")]
     public ParticleSystem m_endeffect;  //消滅時に使うエフェクト
 
     [Header("消滅時SE")]
     public AudioClip m_sound;
-    private AudioSource m_audioSource;
+   // private AudioSource m_audioSource;
 
 
     // Start is called before the first frame update
@@ -32,22 +30,22 @@ public class BrittleBlock : MonoBehaviour
         
     }
 
-    //private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.tag == "Block")
+        {
+            AudioSource.PlayClipAtPoint(m_sound, this.transform.position);//SE再生
+            Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
+            Destroy(this.gameObject);
+        }
+    }
+    //private void OnTriggerEnter(Collider other)
     //{
-    //    if (collision.transform.tag == "Block")
+    //    if (other.transform.tag == "Block")
     //    {
     //        m_audioSource.PlayOneShot(m_sound); //SE再生
     //        Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
-    //        m_objBlock.SetActive(false);   //ブロック同士がぶつかると壊れる
+    //        Destroy(this.gameObject);
     //    }
     //}
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.tag == "Block")
-        {
-            //m_audioSource.PlayOneShot(m_sound); //SE再生
-            Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
-            m_objBlock.SetActive(false);   //ブロック同士がぶつかると壊れる
-        }
-    }
 }

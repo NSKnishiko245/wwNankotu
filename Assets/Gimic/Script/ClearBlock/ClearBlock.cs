@@ -9,6 +9,10 @@ public class ClearBlock : MonoBehaviour
 {
     //実体化するブロック
     public GameObject m_objblock;
+    //半透明ブロック
+    public GameObject m_objNotblock;
+    //出現時のSE
+    public AudioClip m_sound01;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +30,9 @@ public class ClearBlock : MonoBehaviour
     {
         if (other.transform.tag == "GimicClearBlock")
         {
+            AudioSource.PlayClipAtPoint(m_sound01, this.transform.position);    //SE再生
             m_objblock.SetActive(true);
+            m_objNotblock.SetActive(false);
         }
     }
 
@@ -35,6 +41,7 @@ public class ClearBlock : MonoBehaviour
         if (other.transform.tag == "GimicClearBlock")
         {
             m_objblock.SetActive(false);
+            m_objNotblock.SetActive(true);
         }
     }
 }
