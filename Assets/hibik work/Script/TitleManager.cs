@@ -35,7 +35,7 @@ public class TitleManager : MonoBehaviour
             }
 
             // ˆê’èŽžŠÔŒo‰ß‚·‚é‚Æ‘JˆÚ‚·‚é
-            if (sceneChangeCnt > sceneChangeTime * 60)
+            if (sceneChangeCnt > sceneChangeTime)
             {
                 SceneManager.LoadScene("SelectScene");
             }

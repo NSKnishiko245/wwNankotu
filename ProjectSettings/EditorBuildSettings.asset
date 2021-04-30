@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/hibik work/Scene/TitleScene.unity
     guid: e0366c00a847346408f7fb00b8cc13a6
   - enabled: 1
@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/StageMake/Game_Proto.unity
     guid: c912dedca7981114ebc861b5bd1880ff
-  - enabled: 0
+  - enabled: 1
     path: Assets/hibik work/Scene/SelectScene.unity
     guid: 2d489cd0b39c3be4ea293f9f10c56978
   - enabled: 0
