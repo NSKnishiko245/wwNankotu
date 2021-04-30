@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5583547043240214478}
   m_Layer: 0
-  m_Name: medal_Gold
-  m_TagString: Untagged
+  m_Name: 8
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
