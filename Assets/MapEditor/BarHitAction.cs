@@ -56,8 +56,10 @@ public class BarHitAction : MonoBehaviour
         this.GetComponent<Renderer>().material.color = myColor;
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider other)
     {
+        if (other.tag != "MouseCursor") return;
+
         if (m_BarState == BARSTATE.NEUTORAL)
         {
             m_BarState = BARSTATE.SELECT;
@@ -68,11 +70,33 @@ public class BarHitAction : MonoBehaviour
             m_IsPushButton = true;
         }
     }
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
+        if (other.tag != "MouseCursor") return;
+
         if (m_BarState == BARSTATE.SELECT)
         {
             m_BarState = BARSTATE.NEUTORAL;
         }
     }
+
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    if (m_BarState == BARSTATE.NEUTORAL)
+    //    {
+    //        m_BarState = BARSTATE.SELECT;
+    //    }
+
+    //    if (Input.GetMouseButton(2))
+    //    {
+    //        m_IsPushButton = true;
+    //    }
+    //}
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (m_BarState == BARSTATE.SELECT)
+    //    {
+    //        m_BarState = BARSTATE.NEUTORAL;
+    //    }
+    //}
 }

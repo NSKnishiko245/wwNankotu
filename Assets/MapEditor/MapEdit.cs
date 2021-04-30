@@ -77,7 +77,6 @@ public class MapEdit : MonoBehaviour
     {
         if (mode == Mode.Edit)
         {
-
             // エディター更新処理
             InputForEdit();
 
@@ -325,6 +324,10 @@ public class MapEdit : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3)) BlockIndex = 3;
         if (Input.GetKeyDown(KeyCode.Alpha4)) BlockIndex = 4;
         if (Input.GetKeyDown(KeyCode.Alpha5)) BlockIndex = 5;
+        if (Input.GetKeyDown(KeyCode.Alpha6)) BlockIndex = 6;
+        if (Input.GetKeyDown(KeyCode.Alpha7)) BlockIndex = 7;
+        if (Input.GetKeyDown(KeyCode.Alpha8)) BlockIndex = 8;
+        if (Input.GetKeyDown(KeyCode.Alpha9)) BlockIndex = 9;
     }
     private void UpdateBarMap()
     {

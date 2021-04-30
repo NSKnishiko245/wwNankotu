@@ -12,6 +12,8 @@ TagManager:
   - GimicMoveCol
   - GimicClearBlock
   - Tile
+  - MouseCursor
+  - GimicBreakBlock
   layers:
   - Default
   - TransparentFX
