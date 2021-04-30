@@ -171,6 +171,11 @@ public class MapEdit : MonoBehaviour
         // プレイヤーブロックはeditモードの時のみ生成
         // 一度指定された場所のオブジェクトを削除、のち生成
         GameObject obj = Instantiate(Block[blockIdx - 1], new Vector3(cellpos.x + 0.5f, cellpos.y + 0.5f, 0.0f), new Quaternion(0, 0, 0, 1));
+        if (BlockIndex == 7)
+        {
+            obj.transform.Rotate(0, 180, 0);
+        }
+
         if (Block[blockIdx - 1].transform.tag == "Player" && mode == Mode.Game)
         {
             obj.GetComponent<MeshRenderer>().enabled = false;
@@ -319,6 +324,7 @@ public class MapEdit : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha0)) BlockIndex = 10;
         if (Input.GetKeyDown(KeyCode.Alpha1)) BlockIndex = 1;
         if (Input.GetKeyDown(KeyCode.Alpha2)) BlockIndex = 2;
         if (Input.GetKeyDown(KeyCode.Alpha3)) BlockIndex = 3;
