@@ -412,6 +412,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7248166072493199417, guid: 5ebc2a45cc4bf0141ba2e816e9d9847c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.45
+      objectReference: {fileID: 0}
     - target: {fileID: 8581441424736117760, guid: 5ebc2a45cc4bf0141ba2e816e9d9847c, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2384,7 +2388,6 @@ MonoBehaviour:
   selectGear: {fileID: 1682487475}
   retryGear: {fileID: 2145729669}
   stageDisplayCntInit: 20
-  stageNum: 1
   editFlg: 0
   StageBgmSource: {fileID: 1576787884}
 --- !u!114 &1576787887
@@ -3401,7 +3404,7 @@ MonoBehaviour:
   MapManager: {fileID: 375336877}
   UnderBorder: {fileID: 5211530607831076421, guid: 63fb55d01ad456c4892cc304729d4db4, type: 3}
   particleObject: {fileID: 6797351756067995477, guid: 447ba65fbd439914ba066b4908615494, type: 3}
-  stageNum: 1
+  rotateNum: 0
 --- !u!4 &2081052302
 Transform:
   m_ObjectHideFlags: 0

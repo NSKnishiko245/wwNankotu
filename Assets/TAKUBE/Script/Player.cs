@@ -46,6 +46,8 @@ public class Player : MonoBehaviour
         // “ü—Í‚ð‚È‚µ‚É‚·‚éê‡
         if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.02f) inputValue_x = 0.0f;
 
+        Debug.Log(rb.velocity.y);
+
         //ˆÚ“®ˆ—
         Vector3 moveValue = transform.right * Speed * Time.deltaTime;
         if (inputValue_x > 0)
@@ -123,7 +125,8 @@ public class Player : MonoBehaviour
         Ray ray = new Ray(ray_pos, Vector3.up);
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
-            if (hit.transform.tag == "Block") return false;
+            string tag = hit.transform.tag;
+            if (tag == "Block" || tag == "GimicBreakBlock" || tag == "GimicMoveBlock") return false;
         }
         return true;
     }

@@ -18,6 +18,8 @@ public class StageManager : MonoBehaviour
     private GameObject[,] Block_Map;
     private bool isCopy = false;
 
+    private List<MeshRenderer> MeshList;
+
     private GameObject BigParent;
 
     private Vector3 startPos;
@@ -197,6 +199,10 @@ public class StageManager : MonoBehaviour
                     RotateState = ROTATESTATE.NEUTRAL;
                     SetAllBlockActive(false);
                     rotateNum++;
+
+                    DeleteCopy();
+                    isCopy = false;
+                    break;
                 }
             }
         }
@@ -321,16 +327,20 @@ public class StageManager : MonoBehaviour
         }
 
         // プレイヤーと衝突しているバーの両隣にブロックがあった場合は、回転させない
-        Vector3 ray_pos = new Vector3(Bar_List[HitBarIdx].transform.position.x, Player.transform.position.y, Player.transform.localScale.z / 2.0f);
+        Vector3 ray_pos = new Vector3(Bar_List[HitBarIdx].transform.position.x, Player.transform.position.y, -0.25f);
         Ray ray = new Ray(ray_pos + Vector3.left * Bar_List[HitBarIdx].transform.localScale.x / 2.0f, Vector3.right);
         if (Physics.Raycast(ray, out RaycastHit hit, 0.5f))
         {
-            if (hit.collider.CompareTag("Block")) return false;
+            string tag = hit.collider.tag;
+            Debug.Log(tag);
+            if (tag == "Block" || tag == "GoalBlock" || tag == "GimicMoveBlock" || tag == "GimicMoveBar" || tag == "GimicBreakBlock") return false;
         }
         ray = new Ray(ray_pos + Vector3.right * Bar_List[HitBarIdx].transform.localScale.x / 2.0f, Vector3.left);
         if (Physics.Raycast(ray, out hit, 0.5f))
         {
-            if (hit.collider.CompareTag("Block")) return false;
+            string tag = hit.collider.tag;
+            Debug.Log(tag);
+            if (tag == "Block" || tag == "GoalBlock" || tag == "GimicMoveBlock" || tag == "GimicMoveBar" || tag == "GimicBreakBlock") return false;
         }
 
         return true;
@@ -548,6 +558,32 @@ public class StageManager : MonoBehaviour
                 yugami.transform.Translate(Vector3.right * addPos);
             }
         }
+    }
+    private void CreateCopy()
+    {
+        // プレイヤーが左端のバーに接触した場合
+            if (isLeftBar(HitBarIdx))
+            {
+                if (!isCopy)
+                {
+                    CopyStage(WARPSTATE.TO_RIGHT);
+                    isCopy = true;
+                }
+            }
+            // プレイヤーが右端のバーに接触した場合
+            else if (isRightBar(HitBarIdx))
+            {
+                if (!isCopy)
+                {
+                    CopyStage(WARPSTATE.TO_LEFT);
+                    isCopy = true;
+                }
+            }
+            else if (isCopy)
+            {
+                DeleteCopy();
+                isCopy = false;
+            }
     }
     private void DecidedStage()
     {
