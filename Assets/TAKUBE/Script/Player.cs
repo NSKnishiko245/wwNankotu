@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
 
     public bool IsHitGoalBlock { get; private set; }
 
+    public bool IsHitBar { get; private set; }
+
     private enum PLAYERHITBOX
     {
         RIGHT,
@@ -126,7 +128,8 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
             string tag = hit.transform.tag;
-            if (tag == "Block" || tag == "GimicBreakBlock" || tag == "GimicMoveBlock") return false;
+            //if (tag == "Block" || tag == "GimicBreakBlock" || tag == "GimicMoveBlock") return false;
+            if (tag == "ClimbBlock") return false;
         }
         return true;
     }
@@ -136,6 +139,20 @@ public class Player : MonoBehaviour
         if (other.transform.tag == "GoalBlock")
         {
             IsHitGoalBlock = true;
+        }
+
+        if (other.transform.tag == "Bar")
+        {
+            IsHitBar = true;
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.tag == "Bar")
+        {
+            IsHitBar = false;
         }
     }
 }
