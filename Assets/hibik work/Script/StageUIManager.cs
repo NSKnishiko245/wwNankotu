@@ -15,12 +15,17 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private GameObject selectGear;
     [SerializeField] private GameObject retryGear;
 
+    [SerializeField] private float sceneChangeTime; // シーン遷移までの時間
+    private int sceneChangeCnt = 0;                 // シーン遷移のカウンタ
+
     [SerializeField] private int stageDisplayCntInit;   // ステージを表示するまでの時間
     private int stageDisplayCnt;
     [SerializeField] private bool editFlg = false;  // true:エディット表示
 
     private bool menuFlg = false;                　 // true:メニュー表示中
     private bool menuFirstFlg = false;              // true:メニューを開いた瞬間
+    private bool retryFlg = false;
+    private bool stageSelectFlg = false;
 
     [SerializeField] private AudioSource StageBgmSource;
 
@@ -29,6 +34,7 @@ public class StageUIManager : MonoBehaviour
     {
         STAGE_SELECT,
         RETRY,
+        DECISION,
     }
     private STATUS status;
 
@@ -107,14 +113,40 @@ public class StageUIManager : MonoBehaviour
             menuFirstFlg = false;
         }
 
-        // 選択
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (stageSelectFlg)
         {
-            status = STATUS.STAGE_SELECT;
+            // 一定時間経過すると遷移する
+            if (sceneChangeCnt > sceneChangeTime)
+            {
+                SceneManager.LoadScene("SelectScene");
+            }
+            sceneChangeCnt++;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+
+        if (retryFlg)
         {
-            status = STATUS.RETRY;
+            // 一定時間経過すると遷移する
+            if (sceneChangeCnt > sceneChangeTime)
+            {
+                // 現在のScene名を取得する
+                Scene loadScene = SceneManager.GetActiveScene();
+                // Sceneの読み直し
+                SceneManager.LoadScene(loadScene.name);
+            }
+            sceneChangeCnt++;
+        }
+
+        // 選択
+        if (status != STATUS.DECISION)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                status = STATUS.STAGE_SELECT;
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                status = STATUS.RETRY;
+            }
         }
 
         // ステージセレクト選択中
@@ -127,7 +159,9 @@ public class StageUIManager : MonoBehaviour
             // 決定でシーン遷移
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
-                SceneManager.LoadScene("SelectScene");
+                stageSelectFlg = true;
+                status = STATUS.DECISION;
+                this.GetComponent<PostEffectController>().SetFireFlg(false);
             }
         }
         // リトライ選択中
@@ -140,10 +174,9 @@ public class StageUIManager : MonoBehaviour
             // 決定でシーン遷移
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
-                // 現在のScene名を取得する
-                Scene loadScene = SceneManager.GetActiveScene();
-                // Sceneの読み直し
-                SceneManager.LoadScene(loadScene.name);
+                retryFlg = true;
+                status = STATUS.DECISION;
+                this.GetComponent<PostEffectController>().SetFireFlg(false);
             }
         }
     }

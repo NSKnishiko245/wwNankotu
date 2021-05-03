@@ -19,8 +19,14 @@ public class ClearUI : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] private AudioSource resultSeSource;
 
+    [SerializeField] private float sceneChangeTime; // シーン遷移までの時間
+    private int sceneChangeCnt = 0;                 // シーン遷移のカウンタ
+
     private bool clearFlg = false;
     private bool firstClearFlg = true;
+    private bool nextFlg = false;
+    private bool stageSelectFlg = false;
+
     [SerializeField] private float OperationTime;
     private int OperationCnt = 0;
 
@@ -28,6 +34,7 @@ public class ClearUI : MonoBehaviour
     {
         STAGE_SELECT,
         NEXT_STAGE,
+        DECISION,
     }
     STATUS status;
 
@@ -62,8 +69,29 @@ public class ClearUI : MonoBehaviour
                 resultSeSource.Play();
                 firstClearFlg = false;
             }
-            if (OperationCnt < OperationTime * 60) OperationCnt++;
-            else Operation();
+            if (OperationCnt < OperationTime) OperationCnt++;
+            else if (status != STATUS.DECISION) Operation();
+
+            if (stageSelectFlg)
+            {
+                // 一定時間経過すると遷移する
+                if (sceneChangeCnt > sceneChangeTime)
+                {
+                    SceneManager.LoadScene("SelectScene");
+                }
+                sceneChangeCnt++;
+            }
+
+            if (nextFlg)
+            {
+                // 一定時間経過すると遷移する
+                if (sceneChangeCnt > sceneChangeTime)
+                {
+                    StageManager.stageNum++;
+                    SceneManager.LoadScene("Stage1Scene");
+                }
+                sceneChangeCnt++;
+            }
         }
     }
 
@@ -99,7 +127,9 @@ public class ClearUI : MonoBehaviour
             nextUnderGear.GetComponent<GearRotation>().SetRotFlg(false);
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
-                SceneManager.LoadScene("SelectScene");
+                stageSelectFlg = true;
+                status = STATUS.DECISION;
+                this.GetComponent<PostEffectController>().SetFireFlg(false);
             }
         }
         if (status == STATUS.NEXT_STAGE)
@@ -111,8 +141,9 @@ public class ClearUI : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
-                StageManager.stageNum++;
-                SceneManager.LoadScene("Stage1Scene");
+                nextFlg = true;
+                status = STATUS.DECISION;
+                this.GetComponent<PostEffectController>().SetFireFlg(false);
             }
         }
     }

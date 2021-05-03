@@ -42,6 +42,8 @@ public class StageSelectManager : MonoBehaviour
 
         //ScoreReset();            
         SilverConditionsSet();
+
+        this.GetComponent<PostEffectController>().SetVigFlg(false);
     }
 
     private void Update()
@@ -79,20 +81,20 @@ public class StageSelectManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
         {
             selectDecSource.Play();
-            sceneChangeFlg = true;
+
+            // 現在のページ取得(ステージ番号)
+            StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+            // ステージに遷移
+            if (StageManager.stageNum > 0) sceneChangeFlg = true;
         }
 
         if (sceneChangeFlg)
         {
+            this.GetComponent<PostEffectController>().SetVigFlg(true);
             // 一定時間経過すると遷移する
-            if (sceneChangeCnt > sceneChangeTime * 60)
+            if (sceneChangeCnt > sceneChangeTime)
             {
-                // 現在のページ取得(ステージ番号)
-                StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
-                // ステージに遷移
-                if (StageManager.stageNum > 0) SceneManager.LoadScene("Stage1Scene");
-                // 遷移しなければフラグを無効
-                sceneChangeFlg = false;
+                SceneManager.LoadScene("Stage1Scene");
             }
             sceneChangeCnt++;
         }
