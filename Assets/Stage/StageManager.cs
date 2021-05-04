@@ -505,7 +505,7 @@ public class StageManager : MonoBehaviour
 
             foreach (Transform child in tile.GetComponentsInChildren<Transform>())
             {
-                if (child.tag == "Block" || child.tag == "GoalBlock" || child.tag == "GimicMoveBlock" || child.tag == "GimicMoveBar" || child.tag == "GimicBreakBlock")
+                if (child.tag == "Block" || child.tag == "GoalBlock" || child.tag == "GimicMoveBlock" || child.tag == "GimicMoveBar" || child.tag == "GimicBreakBlock"||child.tag=="GimicClearBlock")
                 {
                     child.parent = tile.transform;
                     child.transform.position = new Vector3(child.transform.position.x, -child.transform.position.y, child.transform.position.z);
@@ -625,7 +625,7 @@ public class StageManager : MonoBehaviour
         {
             foreach (Transform childTransform in obj.transform)
             {
-                if (childTransform.tag == "Block" || childTransform.tag == "GoalBlock" || childTransform.tag == "GimicMoveBlock" || childTransform.tag == "GimicMoveBar" || childTransform.tag == "GimicBreakBlock")
+                if (childTransform.tag == "Block" || childTransform.tag == "GoalBlock" || childTransform.tag == "GimicMoveBlock" || childTransform.tag == "GimicMoveBar" || childTransform.tag == "GimicBreakBlock"|| childTransform.tag == "GimicClearBlock")
                 {
                     childTransform.gameObject.SetActive(activeFlg);
                 }

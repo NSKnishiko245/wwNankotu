@@ -14,6 +14,11 @@ TagManager:
   - Tile
   - MouseCursor
   - GimicBreakBlock
+  - GoldImage
+  - SilverImage
+  - CopperImage
+  - ClimbBlock
+  - GimicCollision
   layers:
   - Default
   - TransparentFX

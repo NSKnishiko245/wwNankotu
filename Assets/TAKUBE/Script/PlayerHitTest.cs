@@ -14,8 +14,17 @@ public class PlayerHitTest : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //if (other.transform.tag != "ClimbBlock") return;
+
+        //Vector3 ray_pos = other.transform.position;
+        //Ray ray = new Ray(ray_pos, Vector3.up);
+        //if (!Physics.Raycast(ray, out RaycastHit hit, other.transform.lossyScale.y))
+        //{
+        //    HitBlockHeight = other.transform.lossyScale.y;
+        //    isHit = true;
+        //}
         string tag = other.transform.tag;
-        if (tag == "Block" || tag == "GimicBreakBlock" || tag == "GimicMoveBlock")
+        if (other.transform.tag == "ClimbBlock"||other.transform.tag=="GimicClearBlock")
         {
             Vector3 ray_pos = other.transform.position;
             Ray ray = new Ray(ray_pos, Vector3.up);

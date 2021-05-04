@@ -108,7 +108,7 @@ public class ScoreAnimation : MonoBehaviour
         if (firstClearFlg)
         {
             // ゴールの位置を取得
-            goalPos = GameObject.Find("4(Clone)").transform.position;
+            goalPos = GameObject.Find("2(Clone)").transform.position;
 
             // カメラの移動先の座標をセット
             cameraTargetPos = goalPos + cameraAdjustmentPos;

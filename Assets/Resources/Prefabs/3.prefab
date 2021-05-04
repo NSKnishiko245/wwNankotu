@@ -194,11 +194,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2318334945090284585, guid: 958ba08f3579fbe42897459c6e3d6c79, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2318334945090284585, guid: 958ba08f3579fbe42897459c6e3d6c79, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: ClimbBlock
       objectReference: {fileID: 0}
     - target: {fileID: 2727790430007699300, guid: 958ba08f3579fbe42897459c6e3d6c79, type: 3}
       propertyPath: m_RootOrder

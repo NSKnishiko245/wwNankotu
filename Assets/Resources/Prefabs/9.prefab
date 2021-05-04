@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7894725264280319243}
   - component: {fileID: 4393031996631320400}
   - component: {fileID: 831497897904148122}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DownCol
   m_TagString: GimicMoveCol
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 753348905525194392}
   - component: {fileID: 2754169772314024983}
   m_Layer: 0
-  m_Name: MoveBlockBar
+  m_Name: 9
   m_TagString: GimicMoveBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 4029326590282169837}
   - component: {fileID: 6235972435029731018}
   - component: {fileID: 645476136838262199}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UpCol
   m_TagString: GimicMoveCol
   m_Icon: {fileID: 0}

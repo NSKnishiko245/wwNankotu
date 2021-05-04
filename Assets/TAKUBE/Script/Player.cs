@@ -23,6 +23,10 @@ public class Player : MonoBehaviour
 
     public bool IsHitBar { get; private set; }
 
+    //プレイヤーの向きを変える
+    private Vector3 prev;
+    public bool IsMove { get; private set; }
+
     private enum PLAYERHITBOX
     {
         RIGHT,
@@ -37,6 +41,9 @@ public class Player : MonoBehaviour
         pos = transform.position;
         rb = GetComponent<Rigidbody>();
         IsHitGoalBlock = false;
+
+        prev = this.transform.position;
+        
     }
 
     // Update is called once per frame
@@ -48,7 +55,7 @@ public class Player : MonoBehaviour
         // 入力をなしにする場合
         if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.02f) inputValue_x = 0.0f;
 
-        Debug.Log(rb.velocity.y);
+        
 
         //移動処理
         Vector3 moveValue = transform.right * Speed * Time.deltaTime;
@@ -57,6 +64,8 @@ public class Player : MonoBehaviour
             //if (transform.position.x + transform.localScale.x / 2.0f < BorderLine_r)
             {
                 transform.position += moveValue;
+                // transform.rotation = Quaternion.Euler(0, 0, 0);
+                IsMove = true;
             }
         }
         else if (inputValue_x < 0)
@@ -64,7 +73,14 @@ public class Player : MonoBehaviour
             //if (transform.position.x - transform.localScale.x / 2.0f > BorderLine_l)
             {
                 transform.position -= moveValue;
+                // transform.rotation = Quaternion.Euler(0, 180, 0);
+                //m_anim.SetBool("move_flg", true);
+                IsMove = true;
             }
+        }
+        else
+        {
+            IsMove = false;
         }
         
         //ジャンプ処理（Aボタン押下）
@@ -81,6 +97,14 @@ public class Player : MonoBehaviour
             Jumpflg = true;
         }
         HitTest();
+
+        //Vector3 diff = this.transform.position - prev;
+        //if (diff.magnitude > 0.01f)
+        //{
+        //    transform.rotation = Quaternion.LookRotation(diff);
+        //}
+        Debug.Log(transform.rotation);
+        //prev=transform.position;
     }
     
     public void TurnOnMove()
@@ -100,6 +124,9 @@ public class Player : MonoBehaviour
     {
         if (transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit)
         {
+            //足場に触れている間useGravityを無効
+            //this.gameObject.GetComponent<Rigidbody>().useGravity = false;
+
             if (inputValue_x < 0 && IsClimb())
             {
                 if (transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().isHit)
@@ -119,6 +146,11 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            //足場に触れていないのでuseGravityを有効
+           // this.gameObject.GetComponent<Rigidbody>().useGravity = true;
+        }
     }
 
     private bool IsClimb()
@@ -128,8 +160,8 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
             string tag = hit.transform.tag;
-            //if (tag == "Block" || tag == "GimicBreakBlock" || tag == "GimicMoveBlock") return false;
-            if (tag == "ClimbBlock") return false;
+            if (tag == "ClimbBlock" || tag == "GimicClearBlock") return false;
+            //if (hit.transform.tag == "ClimbBlock") return false;
         }
         return true;
     }

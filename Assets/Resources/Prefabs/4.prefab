@@ -10,13 +10,15 @@ GameObject:
   m_Component:
   - component: {fileID: 5025252565542282170}
   - component: {fileID: 1520868398508195205}
+  - component: {fileID: 488672063435100299}
+  - component: {fileID: 3777048903454557447}
   m_Layer: 0
   m_Name: collllsion
-  m_TagString: Untagged
+  m_TagString: ClimbBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5025252565542282170
 Transform:
   m_ObjectHideFlags: 0
@@ -42,8 +44,39 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.95, y: 0.95, z: 0.95}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &488672063435100299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903537921507464604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e7c52302b1af140b887300f81f05a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_endeffect: {fileID: 6797351756067995483, guid: 447ba65fbd439914ba066b4908615494, type: 3}
+  m_sound: {fileID: 8300000, guid: c7e31bcbd7a52644d8adf417a60e98b2, type: 3}
+  m_blockobj: {fileID: 8583817307960689292}
+--- !u!54 &3777048903454557447
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903537921507464604}
+  serializedVersion: 2
+  m_Mass: 100
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &8583817307960689292
 GameObject:
   m_ObjectHideFlags: 0
@@ -54,7 +87,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1831293904666388332}
   - component: {fileID: 8646273385503525227}
-  - component: {fileID: 3104328083808651695}
   - component: {fileID: 625416125326190884}
   m_Layer: 0
   m_Name: 4
@@ -92,26 +124,10 @@ BoxCollider:
   m_GameObject: {fileID: 8583817307960689292}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.95, y: 0.95, z: 0.95}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &3104328083808651695
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8583817307960689292}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!114 &625416125326190884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,13 +135,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8583817307960689292}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48e7c52302b1af140b887300f81f05a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_endeffect: {fileID: 6797351756067995483, guid: 447ba65fbd439914ba066b4908615494, type: 3}
   m_sound: {fileID: 8300000, guid: c7e31bcbd7a52644d8adf417a60e98b2, type: 3}
+  m_blockobj: {fileID: 0}
 --- !u!1001 &2390299762000636047
 PrefabInstance:
   m_ObjectHideFlags: 0

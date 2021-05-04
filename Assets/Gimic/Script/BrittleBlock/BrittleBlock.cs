@@ -14,8 +14,8 @@ public class BrittleBlock : MonoBehaviour
 
     [Header("消滅時SE")]
     public AudioClip m_sound;
-   // private AudioSource m_audioSource;
-
+    // private AudioSource m_audioSource;
+    public GameObject m_blockobj;
 
     // Start is called before the first frame update
     void Start()
@@ -32,11 +32,11 @@ public class BrittleBlock : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Block")
+        if (collision.transform.tag == "ClimbBlock")
         {
             AudioSource.PlayClipAtPoint(m_sound, this.transform.position);//SE再生
             Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
-            Destroy(this.gameObject);
+            Destroy(m_blockobj.gameObject);
         }
     }
     //private void OnTriggerEnter(Collider other)

@@ -28,6 +28,7 @@ public class GoldGear : MonoBehaviour
     {
         m_anim = this.gameObject.GetComponent<Animator>();
         m_objPlayer = GameObject.Find("Player");
+        stageUIManager = GameObject.Find("StageUIManager");
     }
 
     // Update is called once per frame
@@ -70,16 +71,29 @@ public class GoldGear : MonoBehaviour
         Destroy(this.gameObject);
 
     }
-    private void OnCollisionEnter(Collision collision)
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.transform.tag == "Player")
+    //    {
+    //        m_getflg = true;
+    //        m_anim.SetBool("GetFlg", m_getflg);
+    //        if (m_animend)
+    //        {
+    //            DestroyGear();
+    //        }
+    //    }
+    //}
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.transform.tag == "Player")
+        if (other.transform.tag == "Player")
         {
-            m_getflg = true;
-            m_anim.SetBool("GetFlg", m_getflg);
-            if (m_animend)
-            {
-                DestroyGear();
-            }
+            Debug.Log("ã‡ÇÃéïé‘éÊÇ¡ÇΩÅIÅI");
+            //m_getflg = true;
+           // m_anim.SetBool("GetFlg", m_getflg);
+            //if (m_animend)
+            //{
+            DestroyGear();
+           // }
         }
     }
 }
