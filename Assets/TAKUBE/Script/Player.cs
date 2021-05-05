@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         //{
         //    transform.rotation = Quaternion.LookRotation(diff);
         //}
-        Debug.Log(transform.rotation);
+       // Debug.Log(transform.rotation);
         //prev=transform.position;
     }
     
@@ -124,6 +124,7 @@ public class Player : MonoBehaviour
     {
         if (transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit)
         {
+            Debug.Log(inputValue_x);
             //ë´èÍÇ…êGÇÍÇƒÇ¢ÇÈä‘useGravityÇñ≥å¯
             //this.gameObject.GetComponent<Rigidbody>().useGravity = false;
 
@@ -131,6 +132,7 @@ public class Player : MonoBehaviour
             {
                 if (transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().isHit)
                 {
+                    Debug.Log("ìoÇ¡ÇΩ");
                     transform.position += Vector3.up * transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().HitBlockHeight;
                     transform.position += Vector3.left * 0.2f;
                     transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().ResetHitFlg();
@@ -140,6 +142,7 @@ public class Player : MonoBehaviour
             {
                 if (transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().isHit)
                 {
+                    Debug.Log("ìoÇ¡ÇΩ");
                     transform.position += Vector3.up * transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().HitBlockHeight;
                     transform.position += Vector3.right * 0.2f;
                     transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().ResetHitFlg();
@@ -160,7 +163,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
             string tag = hit.transform.tag;
-            if (tag == "ClimbBlock" || tag == "GimicClearBlock") return false;
+            if (tag == "ClimbBlock" || tag == "GimicClearBlock"||tag=="GimicMoveBlock") return false;
             //if (hit.transform.tag == "ClimbBlock") return false;
         }
         return true;

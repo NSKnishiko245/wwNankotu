@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 873445577700792051}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.903, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 6421210645333856970}
@@ -71,7 +71,6 @@ GameObject:
   - component: {fileID: 5034567224718981498}
   - component: {fileID: 7199725829386194198}
   - component: {fileID: 5381191745296927847}
-  - component: {fileID: 753348905525194392}
   - component: {fileID: 2754169772314024983}
   m_Layer: 0
   m_Name: 9
@@ -159,21 +158,6 @@ CapsuleCollider:
   m_Height: 2.26
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &753348905525194392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2796107689389171645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d372b093cd0feb409390295d7230368, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_frame: 30
-  m_UpCol: {fileID: 0}
-  m_DownCol: {fileID: 0}
 --- !u!54 &2754169772314024983
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -304,7 +288,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8980798828068479838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0.898, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 8850016140186095044}

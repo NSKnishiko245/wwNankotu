@@ -7,6 +7,7 @@ public class MoveBlock : MonoBehaviour
     //SE
     public AudioClip m_audioClip;
 
+    private bool m_HitFlg;
 
     private int m_nowCnt = 0;
     private int m_addCnt = 0;
@@ -21,7 +22,9 @@ public class MoveBlock : MonoBehaviour
     {
         if (m_addCnt < m_nowCnt)
         {
-            this.gameObject.GetComponent<Rigidbody>().useGravity = false;
+           // this.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition|RigidbodyConstraints.FreezeRotation;
+            this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
         }
 
         m_nowCnt++;
@@ -32,8 +35,10 @@ public class MoveBlock : MonoBehaviour
     {
         if (other.transform.tag == "GimicMoveBar")
         {
-           // AudioSource.PlayClipAtPoint(m_audioClip, this.transform.position);//SEçƒê∂
+            this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+            // AudioSource.PlayClipAtPoint(m_audioClip, this.transform.position);//SEçƒê∂
             this.gameObject.GetComponent<Rigidbody>().useGravity = true;
+            this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             m_addCnt = m_nowCnt;
             m_addCnt++;
         }
