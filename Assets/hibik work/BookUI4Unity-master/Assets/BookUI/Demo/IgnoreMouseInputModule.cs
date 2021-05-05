@@ -24,6 +24,8 @@ public class IgnoreMouseInputModule : BaseInputModule
     private bool nextPageFlg = false;       // true:次のページへ進む
     private bool backPageFlg = false;       // true:前のページに戻る
 
+    private bool allBackFlg = false;        // 一番最初のページに戻る
+
     [SerializeField] private AudioSource pageSeSource;
     //========================================
 
@@ -220,6 +222,7 @@ public class IgnoreMouseInputModule : BaseInputModule
         movement = Vector2.zero;
         if (pageNum < maxPageNum && nextPageFlg) PageChange("next");
         if (pageNum > 0 && backPageFlg) PageChange("back");
+        if (allBackFlg) PageChange("back");
         //========================================
 
         if (Mathf.Approximately(movement.x, 0f) && Mathf.Approximately(movement.y, 0f))
@@ -297,6 +300,16 @@ public class IgnoreMouseInputModule : BaseInputModule
         backPageFlg = true;
     }
 
+    public void AllBackPage()
+    {
+        allBackFlg = true;
+    }
+
+    public bool GetAllBackFlg()
+    {
+        return allBackFlg;
+    }
+
     // ページ変更　next:次のページ　back:前のページ
     public void PageChange(string str)
     {
@@ -308,13 +321,13 @@ public class IgnoreMouseInputModule : BaseInputModule
         switch (str)
         {
             case "next":
-                pageNum++;
-                movement.x++;
+                if (pageNum < maxPageNum) pageNum++;
+                    movement.x++;
                 break;
 
             case "back":
-                pageNum--;
-                movement.x--;
+                if (pageNum > 0) pageNum--;
+                    movement.x--;
                 break;
         }
     }

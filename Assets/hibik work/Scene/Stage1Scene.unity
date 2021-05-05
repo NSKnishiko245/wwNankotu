@@ -1250,6 +1250,11 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &511036163 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5342644501996769225, guid: 147fa2b82cd55324bb845951af220f9f, type: 3}
+  m_PrefabInstance: {fileID: 5342644502309057356}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &530540323
 GameObject:
   m_ObjectHideFlags: 0
@@ -2116,6 +2121,11 @@ RectTransform:
   m_AnchoredPosition: {x: -261.53, y: -181}
   m_SizeDelta: {x: 66.8568, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1356676869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5342644501835647999, guid: 147fa2b82cd55324bb845951af220f9f, type: 3}
+  m_PrefabInstance: {fileID: 5342644502309057356}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1433931858
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,9 +2686,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7db295f7278f2d48b8d6cf538329a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resultSeSource: {fileID: 1576787889}
-  sceneChangeTime: 60
-  OperationTime: 300
 --- !u!114 &1576787886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2692,16 +2699,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventSystem: {fileID: 1480091781}
-  player: {fileID: 682792883}
   stageManager: {fileID: 2081052299}
-  stageUIManager: {fileID: 1576787883}
   editCanvas: {fileID: 175145924}
-  selectGear: {fileID: 1682487475}
-  retryGear: {fileID: 2145729669}
-  sceneChangeTime: 90
-  stageDisplayCntInit: 20
+  player: {fileID: 682792883}
+  menuSelectGear: {fileID: 1356676869}
+  menuRetryGear: {fileID: 511036163}
+  clearSelectGear: {fileID: 760638604}
+  clearSelectGear2: {fileID: 659287055}
+  clearNextGear: {fileID: 49541671}
+  clearNextGear2: {fileID: 1764975048}
+  bgmSource: {fileID: 1576787884}
+  resultSource: {fileID: 1576787889}
   editFlg: 0
-  StageBgmSource: {fileID: 1576787884}
+  stageNum: 0
+  sceneChangeCntInit: 0
+  stageDisplayCntInit: 20
+  clearCommandOperationCntInit: 300
 --- !u!114 &1576787887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2948,11 +2961,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608855499}
   m_CullTransparentMesh: 1
---- !u!1 &1682487475 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5342644501835647999, guid: 147fa2b82cd55324bb845951af220f9f, type: 3}
-  m_PrefabInstance: {fileID: 5342644502309057356}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1690168354
 GameObject:
   m_ObjectHideFlags: 0
@@ -3882,11 +3890,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115866147}
   m_CullTransparentMesh: 1
---- !u!1 &2145729669 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5342644501996769225, guid: 147fa2b82cd55324bb845951af220f9f, type: 3}
-  m_PrefabInstance: {fileID: 5342644502309057356}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &399168988437187756
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,10 +12,12 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private AudioSource selectDecSource;
 
     [SerializeField] private GameObject eventSystem;
+    [SerializeField] private GameObject bookL;
+    private Animator bookLAnim;
+
     [SerializeField] private float sceneChangeTime; // シーン遷移までの時間
     private int sceneChangeCnt = 0;                 // シーン遷移のカウンタ
     private bool sceneChangeFlg = false;            // true:シーン遷移開始
-    //private bool sceneChangeFirstFlg = true;        // シーン遷移開始後に１度だけ通る処理
 
     private int pageInterval;                       // ページをめくれるまでの待機時間
     [SerializeField] private int pageIntervalInit;  // ページをめくれるまでの待機時間の初期値
@@ -36,6 +38,7 @@ public class StageSelectManager : MonoBehaviour
     {
         pageInterval = pageIntervalInit;
 
+        bookLAnim = bookL.GetComponent<Animator>();
         goldImage = GameObject.FindGameObjectsWithTag("GoldImage");
         silverImage = GameObject.FindGameObjectsWithTag("SilverImage");
         copperImage = GameObject.FindGameObjectsWithTag("CopperImage");
@@ -50,7 +53,17 @@ public class StageSelectManager : MonoBehaviour
     {
         PageOperation();    // ページをめくる
         SceneChange();      // シーン遷移
-        ScoreDisplay();
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if(!bookLAnim.GetBool("isAnim")) bookLAnim.SetBool("isAnim", true);
+            else bookLAnim.SetBool("isAnim", false);
+        }
+
+        if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
+        {
+            ScoreDisplay();
+        }
     }
 
     // ページをめくる
@@ -84,8 +97,14 @@ public class StageSelectManager : MonoBehaviour
 
             // 現在のページ取得(ステージ番号)
             StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+
+
             // ステージに遷移
-            if (StageManager.stageNum > 0) sceneChangeFlg = true;
+            if (StageManager.stageNum > 0)
+            {
+                sceneChangeFlg = true;
+                eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+            }
         }
 
         if (sceneChangeFlg)

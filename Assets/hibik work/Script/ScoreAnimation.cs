@@ -47,7 +47,7 @@ public class ScoreAnimation : MonoBehaviour
     [SerializeField] private int medalRotationStartCnt;
 
     private bool firstClearFlg = true; // クリア後に1度だけ行う処理
-
+    private bool startFlg = false;      // クリアアニメーション開始
 
 
     //==============================================================
@@ -76,7 +76,7 @@ public class ScoreAnimation : MonoBehaviour
     private void Update()
     {
         // クリア後
-        if (stageUIManager.GetComponent<ClearUI>().GetCLearFlg())
+        if (startFlg)
         {
             // カメラの位置を徐々に変更
             if (cameraMoveCnt != 0)
@@ -204,5 +204,10 @@ public class ScoreAnimation : MonoBehaviour
             }
         }
         else medalRotationStartCnt--;
+    }
+
+    public void StartFlgOn()
+    {
+        startFlg = true;
     }
 }
