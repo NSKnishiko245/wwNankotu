@@ -17,6 +17,18 @@ public class anim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Œü‚«‚ð•Ï‚¦‚é
+        if (m_playobj.GetComponent<Player>().GetInputValue() > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+        }else if(m_playobj.GetComponent<Player>().GetInputValue() < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, -90, 0);
+        }
+
+
+
+
         if (m_playobj.GetComponent<Player>().IsMove)
         {
             m_anim.SetBool("move_flg", true);
@@ -24,6 +36,11 @@ public class anim : MonoBehaviour
         else
         {
             m_anim.SetBool("move_flg", false);
+        }
+        if (m_playobj.GetComponent<Player>().IsHitGoalBlock)
+        {
+            m_anim.SetBool("goal_flg", true);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 }

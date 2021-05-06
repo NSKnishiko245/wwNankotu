@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        IsHitGoalBlock = false;
         pos = transform.position;
         rb = GetComponent<Rigidbody>();
         IsHitGoalBlock = false;
@@ -55,47 +56,48 @@ public class Player : MonoBehaviour
         // 入力をなしにする場合
         if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.02f) inputValue_x = 0.0f;
 
-        
 
-        //移動処理
-        Vector3 moveValue = transform.right * Speed * Time.deltaTime;
-        if (inputValue_x > 0)
+        if (!IsHitGoalBlock)
         {
-            //if (transform.position.x + transform.localScale.x / 2.0f < BorderLine_r)
+            //移動処理
+            Vector3 moveValue = transform.right * Speed * Time.deltaTime;
+            if (inputValue_x > 0)
             {
-                transform.position += moveValue;
-                // transform.rotation = Quaternion.Euler(0, 0, 0);
-                IsMove = true;
+                //if (transform.position.x + transform.localScale.x / 2.0f < BorderLine_r)
+                {
+                    transform.position += moveValue;
+                    // transform.rotation = Quaternion.Euler(0, 0, 0);
+                    IsMove = true;
+                }
+            }
+            else if (inputValue_x < 0)
+            {
+                //if (transform.position.x - transform.localScale.x / 2.0f > BorderLine_l)
+                {
+                    transform.position -= moveValue;
+                    // transform.rotation = Quaternion.Euler(0, 180, 0);
+                    //m_anim.SetBool("move_flg", true);
+                    IsMove = true;
+                }
+            }
+            else
+            {
+                IsMove = false;
             }
         }
-        else if (inputValue_x < 0)
-        {
-            //if (transform.position.x - transform.localScale.x / 2.0f > BorderLine_l)
-            {
-                transform.position -= moveValue;
-                // transform.rotation = Quaternion.Euler(0, 180, 0);
-                //m_anim.SetBool("move_flg", true);
-                IsMove = true;
-            }
-        }
-        else
-        {
-            IsMove = false;
-        }
-        
-        //ジャンプ処理（Aボタン押下）
-        if(Input.GetKeyDown("joystick button 1"))
-        {
-            if (Jumpflg)
-            {
-                rb.velocity = transform.up * Jump;
-                Jumpflg = false;
-            }
-        }
-        if (rb.velocity.magnitude == 0f)
-        {
-            Jumpflg = true;
-        }
+        ////ジャンプ処理（Aボタン押下）
+        //if(Input.GetKeyDown("joystick button 1"))
+        //{
+        //    if (Jumpflg)
+        //    {
+        //        rb.velocity = transform.up * Jump;
+        //        Jumpflg = false;
+        //    }
+        //}
+        //if (rb.velocity.magnitude == 0f)
+        //{
+        //    Jumpflg = true;
+        //}
         HitTest();
 
         //Vector3 diff = this.transform.position - prev;
@@ -169,11 +171,18 @@ public class Player : MonoBehaviour
         return true;
     }
 
+    //移動分
+    public float GetInputValue()
+    {
+        return inputValue_x;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "GoalBlock")
         {
             IsHitGoalBlock = true;
+            IsMove = false;
         }
 
         if (other.transform.tag == "Bar")
