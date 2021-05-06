@@ -5,7 +5,6 @@ using UnityEngine;
 public class ScoreAnimation : MonoBehaviour
 {
     [SerializeField] private GameObject mainCamera;
-    [SerializeField] private GameObject stageUIManager;
 
     [SerializeField] private GameObject stageClear;
     [SerializeField] private GameObject stageSelect;
@@ -19,13 +18,15 @@ public class ScoreAnimation : MonoBehaviour
     private Animator[] medalAnim = new Animator[3];
 
     // クリア後のカメラの位置調整用(ゴールからの差をセットする)
+    [SerializeField] private Vector3 cameraStartPos;    // カメラの初期位置
     [SerializeField] private Vector3 cameraAdjustmentPos;
     private Vector3 cameraNowPos;       // カメラの現在座標
     private Vector3 goalPos;            // ゴールの座標
     private Vector3 cameraTargetPos;    // カメラの移動先の座標
     private Vector3 cameraMovePos;      // カメラが１フレームに移動する座標
     [SerializeField] private int cameraMoveSpeed; // カメラが移動する速度
-    private int cameraMoveCnt;          // カメラが移動する回数
+    private int cameraStartMoveCnt;          // カメラが移動する回数
+    private int cameraEndMoveCnt;          // カメラが移動する回数
 
     // ステージクリアしてからステージクリアのテキストが出るまでの時間
     [SerializeField] private int stageClearTextCnt;
@@ -48,6 +49,7 @@ public class ScoreAnimation : MonoBehaviour
 
     private bool firstClearFlg = true; // クリア後に1度だけ行う処理
     private bool startFlg = false;      // クリアアニメーション開始
+    private bool endFlg = false;      // クリアアニメーション終了
 
 
     //==============================================================
@@ -61,8 +63,10 @@ public class ScoreAnimation : MonoBehaviour
 
         for (int i = 0; i < 3; i++) medalAnim[i] = medal[i].GetComponent<Animator>();
 
+        cameraStartPos = mainCamera.transform.position;
         cameraNowPos = mainCamera.transform.position;
-        cameraMoveCnt = cameraMoveSpeed;
+        cameraStartMoveCnt = cameraMoveSpeed;
+        cameraEndMoveCnt = cameraMoveSpeed;
 
         // メダルの動作確認用
         //StageSelectManager.score[StageManager.stageNum].isCopper = true;
@@ -79,11 +83,11 @@ public class ScoreAnimation : MonoBehaviour
         if (startFlg)
         {
             // カメラの位置を徐々に変更
-            if (cameraMoveCnt != 0)
+            if (cameraStartMoveCnt != 0)
             {
                 cameraNowPos -= cameraMovePos;
                 mainCamera.transform.position = cameraNowPos;
-                cameraMoveCnt--;
+                cameraStartMoveCnt--;
             }
 
             // クリア後に1度だけ行う処理
@@ -97,6 +101,28 @@ public class ScoreAnimation : MonoBehaviour
 
             // ステージ内の全てのメダルを取得するとメダルが回転する
             MedalRotation();
+        }
+
+        if (endFlg)
+        {
+            for (int i = 0; i < 3; i++) medal[i].SetActive(false);
+            stageClearAnim.SetBool("isMove", false);
+            stageSelectAnim.SetBool("isMove", false);
+            stageSelectAnim.SetBool("isRot", false);
+            nextStageAnim.SetBool("isMove", false);
+            nextStageAnim.SetBool("isRot", false);
+
+            // カメラの位置を徐々に変更
+            if (cameraEndMoveCnt != 0)
+            {
+                cameraNowPos += cameraMovePos;
+                mainCamera.transform.position = cameraNowPos;
+                cameraEndMoveCnt--;
+            }
+            else
+            {
+                this.GetComponent<StageUIManager>().StageDisplay(false);
+            }
         }
     }
 
@@ -209,5 +235,10 @@ public class ScoreAnimation : MonoBehaviour
     public void StartFlgOn()
     {
         startFlg = true;
+    }
+
+    public void EndFlgOn()
+    {
+        endFlg = true;
     }
 }

@@ -12,15 +12,16 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private AudioSource selectDecSource;
 
     [SerializeField] private GameObject eventSystem;
-    [SerializeField] private GameObject bookL;
-    private Animator bookLAnim;
 
     [SerializeField] private float sceneChangeTime; // シーン遷移までの時間
     private int sceneChangeCnt = 0;                 // シーン遷移のカウンタ
-    private bool sceneChangeFlg = false;            // true:シーン遷移開始
+    private bool sceneChangeFlg = false;
 
-    private int pageInterval;                       // ページをめくれるまでの待機時間
     [SerializeField] private int pageIntervalInit;  // ページをめくれるまでの待機時間の初期値
+    private int pageInterval = 0;
+
+    [SerializeField] private int operationCntInit;  // シーン遷移して操作可能になるまでの時間
+    private int operationCnt = 0;
 
     private GameObject[] goldImage;
     private GameObject[] silverImage;
@@ -31,14 +32,14 @@ public class StageSelectManager : MonoBehaviour
         public bool isSilver;
         public bool isCopper;
     }
-    public static Score[] score = new Score[11];
-    public static int[] silverConditions = new int[11];
+    public static Score[] score = new Score[51];
+    public static int[] silverConditions = new int[51];
 
     private void Awake()
     {
         pageInterval = pageIntervalInit;
+        operationCnt = operationCntInit;
 
-        bookLAnim = bookL.GetComponent<Animator>();
         goldImage = GameObject.FindGameObjectsWithTag("GoldImage");
         silverImage = GameObject.FindGameObjectsWithTag("SilverImage");
         copperImage = GameObject.FindGameObjectsWithTag("CopperImage");
@@ -51,14 +52,18 @@ public class StageSelectManager : MonoBehaviour
 
     private void Update()
     {
-        PageOperation();    // ページをめくる
-        SceneChange();      // シーン遷移
+        if (operationCnt == 1) eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (operationCnt == 0)
         {
-            if(!bookLAnim.GetBool("isAnim")) bookLAnim.SetBool("isAnim", true);
-            else bookLAnim.SetBool("isAnim", false);
+            if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
+            {
+                PageOperation();
+            }
         }
+        else operationCnt--;
+
+        SceneChange();      // シーン遷移
 
         if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
         {
@@ -90,32 +95,29 @@ public class StageSelectManager : MonoBehaviour
     // シーン遷移
     private void SceneChange()
     {
-        // シーン遷移開始
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+        if (!sceneChangeFlg && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
         {
             selectDecSource.Play();
 
             // 現在のページ取得(ステージ番号)
             StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
 
-
-            // ステージに遷移
+            // シーン遷移開始
             if (StageManager.stageNum > 0)
             {
-                sceneChangeFlg = true;
+                // 本を閉じる
                 eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+                // 部屋を暗くする
+                this.GetComponent<PostEffectController>().SetVigFlg(true);
+
+                sceneChangeFlg = true;
             }
         }
 
-        if (sceneChangeFlg)
+        if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetBookCloseFlg())
         {
-            this.GetComponent<PostEffectController>().SetVigFlg(true);
-            // 一定時間経過すると遷移する
-            if (sceneChangeCnt > sceneChangeTime)
-            {
-                SceneManager.LoadScene("Stage1Scene");
-            }
-            sceneChangeCnt++;
+            // 遷移
+            SceneManager.LoadScene("Stage1Scene");
         }
     }
 

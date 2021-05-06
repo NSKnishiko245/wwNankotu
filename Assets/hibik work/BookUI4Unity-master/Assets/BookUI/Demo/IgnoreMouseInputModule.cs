@@ -18,6 +18,9 @@ public class IgnoreMouseInputModule : BaseInputModule
 
     // 自身が作成した変数
     //========================================
+    [SerializeField] private GameObject bookL;
+    private Animator bookLAnim;
+
     [SerializeField] private int pageNum;      // 現在のページ　※開始するページを入力する
     [SerializeField] private int maxPageNum;   // ページの最大値
 
@@ -25,6 +28,10 @@ public class IgnoreMouseInputModule : BaseInputModule
     private bool backPageFlg = false;       // true:前のページに戻る
 
     private bool allBackFlg = false;        // 一番最初のページに戻る
+    private int pageCntInit = 10;
+    private int pageCnt = 20;
+    private int bookCloseCnt = 90;
+    private bool bookCloseFlg = false;
 
     [SerializeField] private AudioSource pageSeSource;
     //========================================
@@ -321,15 +328,46 @@ public class IgnoreMouseInputModule : BaseInputModule
         switch (str)
         {
             case "next":
-                if (pageNum < maxPageNum) pageNum++;
+                if (pageNum < maxPageNum)
+                {
+                    pageNum++;
                     movement.x++;
+                }
                 break;
 
             case "back":
-                if (pageNum > 0) pageNum--;
+                if (allBackFlg && pageNum <= 1)
+                {
+                    if (bookCloseCnt == 60)
+                    {
+                        bookLAnim = bookL.GetComponent<Animator>();
+                        bookLAnim.SetBool("isAnim", false);
+                    }
+                    if (bookCloseCnt == 0) bookCloseFlg = true;
+                    else bookCloseCnt--;
+                }
+
+                if (allBackFlg && pageCnt == 0)
+                {
+                    pageNum--;
                     movement.x--;
+                    pageCnt = pageCntInit;
+                }
+                else pageCnt--;
+
+
+                if (!allBackFlg && pageNum > 1)
+                {
+                    pageNum--;
+                    movement.x--;
+                }
                 break;
         }
+    }
+
+    public bool GetBookCloseFlg()
+    {
+        return bookCloseFlg;
     }
     //========================================
 }

@@ -11,6 +11,9 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private GameObject editCanvas;
     [SerializeField] private GameObject player;
 
+    [SerializeField] private GameObject bookL;
+    private Animator bookLAnim;
+
     // メニューのUI
     [SerializeField] private GameObject menuSelectGear;
     [SerializeField] private GameObject menuRetryGear;
@@ -24,6 +27,7 @@ public class StageUIManager : MonoBehaviour
     // サウンド
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource resultSource;
+    [SerializeField] private AudioSource selectDecSource;
 
     [SerializeField] private bool editFlg = false;  // true:エディット表示
     [SerializeField] private int stageNum;   // ステージ番号
@@ -35,11 +39,14 @@ public class StageUIManager : MonoBehaviour
 
     // プレイヤーとステージを表示するまでの時間
     [SerializeField] private int stageDisplayCntInit;
-    private int stageDisplayCnt = 0;
+    private int stageDisplayCnt = 90;
 
     // クリアコマンドが操作可能になるまでの時間
     [SerializeField] private int clearCommandOperationCntInit;
     private int clearCommandOperationCnt = 0;
+
+    private int startPageCnt = 45;  // 開始時のページがめくれるまでの時間
+    private int endBookCnt = 45;    // 終了時の本が閉じるまでの時間
 
     private bool statusFirstFlg = true;
     private bool menuCommandFirstFlg = true;
@@ -48,6 +55,7 @@ public class StageUIManager : MonoBehaviour
     // シーンの状態
     private enum STATUS
     {
+        START,
         PLAY,
         MENU,
         CLEAR,
@@ -77,15 +85,15 @@ public class StageUIManager : MonoBehaviour
         // エディットを非表示
         if (!editFlg) editCanvas.SetActive(false);
 
-        // プレイヤーとステージを非表示
-        player.SetActive(false);
-        stageManager.SetActive(false);
+        StageDisplay(false);
 
         // 変数初期化
-        status = STATUS.PLAY;
+        status = STATUS.START;
         sceneChangeCnt = sceneChangeCntInit;
         stageDisplayCnt = stageDisplayCntInit;
         clearCommandOperationCnt = clearCommandOperationCntInit;
+
+        bookLAnim = bookL.GetComponent<Animator>();
     }
 
     //==============================================================
@@ -98,14 +106,25 @@ public class StageUIManager : MonoBehaviour
         switch (status)
         {
             //-----------------------------------
+            // 開始後
+            //-----------------------------------
+            case STATUS.START:
+                if (startPageCnt == 0)
+                {
+                    eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+                    status = STATUS.PLAY;
+                }
+                else startPageCnt--;
+                break;
+
+            //-----------------------------------
             // プレイ中
             //-----------------------------------
             case STATUS.PLAY:
                 // カウントが０になるとプレイヤーとステージを表示する
                 if (stageDisplayCnt == 0)
                 {
-                    player.SetActive(true);
-                    stageManager.SetActive(true);
+                    StageDisplay(true);
                 }
                 else stageDisplayCnt--;
 
@@ -131,9 +150,7 @@ public class StageUIManager : MonoBehaviour
             case STATUS.MENU:
                 if (statusFirstFlg)
                 {
-                    // プレイヤーとステージを非表示
-                    player.SetActive(false);
-                    stageManager.SetActive(false);
+                    StageDisplay(false);
                     statusFirstFlg = false;
                 }
 
@@ -144,6 +161,7 @@ public class StageUIManager : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                 {
                     status = STATUS.COMMAND_DECISION;
+                    selectDecSource.Play();
                 }
 
                 // メニューを閉じる
@@ -168,7 +186,7 @@ public class StageUIManager : MonoBehaviour
                     // スコアアニメーション開始
                     this.GetComponent<ScoreAnimation>().StartFlgOn();
 
-                    // リザルトBGM再生
+                    bgmSource.Stop();
                     resultSource.Play();
 
                     // 銅メダル取得
@@ -189,6 +207,8 @@ public class StageUIManager : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                     {
                         status = STATUS.COMMAND_DECISION;
+                        selectDecSource.Play();
+                        this.GetComponent<ScoreAnimation>().EndFlgOn();
                     }
                 }
                 else clearCommandOperationCnt--;
@@ -203,8 +223,18 @@ public class StageUIManager : MonoBehaviour
                 {
                     // ランタンの火を消す
                     this.GetComponent<PostEffectController>().SetFireFlg(false);
+                    eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+
+                    // プレイヤーとステージを非表示
+                    //player.SetActive(false);
+                    //stageManager.SetActive(false);
+
                     statusFirstFlg = false;
                 }
+
+                // 本のモデルを閉じる
+                if (endBookCnt == 0) bookLAnim.SetBool("isAnim", false);
+                else endBookCnt--;
 
                 // 一定時間経過すると遷移する
                 if (sceneChangeCnt == 0) SceneManager.LoadScene(changeSceneName);
@@ -338,6 +368,25 @@ public class StageUIManager : MonoBehaviour
             StageSelectManager.score[StageManager.stageNum].isSilver = true;
             Debug.Log("ノルマ" + StageSelectManager.silverConditions[1]);
             Debug.Log("折った回数" + stageManager.GetComponent<StageManager>().rotateNum);
+        }
+    }
+
+    //==============================================================
+    // ステージ表示切替
+    //==============================================================
+    public void StageDisplay(bool sts)
+    {
+        if(sts)
+        {
+            // プレイヤーとステージを表示
+            player.SetActive(true);
+            stageManager.SetActive(true);
+        }
+        else
+        {
+            // プレイヤーとステージを非表示
+            player.SetActive(false);
+            stageManager.SetActive(false);
         }
     }
 }
