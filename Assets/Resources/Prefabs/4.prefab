@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 705832954133945098}
   - component: {fileID: 976676491577706270}
   m_Layer: 0
-  m_Name: 2
+  m_Name: 4
   m_TagString: GoalBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
