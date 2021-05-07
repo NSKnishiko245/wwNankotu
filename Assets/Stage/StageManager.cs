@@ -56,6 +56,12 @@ public class StageManager : MonoBehaviour
     public bool IsGameOver { get; private set; }
     public bool IsGameClear { get; private set; }
 
+
+    bool flg = false;
+    bool rerotFlg = false;
+    bool resetFlg = false;
+
+
     private enum CONTROLLERSTATE
     {
         L_TRIGGER = -1,
@@ -187,6 +193,41 @@ public class StageManager : MonoBehaviour
             }
         }
 
+        if (rerotFlg)
+        {
+            if (flg)
+            {
+                SecondFunc();
+            }
+            if (Tile_List[0].activeSelf)
+            {
+                if (Tile_List[0].transform.Find("TileChild").GetComponent<ScreenShot>().isFinishedScreenShot())
+                {
+                    ThirdFunc();
+                }
+            }
+            if (Tile_List[Tile_List.Count - 1].activeSelf)
+            {
+                if (Tile_List[Tile_List.Count - 1].transform.Find("TileChild").GetComponent<ScreenShot>().isFinishedScreenShot())
+                {
+                    FourFunc();
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Tile_List.Count; i++)
+            {
+                if (Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().isFinishedScreenShot())
+                {
+
+                    SetAllBlockActive(false);
+                    Player.transform.Find("walk_UV").gameObject.SetActive(true);
+                    break;
+                }
+            }
+        }
+
         // 回転済みのステージを戻す処理
         if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
         {
@@ -195,25 +236,17 @@ public class StageManager : MonoBehaviour
             {
                 if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
                 {
-                    RotateBar(i, BarRotate.ROTSTATEOUTERDATA.REROTATE);
-                    RotateState = ROTATESTATE.NEUTRAL;
-                    SetAllBlockActive(false);
-                    rotateNum++;
-
-                    DeleteCopy();
-                    isCopy = false;
+                    FirstFunc();
                     break;
                 }
             }
         }
-
+        
         if (Player.transform.position.x < Bar_List[LeftBarIdx].transform.position.x || Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
         {
             if (isCopy)
             {
                 DecidedStage();
-                //DeleteCopy();
-                //Destroy(BigParent);
                 isCopy = false;
             }
         }
@@ -228,17 +261,7 @@ public class StageManager : MonoBehaviour
         {
             IsGameOver = true;
         }
-
-        for (int i = 0; i < Tile_List.Count; i++)
-        {
-            if (Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().isFinishedScreenShot())
-            {
-                SetAllBlockActive(false);
-                Player.transform.Find("modelMan").gameObject.SetActive(true);
-                break;
-            }
-        }
-
+       
         // ワープエフェクトの位置更新
         for (int i = 0; i < Bar_List.Count; i++)
         {
@@ -266,12 +289,25 @@ public class StageManager : MonoBehaviour
                 ps.Stop();
                 ps.gameObject.SetActive(false);
             }
+            resetFlg = true;
         }
         else
         {
+            if (resetFlg)
+            {
+                for (int k = 0; k < Tile_List.Count; k++)
+                {
+                    Tile_List[k].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+                }
+                resetFlg = false;
+            }
             ParentReset();
         }
 
+
+
+
+        
     }
 
     // バーの回転処理
@@ -332,15 +368,13 @@ public class StageManager : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 0.5f))
         {
             string tag = hit.collider.tag;
-            Debug.Log(tag);
-            if (tag == "Block" || tag == "GoalBlock" || tag == "GimicMoveBlock" || tag == "GimicMoveBar" || tag == "GimicBreakBlock") return false;
+            if (tag == "Block" || tag == "GoalBlock" || tag == "GimicMoveBlock" || tag == "GimicMoveBar" || tag == "GimicBreakBlock" || tag == "ClimbBlock") return false;
         }
         ray = new Ray(ray_pos + Vector3.right * Bar_List[HitBarIdx].transform.localScale.x / 2.0f, Vector3.left);
         if (Physics.Raycast(ray, out hit, 0.5f))
         {
             string tag = hit.collider.tag;
-            Debug.Log(tag);
-            if (tag == "Block" || tag == "GoalBlock" || tag == "GimicMoveBlock" || tag == "GimicMoveBar" || tag == "GimicBreakBlock") return false;
+            if (tag == "Block" || tag == "GoalBlock" || tag == "GimicMoveBlock" || tag == "GimicMoveBar" || tag == "GimicBreakBlock" || tag == "ClimbBlock") return false;
         }
 
         return true;
@@ -466,6 +500,7 @@ public class StageManager : MonoBehaviour
                 return false;
             }
         }
+        
         SetAllBlockActive(true);
         return true;
     }
@@ -645,6 +680,84 @@ public class StageManager : MonoBehaviour
             Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
             Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().TurnOnScreenShot();
         }
-        Player.transform.Find("modelMan").gameObject.SetActive(false);
+        Player.transform.Find("walk_UV").gameObject.SetActive(false);
+    }
+
+    private void FirstFunc()
+    {
+        //RotateState = ROTATESTATE.REROTATE;
+        rerotFlg = true;
+        bool tileActive = true;
+        for (int k = 0; k < Tile_List.Count; k++)
+        {
+            Tile_List[k].SetActive(tileActive);
+            if (Bar_List[k + 1].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
+            {
+                tileActive = false;
+            }
+        }
+        Player.transform.Find("walk_UV").gameObject.SetActive(false);
+        DeleteCopy();
+        isCopy = false;
+
+        flg = true;
+    }
+    private void SecondFunc()
+    {
+        bool tileActive2 = true;
+        for (int k = 0; k < Tile_List.Count; k++)
+        {
+            if (tileActive2)
+            {
+                Tile_List[k].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+                Tile_List[k].transform.Find("TileChild").GetComponent<ScreenShot>().TurnOnScreenShot();
+            }
+            if (Bar_List[k + 1].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
+            {
+                tileActive2 = false;
+            }
+        }
+        flg = false;
+    }
+    private void ThirdFunc()
+    {
+        bool tileActive = true;
+        for (int k = Tile_List.Count - 1; k >= 0; k--)
+        {
+            Tile_List[k].SetActive(tileActive);
+            if (tileActive)
+            {
+                Tile_List[k].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+                Tile_List[k].transform.Find("TileChild").GetComponent<ScreenShot>().TurnOnScreenShot();
+            }
+            if (Bar_List[k].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
+            {
+                tileActive = false;
+            }
+        }
+    }
+    private void FourFunc()
+    {
+        for (int i = 0; i < Tile_List.Count; i++)
+        {
+            Tile_List[i].SetActive(true);
+            if (Tile_List[i].transform.localRotation.y != 0.0f)
+            {
+                Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ReverseTexture();
+            }
+        }
+
+        for (int i = 0; i < Bar_List.Count; i++)
+        {
+            if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
+            {
+                RotateBar(i, BarRotate.ROTSTATEOUTERDATA.REROTATE);
+                break;
+            }
+        }
+        SetAllBlockActive(false);
+        Player.transform.Find("walk_UV").gameObject.SetActive(true);
+        rerotFlg = false;
+        RotateState = ROTATESTATE.NEUTRAL;
     }
 }

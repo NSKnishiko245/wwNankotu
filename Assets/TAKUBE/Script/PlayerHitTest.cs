@@ -24,7 +24,7 @@ public class PlayerHitTest : MonoBehaviour
         //    isHit = true;
         //}
         string tag = other.transform.tag;
-        if (other.transform.tag == "ClimbBlock"||other.transform.tag=="GimicClearBlock")
+        if (tag == "ClimbBlock"||tag=="GimicClearBlock"||tag == "Block")
         {
             Vector3 ray_pos = other.transform.position;
             Ray ray = new Ray(ray_pos, Vector3.up);
@@ -32,6 +32,15 @@ public class PlayerHitTest : MonoBehaviour
             {
                 HitBlockHeight = other.transform.lossyScale.y;
                 isHit = true;
+            }
+            else
+            {
+                tag = hit.transform.tag;
+                if (tag == "GoalBlock")
+                {
+                    HitBlockHeight = other.transform.lossyScale.y;
+                    isHit = true;
+                }
             }
         }
     }

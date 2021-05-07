@@ -56,6 +56,8 @@ public class ScreenShot : MonoBehaviour
         screeTex.ReadPixels(new Rect(0, 0, size.x, size.y), 0, 0);
         screeTex.Apply();
 
+        
+
         // 上で撮ったスクショデータから指定した範囲のピクセルを取得
         Color[] colors = screeTex.GetPixels(leftBottom.x, leftBottom.y, width, height);
 
@@ -89,11 +91,11 @@ public class ScreenShot : MonoBehaviour
         Vector2 leftBottom = pos - DefaultScale / 2.0f;
         Vector2 rightTop = pos + DefaultScale / 2.0f;
         // 裏を向いている時は補正
-        if (gameObject.transform.parent.localRotation.y != 0.0f)
-        {
-            leftBottom.x -= DefaultScale.x;
-            rightTop.x += DefaultScale.x;
-        }
+        //if (gameObject.transform.parent.localRotation.y != 0.0f)
+        //{
+        //    leftBottom.x -= DefaultScale.x;
+        //    rightTop.x += DefaultScale.x;
+        //}
         leftBottom = RectTransformUtility.WorldToScreenPoint(Camera.main, leftBottom);
         rightTop = RectTransformUtility.WorldToScreenPoint(Camera.main, rightTop);
 
@@ -106,5 +108,9 @@ public class ScreenShot : MonoBehaviour
     public void TurnTexture()
     {
         transform.Rotate(180, 0, 0);
+    }
+    public void ReverseTexture()
+    {
+        transform.Rotate(0, 180, 0);
     }
 }

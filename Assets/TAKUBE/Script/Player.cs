@@ -63,22 +63,16 @@ public class Player : MonoBehaviour
             Vector3 moveValue = transform.right * Speed * Time.deltaTime;
             if (inputValue_x > 0)
             {
-                //if (transform.position.x + transform.localScale.x / 2.0f < BorderLine_r)
-                {
-                    transform.position += moveValue;
-                    // transform.rotation = Quaternion.Euler(0, 0, 0);
-                    IsMove = true;
-                }
+                transform.position += moveValue;
+                // transform.rotation = Quaternion.Euler(0, 0, 0);
+                IsMove = true;
             }
             else if (inputValue_x < 0)
             {
-                //if (transform.position.x - transform.localScale.x / 2.0f > BorderLine_l)
-                {
-                    transform.position -= moveValue;
-                    // transform.rotation = Quaternion.Euler(0, 180, 0);
-                    //m_anim.SetBool("move_flg", true);
-                    IsMove = true;
-                }
+                transform.position -= moveValue;
+                //transform.rotation = Quaternion.Euler(0, 180, 0);
+                //m_anim.SetBool("move_flg", true);
+                IsMove = true;
             }
             else
             {
@@ -126,7 +120,7 @@ public class Player : MonoBehaviour
     {
         if (transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit)
         {
-            Debug.Log(inputValue_x);
+            //Debug.Log(inputValue_x);
             //ë´èÍÇ…êGÇÍÇƒÇ¢ÇÈä‘useGravityÇñ≥å¯
             //this.gameObject.GetComponent<Rigidbody>().useGravity = false;
 

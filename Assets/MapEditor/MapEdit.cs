@@ -167,11 +167,10 @@ public class MapEdit : MonoBehaviour
         // マウスの位置から、その位置に対応したマップの要素数に変換
         Vector2Int elementNum = GetElementNumFormCellPos(cellpos, MapSize);
 
-
         // プレイヤーブロックはeditモードの時のみ生成
         // 一度指定された場所のオブジェクトを削除、のち生成
         GameObject obj = Instantiate(Block[blockIdx - 1], new Vector3(cellpos.x + 0.5f, cellpos.y + 0.5f, 0.0f), new Quaternion(0, 0, 0, 1));
-        if (BlockIndex == 7)
+        if (blockIdx == 7)
         {
             obj.transform.Rotate(0, 180, 0);
         }
