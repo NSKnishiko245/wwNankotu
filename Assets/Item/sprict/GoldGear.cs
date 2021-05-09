@@ -65,7 +65,7 @@ public class GoldGear : MonoBehaviour
     private void DestroyGear()
     {
         // ここでスコア加算
-        StageSelectManager.score[StageManager.stageNum].isGold = true;
+        stageUIManager.GetComponent<StageUIManager>().SetGoldMedalFlg(true);
 
         Instantiate(m_particle, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
         Destroy(this.gameObject);

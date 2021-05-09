@@ -50,6 +50,7 @@ public class StageUIManager : MonoBehaviour
     private bool statusFirstFlg = true;
     private bool menuCommandFirstFlg = true;
     private bool clearCommandFirstFlg = true;
+    private bool goldMedalFlg = false;
 
     // シーンの状態
     private enum STATUS
@@ -194,6 +195,9 @@ public class StageUIManager : MonoBehaviour
 
                     // 銀メダル取得
                     SilverMedalConditions();
+
+                    // 金メダル取得
+                    if(goldMedalFlg) StageSelectManager.score[StageManager.stageNum].isGold = true;
 
                     statusFirstFlg = false;
                 }
@@ -385,5 +389,10 @@ public class StageUIManager : MonoBehaviour
             player.SetActive(false);
             stageManager.SetActive(false);
         }
+    }
+
+    public void SetGoldMedalFlg(bool sts)
+    {
+        goldMedalFlg = sts;
     }
 }

@@ -96,7 +96,6 @@ public class ScoreAnimation : MonoBehaviour
 
         if (endFlg)
         {
-            for (int i = 0; i < 3; i++) medal[i].SetActive(false);
             stageClearAnim.SetBool("isMove", false);
             stageSelectAnim.SetBool("isRot", false);
             stageSelectAnim.SetBool("isMove", false);
@@ -105,6 +104,7 @@ public class ScoreAnimation : MonoBehaviour
 
             if (stageDeleteCnt == 0)
             {
+                for (int i = 0; i < 3; i++) medal[i].SetActive(false);
 
                 this.GetComponent<StageUIManager>().StageDisplay(false);
             }

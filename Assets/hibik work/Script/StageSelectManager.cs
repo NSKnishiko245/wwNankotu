@@ -77,13 +77,13 @@ public class StageSelectManager : MonoBehaviour
         if (pageInterval == 0)
         {
             // 次のページへ進む
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("joystick button 5"))
+            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
             {
                 eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
                 pageInterval = pageIntervalInit;
             }
             // 前のページに戻る
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("joystick button 4"))
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
             {
                 eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
                 pageInterval = pageIntervalInit;
@@ -129,19 +129,19 @@ public class StageSelectManager : MonoBehaviour
         for (int i = 0; i < goldImage.Length; i++)
         {
             if (score[StageManager.stageNum].isGold) goldImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else goldImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+            else goldImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
         }
 
         for (int i = 0; i < silverImage.Length; i++)
         {
             if (score[StageManager.stageNum].isSilver) silverImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else silverImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+            else silverImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
         }
 
         for (int i = 0; i < copperImage.Length; i++)
         {
             if (score[StageManager.stageNum].isCopper) copperImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else copperImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+            else copperImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
         }
     }
 
