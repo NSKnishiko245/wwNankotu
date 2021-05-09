@@ -7,7 +7,7 @@ public class BarRotate : MonoBehaviour
     // 目標の角度
     private float Angle_Destination = 0.0f;
     // 角速度を目標角の何割にするか
-    private float Angle_Speed = 2.0f;
+    public float Angle_Speed = 3.0f;
 
     //当たっているか？
     public bool IsHit{ get; private set; }

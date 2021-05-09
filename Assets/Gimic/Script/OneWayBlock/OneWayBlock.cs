@@ -21,6 +21,15 @@ public class OneWayBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (transform.eulerAngles.y != 0)
+        {
+            m_centerobj.GetComponent<OneWayCenter>().m_Direction = OneWayCenter.DIRECTION.LEFT;
+        }
+        else
+        {
+            m_centerobj.GetComponent<OneWayCenter>().m_Direction = OneWayCenter.DIRECTION.RIGHT;
+        }
+
         if (m_centerobj.GetComponent<OneWayCenter>().GetIsPlayerHit())
         {
             m_Collobj.SetActive(false);

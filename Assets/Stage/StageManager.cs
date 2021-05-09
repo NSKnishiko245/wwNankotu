@@ -143,7 +143,7 @@ public class StageManager : MonoBehaviour
             // プレイヤーが左端のバーに接触した場合
             if (isLeftBar(HitBarIdx))
             {
-                if (!isCopy)
+                if (!isCopy && !rerotFlg)
                 {
                     CopyStage(WARPSTATE.TO_RIGHT);
                     isCopy = true;
@@ -152,7 +152,7 @@ public class StageManager : MonoBehaviour
             // プレイヤーが右端のバーに接触した場合
             else if (isRightBar(HitBarIdx))
             {
-                if (!isCopy)
+                if (!isCopy && !rerotFlg)
                 {
                     CopyStage(WARPSTATE.TO_LEFT);
                     isCopy = true;
@@ -231,13 +231,16 @@ public class StageManager : MonoBehaviour
         // 回転済みのステージを戻す処理
         if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
         {
-            // 回転済みのバーを検出したら元に戻す回転処理を開始
-            for (int i = 0; i < Bar_List.Count; i++)
+            if (!Camera.main.GetComponent<MoveCamera>().isMove)
             {
-                if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
+                // 回転済みのバーを検出したら元に戻す回転処理を開始
+                for (int i = 0; i < Bar_List.Count; i++)
                 {
-                    FirstFunc();
-                    break;
+                    if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
+                    {
+                        FirstFunc();
+                        break;
+                    }
                 }
             }
         }
@@ -597,28 +600,28 @@ public class StageManager : MonoBehaviour
     private void CreateCopy()
     {
         // プレイヤーが左端のバーに接触した場合
-            if (isLeftBar(HitBarIdx))
+        if (isLeftBar(HitBarIdx))
+        {
+            if (!isCopy)
             {
-                if (!isCopy)
-                {
-                    CopyStage(WARPSTATE.TO_RIGHT);
-                    isCopy = true;
-                }
+                CopyStage(WARPSTATE.TO_RIGHT);
+                isCopy = true;
             }
-            // プレイヤーが右端のバーに接触した場合
-            else if (isRightBar(HitBarIdx))
+        }
+        // プレイヤーが右端のバーに接触した場合
+        else if (isRightBar(HitBarIdx))
+        {
+            if (!isCopy)
             {
-                if (!isCopy)
-                {
-                    CopyStage(WARPSTATE.TO_LEFT);
-                    isCopy = true;
-                }
+                CopyStage(WARPSTATE.TO_LEFT);
+                isCopy = true;
             }
-            else if (isCopy)
-            {
-                DeleteCopy();
-                isCopy = false;
-            }
+        }
+        else if (isCopy)
+        {
+            DeleteCopy();
+            isCopy = false;
+        }
     }
     private void DecidedStage()
     {
@@ -685,7 +688,7 @@ public class StageManager : MonoBehaviour
 
     private void FirstFunc()
     {
-        //RotateState = ROTATESTATE.REROTATE;
+        ChangeBlockClear(true);
         rerotFlg = true;
         bool tileActive = true;
         for (int k = 0; k < Tile_List.Count; k++)
@@ -701,6 +704,7 @@ public class StageManager : MonoBehaviour
         isCopy = false;
 
         flg = true;
+
     }
     private void SecondFunc()
     {
@@ -755,9 +759,34 @@ public class StageManager : MonoBehaviour
                 break;
             }
         }
-        SetAllBlockActive(false);
         Player.transform.Find("walk_UV").gameObject.SetActive(true);
         rerotFlg = false;
         RotateState = ROTATESTATE.NEUTRAL;
+
+        SetAllBlockActive(true);
+        ChangeBlockClear(false);
+        SetAllBlockActive(false);
+    }
+
+    private void ChangeBlockClear(bool flg)
+    {
+        // タイル複製
+        for (int i = 0; i < Tile_List.Count; i++)
+        {
+            foreach (Transform child in Tile_List[i].GetComponentsInChildren<Transform>())
+            {
+                if (child.tag == "GimicClearBlock")
+                {
+                    if (flg)
+                    {
+                        child.GetComponent<ClearBlock>().Clear();
+                    }
+                    else
+                    {
+                        child.GetComponent<ClearBlock>().start();
+                    }
+                }
+            }
+        }
     }
 }

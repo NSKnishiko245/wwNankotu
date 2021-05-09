@@ -7,12 +7,19 @@ public class PlayerHitTest : MonoBehaviour
     public float HitBlockHeight { get; private set; }
     public bool isHit { get; private set; }
 
+    public enum COLLISIONDIRECTION
+    {
+        LEFT,
+        RIGHT
+    }
+    public COLLISIONDIRECTION dir;
+
     void Start()
     {
         HitBlockHeight = 0.0f;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         //if (other.transform.tag != "ClimbBlock") return;
 
@@ -26,7 +33,7 @@ public class PlayerHitTest : MonoBehaviour
         string tag = other.transform.tag;
         if (tag == "ClimbBlock"||tag=="GimicClearBlock"||tag == "Block")
         {
-            Vector3 ray_pos = other.transform.position;
+            Vector3 ray_pos = other.transform.position - Vector3.up * 0.1f;
             Ray ray = new Ray(ray_pos, Vector3.up);
             if (!Physics.Raycast(ray, out RaycastHit hit, other.transform.lossyScale.y))
             {
@@ -36,8 +43,30 @@ public class PlayerHitTest : MonoBehaviour
             else
             {
                 tag = hit.transform.tag;
-                if (tag == "GoalBlock")
+                Debug.Log(tag);
+                if (tag != "ClimbBlock")
                 {
+                    if (tag == "GimicClearBlock")
+                    {
+                        if (hit.transform.GetComponent<ClearBlock>().IsClear())
+                        {
+                            isHit = false;
+                            return;
+                        }
+                    }
+
+                    if (tag == "GimicOneWayBlock")
+                    {
+                        if ((hit.transform.GetComponent<OneWayCenter>().m_Direction == OneWayCenter.DIRECTION.LEFT && dir != COLLISIONDIRECTION.RIGHT) ||
+                            hit.transform.GetComponent<OneWayCenter>().m_Direction == OneWayCenter.DIRECTION.RIGHT && dir != COLLISIONDIRECTION.LEFT)
+                        {
+                            isHit = false;
+                            return;
+                        }
+                    }
+
+
+
                     HitBlockHeight = other.transform.lossyScale.y;
                     isHit = true;
                 }
@@ -46,6 +75,7 @@ public class PlayerHitTest : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log("now");
         isHit = false;
     }
     public void ResetHitFlg()

@@ -16,6 +16,8 @@ public class ClearBlock : MonoBehaviour
     public AudioClip m_sound01;
 
     private bool testflg = false;
+    private bool testflg2 = false;
+
     private bool HitobjColl;
 
     private int testcnt = 0;
@@ -35,7 +37,7 @@ public class ClearBlock : MonoBehaviour
         {
             testflg = false;
         }
-        ActiveSet();
+        //ActiveSet();
 
         testcnt++;
 
@@ -56,10 +58,13 @@ public class ClearBlock : MonoBehaviour
             }
         }
         else
-        { 
-            m_objblock.SetActive(true);
-            m_collision.SetActive(true);
-            m_objNotblock.SetActive(false);
+        {
+            if (!testflg2)
+            {
+                m_objblock.SetActive(true);
+                m_collision.SetActive(true);
+                m_objNotblock.SetActive(false);
+            }
         }
     }
 
@@ -73,9 +78,17 @@ public class ClearBlock : MonoBehaviour
             //m_objblock.SetActive(true);
             //m_objNotblock.SetActive(false)
             
-            testflg = true;
-            addcnt = testcnt;
-            addcnt++;
+            //testflg = true;
+            //addcnt = testcnt;
+            //addcnt++;
+
+
+            if (!testflg2)
+            {
+                m_objblock.SetActive(true);
+                m_collision.SetActive(true);
+                m_objNotblock.SetActive(false);
+            }
         }
     }
 
@@ -86,7 +99,42 @@ public class ClearBlock : MonoBehaviour
             //m_objblock.SetActive(false);
             //m_objNotblock.SetActive(true);
 
-            
+            if (m_objblock.activeSelf)
+            {
+                if (!m_objNotblock.activeSelf)
+                {
+                    m_objblock.SetActive(false);
+                    m_objNotblock.SetActive(true);
+                    m_collision.SetActive(false);
+                }
+            }
         }
+    }
+
+    public void Clear()
+    {
+        //addcnt = 0;
+        //testcnt = 100;
+
+        if (m_objblock.activeSelf)
+        {
+            if (!m_objNotblock.activeSelf)
+            {
+                m_objblock.SetActive(false);
+                m_objNotblock.SetActive(true);
+                m_collision.SetActive(false);
+            }
+        }
+        testflg2 = true;
+    }
+
+    public void start()
+    {
+        testflg2 = false;
+    }
+
+    public bool IsClear()
+    {
+        return m_objblock.activeSelf;
     }
 }

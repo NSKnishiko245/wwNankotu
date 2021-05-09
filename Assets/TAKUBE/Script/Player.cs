@@ -44,7 +44,10 @@ public class Player : MonoBehaviour
         IsHitGoalBlock = false;
 
         prev = this.transform.position;
-        
+
+        transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().dir = PlayerHitTest.COLLISIONDIRECTION.RIGHT;
+        transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().dir = PlayerHitTest.COLLISIONDIRECTION.LEFT;
+
     }
 
     // Update is called once per frame
@@ -159,7 +162,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
             string tag = hit.transform.tag;
-            if (tag == "ClimbBlock" || tag == "GimicClearBlock"||tag=="GimicMoveBlock") return false;
+            if (tag == "ClimbBlock" || tag== "GimicMoveBlock" || tag == "GimicBreakBlock") return false;
             //if (hit.transform.tag == "ClimbBlock") return false;
         }
         return true;

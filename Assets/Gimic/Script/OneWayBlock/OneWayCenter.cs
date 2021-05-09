@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class OneWayCenter : MonoBehaviour
 {
+    public enum DIRECTION
+    {
+        LEFT,
+        RIGHT,
+    }
+    public DIRECTION m_Direction { get; set; }
+
     private bool m_isPlayerHit = false;
 
     // Start is called before the first frame update

@@ -19,6 +19,7 @@ TagManager:
   - CopperImage
   - ClimbBlock
   - GimicCollision
+  - GimicOneWayBlock
   layers:
   - Default
   - TransparentFX
