@@ -20,6 +20,7 @@ public class MoveBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (m_addCnt < m_nowCnt)
         {
            // this.gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -37,7 +38,10 @@ public class MoveBlock : MonoBehaviour
         {
             this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
             // AudioSource.PlayClipAtPoint(m_audioClip, this.transform.position);//SEçƒê∂
-            this.gameObject.GetComponent<Rigidbody>().useGravity = true;
+            
+            {
+                this.gameObject.GetComponent<Rigidbody>().useGravity = true;
+            }
             this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             m_addCnt = m_nowCnt;
             m_addCnt++;
@@ -51,4 +55,5 @@ public class MoveBlock : MonoBehaviour
         }
     }
 
+   
 }

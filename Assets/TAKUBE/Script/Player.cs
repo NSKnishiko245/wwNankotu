@@ -57,11 +57,12 @@ public class Player : MonoBehaviour
         inputValue_x = Input.GetAxis("Horizontal");
 
         // “ü—Í‚ð‚È‚µ‚É‚·‚éê‡
-        if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.02f) inputValue_x = 0.0f;
+        if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.2f) inputValue_x = 0.0f;
 
 
         if (!IsHitGoalBlock)
         {
+            Debug.Log(Mathf.Abs(rb.velocity.y));
             //ˆÚ“®ˆ—
             Vector3 moveValue = transform.right * Speed * Time.deltaTime;
             if (inputValue_x > 0)

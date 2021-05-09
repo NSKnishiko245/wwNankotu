@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 7199725829386194198}
   - component: {fileID: 5381191745296927847}
   - component: {fileID: 2754169772314024983}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 9
   m_TagString: GimicMoveBar
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 3035551564111123663}
   m_Layer: 7
   m_Name: GameObject
-  m_TagString: Untagged
+  m_TagString: GimicBarCol
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 2328890136562292759}
   m_Layer: 7
   m_Name: GameObject
-  m_TagString: Untagged
+  m_TagString: GimicBarCol
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
