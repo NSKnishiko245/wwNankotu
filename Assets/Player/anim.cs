@@ -8,6 +8,9 @@ public class anim : MonoBehaviour
     private Animator m_anim;
     public GameObject m_playobj;
 
+    //アニメーションで使うSE
+    public AudioClip m_moveAudio;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,5 +45,10 @@ public class anim : MonoBehaviour
             m_anim.SetBool("goal_flg", true);
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
+    }
+
+    public void PlayMoveSound()
+    {
+        AudioSource.PlayClipAtPoint(m_moveAudio, this.transform.position);//SE再生
     }
 }
