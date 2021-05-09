@@ -2878,7 +2878,6 @@ MonoBehaviour:
   selectDecSource: {fileID: 1576787892}
   editFlg: 0
   stageNum: 0
-  sceneChangeCntInit: 120
   stageDisplayCntInit: 30
   clearCommandOperationCntInit: 300
 --- !u!114 &1576787887
@@ -3023,8 +3022,7 @@ MonoBehaviour:
   - {fileID: 8161501100754394454}
   - {fileID: 2153749033059760266}
   - {fileID: 2105506896185915070}
-  cameraStartPos: {x: 0, y: 0, z: 0}
-  cameraAdjustmentPos: {x: 0, y: 0, z: -2.5}
+  cameraAdjustmentPos: {x: 0, y: -0.1, z: -2.5}
   cameraMoveSpeed: 50
   stageClearTextCnt: 0
   clearUiCnt: 0

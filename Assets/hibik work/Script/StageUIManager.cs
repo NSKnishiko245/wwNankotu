@@ -33,8 +33,7 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private int stageNum;   // ステージ番号
 
     // シーン遷移までの時間
-    [SerializeField] private int sceneChangeCntInit;
-    private int sceneChangeCnt = 0;
+    private int sceneChangeCnt;
     private string changeSceneName;
 
     // プレイヤーとステージを表示するまでの時間
@@ -46,7 +45,7 @@ public class StageUIManager : MonoBehaviour
     private int clearCommandOperationCnt = 0;
 
     private int startPageCnt = 45;  // 開始時のページがめくれるまでの時間
-    private int endBookCnt = 45;    // 終了時の本が閉じるまでの時間
+    private int endBookCnt;    // 終了時の本が閉じるまでの時間
 
     private bool statusFirstFlg = true;
     private bool menuCommandFirstFlg = true;
@@ -89,7 +88,6 @@ public class StageUIManager : MonoBehaviour
 
         // 変数初期化
         status = STATUS.START;
-        sceneChangeCnt = sceneChangeCntInit;
         stageDisplayCnt = stageDisplayCntInit;
         clearCommandOperationCnt = clearCommandOperationCntInit;
 
@@ -162,6 +160,8 @@ public class StageUIManager : MonoBehaviour
                 {
                     status = STATUS.COMMAND_DECISION;
                     selectDecSource.Play();
+                    sceneChangeCnt = 120;
+                    endBookCnt = 0;
                 }
 
                 // メニューを閉じる
@@ -209,6 +209,8 @@ public class StageUIManager : MonoBehaviour
                         status = STATUS.COMMAND_DECISION;
                         selectDecSource.Play();
                         this.GetComponent<ScoreAnimation>().EndFlgOn();
+                        sceneChangeCnt = 180;
+                        endBookCnt = 90;
                     }
                 }
                 else clearCommandOperationCnt--;
@@ -223,17 +225,12 @@ public class StageUIManager : MonoBehaviour
                 {
                     // ランタンの火を消す
                     this.GetComponent<PostEffectController>().SetFireFlg(false);
-                    eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-
-                    // プレイヤーとステージを非表示
-                    //player.SetActive(false);
-                    //stageManager.SetActive(false);
-
+                    
                     statusFirstFlg = false;
                 }
 
                 // 本のモデルを閉じる
-                if (endBookCnt == 0) bookLAnim.SetBool("isAnim", false);
+                if (endBookCnt == 0) eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
                 else endBookCnt--;
 
                 // 一定時間経過すると遷移する

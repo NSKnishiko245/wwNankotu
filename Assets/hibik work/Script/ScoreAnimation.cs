@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class ScoreAnimation : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class ScoreAnimation : MonoBehaviour
     private Animator[] medalAnim = new Animator[3];
 
     // クリア後のカメラの位置調整用(ゴールからの差をセットする)
-    [SerializeField] private Vector3 cameraStartPos;    // カメラの初期位置
+    private Vector3 cameraStartPos;    // カメラの初期位置
     [SerializeField] private Vector3 cameraAdjustmentPos;
     private Vector3 cameraNowPos;       // カメラの現在座標
     private Vector3 goalPos;            // ゴールの座標
@@ -26,7 +27,7 @@ public class ScoreAnimation : MonoBehaviour
     private Vector3 cameraMovePos;      // カメラが１フレームに移動する座標
     [SerializeField] private int cameraMoveSpeed; // カメラが移動する速度
     private int cameraStartMoveCnt;          // カメラが移動する回数
-    private int cameraEndMoveCnt;          // カメラが移動する回数
+    private int stageDeleteCnt=120;
 
     // ステージクリアしてからステージクリアのテキストが出るまでの時間
     [SerializeField] private int stageClearTextCnt;
@@ -51,7 +52,6 @@ public class ScoreAnimation : MonoBehaviour
     private bool startFlg = false;      // クリアアニメーション開始
     private bool endFlg = false;      // クリアアニメーション終了
 
-
     //==============================================================
     // 初期処理
     //==============================================================
@@ -66,7 +66,6 @@ public class ScoreAnimation : MonoBehaviour
         cameraStartPos = mainCamera.transform.position;
         cameraNowPos = mainCamera.transform.position;
         cameraStartMoveCnt = cameraMoveSpeed;
-        cameraEndMoveCnt = cameraMoveSpeed;
 
         // メダルの動作確認用
         //StageSelectManager.score[StageManager.stageNum].isCopper = true;
@@ -82,14 +81,6 @@ public class ScoreAnimation : MonoBehaviour
         // クリア後
         if (startFlg)
         {
-            // カメラの位置を徐々に変更
-            if (cameraStartMoveCnt != 0)
-            {
-                cameraNowPos -= cameraMovePos;
-                mainCamera.transform.position = cameraNowPos;
-                cameraStartMoveCnt--;
-            }
-
             // クリア後に1度だけ行う処理
             FirstClearFunc();
 
@@ -107,22 +98,17 @@ public class ScoreAnimation : MonoBehaviour
         {
             for (int i = 0; i < 3; i++) medal[i].SetActive(false);
             stageClearAnim.SetBool("isMove", false);
-            stageSelectAnim.SetBool("isMove", false);
             stageSelectAnim.SetBool("isRot", false);
-            nextStageAnim.SetBool("isMove", false);
+            stageSelectAnim.SetBool("isMove", false);
             nextStageAnim.SetBool("isRot", false);
+            nextStageAnim.SetBool("isMove", false);
 
-            // カメラの位置を徐々に変更
-            if (cameraEndMoveCnt != 0)
+            if (stageDeleteCnt == 0)
             {
-                cameraNowPos += cameraMovePos;
-                mainCamera.transform.position = cameraNowPos;
-                cameraEndMoveCnt--;
-            }
-            else
-            {
+
                 this.GetComponent<StageUIManager>().StageDisplay(false);
             }
+            else stageDeleteCnt--;
         }
     }
 
@@ -134,13 +120,13 @@ public class ScoreAnimation : MonoBehaviour
         if (firstClearFlg)
         {
             // ゴールの位置を取得
-            goalPos = GameObject.Find("2(Clone)").transform.position;
+            goalPos = GameObject.Find("Player").transform.position;
+            goalPos.z += 0.1f;
 
             // カメラの移動先の座標をセット
             cameraTargetPos = goalPos + cameraAdjustmentPos;
 
-            // カメラが１フレームに移動する座標をセット
-            cameraMovePos = (cameraNowPos - cameraTargetPos) / cameraMoveSpeed;
+            mainCamera.transform.DOLocalMove(cameraTargetPos, 1.0f);
 
             // ゴールの位置をメダルにセット
             for (int i = 0; i < 3; i++) medal[i].transform.position = goalPos;
@@ -227,6 +213,7 @@ public class ScoreAnimation : MonoBehaviour
                 StageSelectManager.score[StageManager.stageNum].isGold)
             {
                 for (int i = 0; i < 3; i++) medal[i].GetComponent<GearRotation>().SetRotFlg(true);
+                startFlg = false;
             }
         }
         else medalRotationStartCnt--;
