@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1800081188763960605}
   - component: {fileID: 3382238162715750276}
   - component: {fileID: 8957469900344240128}
+  - component: {fileID: 1739184140549456088}
   m_Layer: 0
   m_Name: 10
   m_TagString: Block
@@ -79,6 +80,18 @@ MonoBehaviour:
   stageUIManager: {fileID: 0}
   m_particle: {fileID: 4878400324908020692, guid: ca6c2a484c1799c4abf547332a333030, type: 3}
   speed: 1
+--- !u!114 &1739184140549456088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5059634612204184948}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f33b29c26574244b4ab560f6fe6478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8833266387163366495
 GameObject:
   m_ObjectHideFlags: 0

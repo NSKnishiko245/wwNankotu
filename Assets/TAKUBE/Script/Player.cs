@@ -62,7 +62,6 @@ public class Player : MonoBehaviour
 
         if (!IsHitGoalBlock)
         {
-            Debug.Log(Mathf.Abs(rb.velocity.y));
             //ˆÚ“®ˆ—
             Vector3 moveValue = transform.right * Speed * Time.deltaTime;
             if (inputValue_x > 0)

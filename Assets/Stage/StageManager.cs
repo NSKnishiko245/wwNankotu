@@ -18,7 +18,6 @@ public class StageManager : MonoBehaviour
     private GameObject[,] Block_Map;
     private bool isCopy = false;
 
-    private List<MeshRenderer> MeshList;
 
     private GameObject BigParent;
 
@@ -129,7 +128,7 @@ public class StageManager : MonoBehaviour
         RightBarIdx = GetRightBarIndex();   // ステージの一番右のバーを取得
 
         // ステージが停止している時、プレイヤーを動かせる
-        if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMove)
+        if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMoveEx)
         {
             // プレイヤーの更新、プレイヤーにおける移動可能領域の設定など
             Player.GetComponent<Player>().TurnOnMove();
@@ -231,7 +230,7 @@ public class StageManager : MonoBehaviour
         // 回転済みのステージを戻す処理
         if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
         {
-            if (!Camera.main.GetComponent<MoveCamera>().isMove)
+            if (!Camera.main.GetComponent<MoveCamera>().isMoveEx)
             {
                 // 回転済みのバーを検出したら元に戻す回転処理を開始
                 for (int i = 0; i < Bar_List.Count; i++)
@@ -252,6 +251,11 @@ public class StageManager : MonoBehaviour
                 DecidedStage();
                 isCopy = false;
             }
+        }
+
+        if (!isCopy)
+        {
+            Camera.main.GetComponent<MoveCamera>().SetPos(Bar_List[LeftBarIdx].transform.position.x + (Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x) / 2.0f);
         }
 
         // ゲームクリア検知
@@ -306,9 +310,6 @@ public class StageManager : MonoBehaviour
             }
             ParentReset();
         }
-
-
-
 
         
     }

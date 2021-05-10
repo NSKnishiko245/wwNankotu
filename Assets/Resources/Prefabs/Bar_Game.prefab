@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8482728804436652131}
   - component: {fileID: 4517997993721669995}
   - component: {fileID: 7467103964598457324}
+  - component: {fileID: 7008266016138324153}
   m_Layer: 0
   m_Name: Bar_Game
   m_TagString: Bar
@@ -107,6 +108,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75e51385a4e2fa84e86ef5f8531cb2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Angle_Speed: 3
+--- !u!114 &7008266016138324153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4194655685549358900}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f33b29c26574244b4ab560f6fe6478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &604084661256975619

@@ -14,6 +14,7 @@ public class MoveCamera : MonoBehaviour
     private float delta = 1.0f;
 
     public bool isMove = false;
+    public bool isMoveEx = false;
 
     void Start()
     {
@@ -35,7 +36,11 @@ public class MoveCamera : MonoBehaviour
 
         // オブジェクトの移動
         transform.position = Vector3.Lerp(startMarker, endMarker, delta);
-        if (delta == 1.0f) isMove = false;
+        if (delta == 1.0f)
+        {
+            isMove = false;
+            isMoveEx = false;
+        }
     }
 
     public void Move(float dist)
@@ -43,6 +48,16 @@ public class MoveCamera : MonoBehaviour
         delta = 0.0f;
         startMarker = this.transform.position;
         endMarker.x = transform.position.x + dist;
+        isMove = true;
+        isMoveEx = true;
+    }
+    public void SetPos(float dist)
+    {
+        if (isMove) return;
+        delta = 0.0f;
+        startMarker = this.transform.position;
+        endMarker = transform.position;
+        endMarker.x = dist;
         isMove = true;
     }
 }

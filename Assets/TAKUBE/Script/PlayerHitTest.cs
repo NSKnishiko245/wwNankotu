@@ -65,8 +65,6 @@ public class PlayerHitTest : MonoBehaviour
                         }
                     }
 
-
-
                     HitBlockHeight = other.transform.lossyScale.y;
                     isHit = true;
                 }
