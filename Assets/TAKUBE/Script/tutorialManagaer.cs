@@ -5,9 +5,7 @@ using UnityEngine;
 public class tutorialManagaer : MonoBehaviour
 {
     [SerializeField] private Player Player;
-    [SerializeField] private BarRotate BarRotate;
-
-    private int Tutorialnum = 1;
+    [SerializeField] private GameObject Bar;
     private int Animnum = 1;
 
     //カウントダウン
@@ -28,50 +26,33 @@ public class tutorialManagaer : MonoBehaviour
         LAnim = Lstick.GetComponent<Animator>();
         RAnim = Rstick.GetComponent<Animator>();
         ControllerAnim = Controller.GetComponent<Animator>();
-       
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         //時間をカウントダウンする
-
         Controller.GetComponent<RectTransform>().SetAsLastSibling();
 
 
+        // 左スティックからの入力情報を取得
         float input_x = Input.GetAxis("Horizontal");
 
-        //switch(Tutorialnum)
-        //{
-        //    case 1:
-        //        MoveCheck();
-        //        Debug.Log("移動");
-        //        break;
-
-        //    case 2:
-        //        OriCheck();
-        //        Debug.Log("折りたたみ");
-        //        break;
-
-        //    case 3:
-        //        ReturnOri();
-        //        Debug.Log("折戻し");
-        //        break;
-        //    default:
-        //        Animnum = 4;
-        //        Debug.Log("説明終了");
-        //        break;
-        //}
+        // 右スティックからの入力情報を取得
+        float R_Stick_Value = Input.GetAxis("Horizontal2");
 
         //LAnim.SetInteger("tutorialNum", Animnum);
         //RAnim.SetInteger("RtutorialNum", Animnum);
 
 
-        if(input_x==0)
+        if (input_x==0)
         {
+            
             movecountdown -= Time.deltaTime;
             if (movecountdown <= 0.0f)
             {
+                
                 Debug.Log("移動UI表示");
                 ControllerAnim.SetBool("FukidasiFlg", true);
                 LAnim.SetInteger("tutorialNum", Animnum);
@@ -79,14 +60,21 @@ public class tutorialManagaer : MonoBehaviour
                 movecountdown = 5.0f;
             }
         }
-        else
+        else if(Animnum!=5)
         {
             movecountdown = 5.0f;
             ControllerAnim.SetBool("FukidasiFlg", false);
         }
+        else
+        {
+            movecountdown = 5.0f;
+            
+
+        }
 
         if (Player.GetComponent<Player>().IsHitBar)
         {
+            
             Oricountdown -= Time.deltaTime;
             if (Oricountdown <= 0)
             {
@@ -97,31 +85,38 @@ public class tutorialManagaer : MonoBehaviour
                 RAnim.SetInteger("RtutorialNum", Animnum);
                 Oricountdown = 1.0f;
             }
+
+            if(0 < R_Stick_Value || 0 > R_Stick_Value)
+            {
+                Animnum = 5;
+                ControllerAnim.SetBool("FukidasiFlg", true);
+                LAnim.SetInteger("tutorialNum", Animnum);
+                RAnim.SetInteger("RtutorialNum", Animnum);
+            }
         }
         else
         {
             Oricountdown = 1.0f;
         }
+
+
+        //if(Player.GetComponent<Player>().IsHitBar&& 0 < R_Stick_Value || 0 > R_Stick_Value)
+        //{
+        //    Animnum = 5;
+        //    ControllerAnim.SetBool("FukidasiFlg", true);
+        //    LAnim.SetInteger("tutorialNum",Animnum);
+        //    RAnim.SetInteger("RtutorialNum", Animnum);
+        //}
+
+        if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
+        {
+            ControllerAnim.SetBool("FukidasiFlg", false);
+        }
+
+        Debug.Log(Animnum);
     }
 
 
-    //private bool MoveCheck()
-    //{
-    //    //キーボード操作
-    //    float inputValue_x = Input.GetAxis("Horizontal");
-
-        
-
-    //    if (Player.GetComponent<Player>().IsHitPoint)
-    //    {
-    //        Tutorialnum = 2;
-    //        Animnum = 2;
-           
-    //        return true;
-    //    }
-
-    //    return false;
-    //}
 
     private bool OriCheck()
     {
@@ -130,7 +125,7 @@ public class tutorialManagaer : MonoBehaviour
 
         if (0 < R_Stick_Value || 0 > R_Stick_Value)
         {
-            Tutorialnum = 3;
+            
             Animnum = 3;
             return true;
         }
@@ -141,7 +136,7 @@ public class tutorialManagaer : MonoBehaviour
     {
         if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
         {
-            Tutorialnum = 4;
+           
             return true;
         }
         return false;
