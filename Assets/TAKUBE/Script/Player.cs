@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
     public void TurnOnMove()
     {
         GetComponent<Rigidbody>().isKinematic = false;
-        transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
+        transform.position = new Vector3(transform.position.x, transform.position.y, -0.35f);
         transform.localEulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
         inputFlg = true;
     }

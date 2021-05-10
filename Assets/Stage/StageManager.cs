@@ -253,7 +253,7 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        if (!isCopy)
+        if (!isCopy && !IsGameClear)
         {
             Camera.main.GetComponent<MoveCamera>().SetPos(Bar_List[LeftBarIdx].transform.position.x + (Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x) / 2.0f);
         }
@@ -311,7 +311,6 @@ public class StageManager : MonoBehaviour
             ParentReset();
         }
 
-        
     }
 
     // ƒo[‚Ì‰ñ“]ˆ—
