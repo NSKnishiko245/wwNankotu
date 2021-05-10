@@ -121,7 +121,7 @@ public class ScoreAnimation : MonoBehaviour
         {
             // ゴールの位置を取得
             goalPos = GameObject.Find("Player").transform.position;
-            goalPos.z += 0.1f;
+            goalPos.z += 0.4f;
 
             // カメラの移動先の座標をセット
             cameraTargetPos = goalPos + cameraAdjustmentPos;

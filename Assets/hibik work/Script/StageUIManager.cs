@@ -8,6 +8,7 @@ public class StageUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject eventSystem;
     [SerializeField] private GameObject stageManager;
+    [SerializeField] private GameObject tutorialManager;
     [SerializeField] private GameObject editCanvas;
     [SerializeField] private GameObject player;
 
@@ -82,6 +83,9 @@ public class StageUIManager : MonoBehaviour
         // ステージ番号取得
         stageNum = StageManager.stageNum;
 
+        // ステージ１だけチュートリアル表示
+        if (stageNum != 1) tutorialManager.SetActive(false);
+
         // エディットを非表示
         if (!editFlg) editCanvas.SetActive(false);
 
@@ -124,6 +128,7 @@ public class StageUIManager : MonoBehaviour
                 if (stageDisplayCnt == 0)
                 {
                     StageDisplay(true);
+                    if (stageNum == 1) tutorialManager.SetActive(true);
                 }
                 else stageDisplayCnt--;
 
@@ -134,6 +139,9 @@ public class StageUIManager : MonoBehaviour
 
                     // ページを進める
                     eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+
+                    // チュートリアル非表示
+                    if (stageNum == 1) tutorialManager.SetActive(false);
                 }
 
                 // ステージクリア
@@ -186,6 +194,9 @@ public class StageUIManager : MonoBehaviour
                 {
                     // スコアアニメーション開始
                     this.GetComponent<ScoreAnimation>().StartFlgOn();
+
+                    // チュートリアル非表示
+                    if (stageNum == 1) tutorialManager.SetActive(false);
 
                     bgmSource.Stop();
                     resultSource.Play();
@@ -282,7 +293,7 @@ public class StageUIManager : MonoBehaviour
             case COMMAND.RETRY:
                 if (menuCommandFirstFlg)
                 {
-                    changeSceneName = "Stage1Scene";
+                    changeSceneName = SceneManager.GetActiveScene().name;
                     // 歯車回転
                     menuSelectGear.GetComponent<GearRotation>().SetRotFlg(false);
                     menuRetryGear.GetComponent<GearRotation>().SetRotFlg(true);
