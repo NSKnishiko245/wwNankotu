@@ -5280,6 +5280,8 @@ MonoBehaviour:
   Player: {fileID: 682792883}
   MapManager: {fileID: 375336877}
   UnderBorder: {fileID: 1377248554}
+  L_Smoke: {fileID: 0}
+  R_Smoke: {fileID: 0}
   particleObject: {fileID: 6797351756067995477, guid: 447ba65fbd439914ba066b4908615494, type: 3}
   rotateNum: 0
 --- !u!4 &2081052302

@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f33b29c26574244b4ab560f6fe6478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AlphaState: 0
 --- !u!1001 &3097785235957767028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -268,6 +269,10 @@ PrefabInstance:
     - target: {fileID: 3355426213553372638, guid: 958ba08f3579fbe42897459c6e3d6c79, type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 3859622458370710539, guid: 958ba08f3579fbe42897459c6e3d6c79, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 958ba08f3579fbe42897459c6e3d6c79, type: 3}

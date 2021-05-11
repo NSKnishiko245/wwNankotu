@@ -27,7 +27,7 @@ public class MoveCamera : MonoBehaviour
 
         if (delta < 1.0f)
         {
-            delta += Time.deltaTime;
+            delta += Time.deltaTime * 2.0f;
             if (delta > 1.0f)
             {
                 delta = 1.0f;

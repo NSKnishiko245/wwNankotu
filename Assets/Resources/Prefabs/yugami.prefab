@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5508631499622308610}
   - component: {fileID: 5508631499622308609}
   - component: {fileID: 5508631499622308608}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: yugami
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,6 +111,10 @@ PrefabInstance:
     - target: {fileID: 1130739402948118453, guid: f0cb8f01ec4e5be478f5245f0c47c651, type: 3}
       propertyPath: m_Name
       value: Effect_Mist
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130739402948118453, guid: f0cb8f01ec4e5be478f5245f0c47c651, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1133688821584074703, guid: f0cb8f01ec4e5be478f5245f0c47c651, type: 3}
       propertyPath: m_RootOrder

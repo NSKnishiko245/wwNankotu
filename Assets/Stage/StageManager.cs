@@ -39,6 +39,9 @@ public class StageManager : MonoBehaviour
 
     public GameObject UnderBorder;
 
+    public GameObject L_Smoke;
+    public GameObject R_Smoke;
+
     //パーティクル描画用
     public GameObject particleObject;
 
@@ -60,6 +63,10 @@ public class StageManager : MonoBehaviour
     bool flg = false;
     bool rerotFlg = false;
     bool resetFlg = false;
+
+
+    bool CanYouCopy = true;
+    float timer = 0.0f;
 
 
     private enum CONTROLLERSTATE
@@ -115,6 +122,9 @@ public class StageManager : MonoBehaviour
 
         BigParent = new GameObject();
         BigParent.AddComponent<InvisibleBlock>();
+
+
+
     }
 
     void Update()
@@ -168,19 +178,18 @@ public class StageManager : MonoBehaviour
             //    DeleteCopy();
             //    isCopy = false;
             //}
-
-            if (Player.transform.position.x - Bar_List[LeftBarIdx].transform.position.x < 2)
+            if (Player.transform.position.x - Bar_List[LeftBarIdx].transform.position.x < 1)
             {
-                if (!isCopy && !rerotFlg && Player.transform.position.x > Bar_List[LeftBarIdx].transform.position.x)
+                if (!isCopy && !rerotFlg && Player.transform.position.x > Bar_List[LeftBarIdx].transform.position.x && CanYouCopy)
                 {
                     CopyStage(WARPSTATE.TO_RIGHT);
                     isCopy = true;
                 }
             }
             // プレイヤーが右端のバーに接触した場合
-            else if (Bar_List[RightBarIdx].transform.position.x - Player.transform.position.x < 2)
+            else if (Bar_List[RightBarIdx].transform.position.x - Player.transform.position.x < 1)
             {
-                if (!isCopy && !rerotFlg && Player.transform.position.x < Bar_List[RightBarIdx].transform.position.x)
+                if (!isCopy && !rerotFlg && Player.transform.position.x < Bar_List[RightBarIdx].transform.position.x && CanYouCopy)
                 {
                     CopyStage(WARPSTATE.TO_LEFT);
                     isCopy = true;
@@ -191,11 +200,35 @@ public class StageManager : MonoBehaviour
                 DeleteCopy();
                 isCopy = false;
             }
+
+
+            L_Smoke.SetActive(true);
+            R_Smoke.SetActive(true);
+            if (!L_Smoke.GetComponent<ParticleSystem>().isPlaying)
+            {
+                L_Smoke.GetComponent<ParticleSystem>().Play();
+                R_Smoke.GetComponent<ParticleSystem>().Play();
+            }
+
+
+
+
+            timer += Time.deltaTime;
+            if (timer >= 1.0f) CanYouCopy = true;
+
         }
         else
         {
+            timer = 0;
+            CanYouCopy = false;
+
             // ステージが動いている時はプレイヤーを停止
             Player.GetComponent<Player>().TurnOffMove();
+
+            L_Smoke.SetActive(false);
+            R_Smoke.SetActive(false);
+            //L_Smoke.GetComponent<ParticleSystem>().Stop();
+            //R_Smoke.GetComponent<ParticleSystem>().Stop();
         }
 
         // 右スティックからの入力情報を取得
@@ -273,7 +306,7 @@ public class StageManager : MonoBehaviour
                 }
             }
         }
-        
+
         if (Player.transform.position.x < Bar_List[LeftBarIdx].transform.position.x)
         {
             if (isCopy)
@@ -306,36 +339,21 @@ public class StageManager : MonoBehaviour
         {
             //SceneManager.LoadScene("Stage1Scene");
             IsGameOver = true;
-            Debug.Log("gameover");
         }
 
-        // ワープエフェクトの位置更新
-        //for (int i = 0; i < Bar_List.Count; i++)
+
+
+        //foreach (var bar in Bar_List)
         //{
-        //    ParticleSystem ps = Bar_List[i].transform.GetChild(0).GetComponent<ParticleSystem>();
-        //    if (isLeftBar(i) || isRightBar(i))
-        //    {
-        //        if (!ps.isPlaying)
-        //        {
-        //            ps.gameObject.SetActive(true);
-        //            ps.Play();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        ps.gameObject.SetActive(false);
-        //        ps.Stop();
-        //    }
+        //    bar.GetComponent<MeshRenderer>().enabled = false;
         //}
+        //Bar_List[LeftBarIdx].GetComponent<MeshRenderer>().enabled = true;
+        //Bar_List[RightBarIdx].GetComponent<MeshRenderer>().enabled = true;
+
+
 
         if (!isStopStage())
         {
-            //for (int i = 0; i < Bar_List.Count; i++)
-            //{
-            //    ParticleSystem ps = Bar_List[i].transform.GetChild(0).GetComponent<ParticleSystem>();
-            //    ps.Stop();
-            //    ps.gameObject.SetActive(false);
-            //}
             resetFlg = true;
         }
         else
@@ -351,13 +369,11 @@ public class StageManager : MonoBehaviour
             ParentReset();
         }
 
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            foreach(var tile in Tile_List)
-            {
-                tile.GetComponent<InvisibleBlock>().AlphaState = InvisibleBlock.ALPHASTATE.DECREASE;
-            }
-        }
+
+
+        L_Smoke.transform.position = Bar_List[LeftBarIdx].transform.position;
+        R_Smoke.transform.position = Bar_List[RightBarIdx].transform.position;
+
     }
 
     // バーの回転処理
@@ -550,7 +566,7 @@ public class StageManager : MonoBehaviour
                 return false;
             }
         }
-        
+
         SetAllBlockActive(true);
         return true;
     }
@@ -590,13 +606,13 @@ public class StageManager : MonoBehaviour
 
             foreach (Transform child in tile.GetComponentsInChildren<Transform>())
             {
-                if (child.tag == "Block" || child.tag == "GoalBlock" || child.tag == "GimicMoveBlock" || child.tag == "GimicMoveBar" || child.tag == "GimicBreakBlock"||child.tag=="GimicClearBlock")
+                if (child.tag == "Block" || child.tag == "GoalBlock" || child.tag == "GimicMoveBlock" || child.tag == "GimicMoveBar" || child.tag == "GimicBreakBlock" || child.tag == "GimicClearBlock")
                 {
                     child.parent = tile.transform;
                     child.transform.position = new Vector3(child.transform.position.x, -child.transform.position.y, child.transform.position.z);
                 }
             }
-            
+
             Tile_subList.Add(tile);
         }
 
@@ -711,7 +727,7 @@ public class StageManager : MonoBehaviour
     }
     private void DecidedStage(WARPSTATE state)
     {
-        
+
 
         BigParent.GetComponent<InvisibleBlock>().SetAlpha(1.0f);
 
@@ -774,7 +790,7 @@ public class StageManager : MonoBehaviour
         {
             foreach (Transform childTransform in obj.transform)
             {
-                if (childTransform.tag == "Block" || childTransform.tag == "GoalBlock" || childTransform.tag == "GimicMoveBlock" || childTransform.tag == "GimicMoveBar" || childTransform.tag == "GimicBreakBlock"|| childTransform.tag == "GimicClearBlock")
+                if (childTransform.tag == "Block" || childTransform.tag == "GoalBlock" || childTransform.tag == "GimicMoveBlock" || childTransform.tag == "GimicMoveBar" || childTransform.tag == "GimicBreakBlock" || childTransform.tag == "GimicClearBlock")
                 {
                     childTransform.gameObject.SetActive(activeFlg);
                 }
