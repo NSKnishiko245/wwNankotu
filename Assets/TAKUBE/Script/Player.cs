@@ -155,6 +155,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public bool IsPut()
+    {
+        return transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit;
+    }
+
     private bool IsClimb()
     {
         Vector3 ray_pos = transform.position;
@@ -162,7 +167,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
             string tag = hit.transform.tag;
-            if (tag == "ClimbBlock" || tag== "GimicMoveBlock" || tag == "GimicBreakBlock") return false;
+            if (tag == "ClimbBlock" || tag== "GimicMoveBlock" || tag == "GimicBreakBlock" || tag == "GimicClearBlock") return false;
             //if (hit.transform.tag == "ClimbBlock") return false;
         }
         return true;

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 
 public class StageManager : MonoBehaviour
@@ -110,6 +111,10 @@ public class StageManager : MonoBehaviour
 
         RotateState = ROTATESTATE.NEUTRAL;
         rotateNum = 0;
+
+
+        BigParent = new GameObject();
+        BigParent.AddComponent<InvisibleBlock>();
     }
 
     void Update()
@@ -119,6 +124,7 @@ public class StageManager : MonoBehaviour
             Init();
             initFlg = false;
         }
+
 
         // 左スティックの入力値を取得
         float L_Stick_Value = Input.GetAxis("Horizontal");
@@ -140,18 +146,41 @@ public class StageManager : MonoBehaviour
             Player.transform.parent = null;
 
             // プレイヤーが左端のバーに接触した場合
-            if (isLeftBar(HitBarIdx))
+            //if (isLeftBar(HitBarIdx))
+            //{
+            //    if (!isCopy && !rerotFlg)
+            //    {
+            //        CopyStage(WARPSTATE.TO_RIGHT);
+            //        isCopy = true;
+            //    }
+            //}
+            //// プレイヤーが右端のバーに接触した場合
+            //else if (isRightBar(HitBarIdx))
+            //{
+            //    if (!isCopy && !rerotFlg)
+            //    {
+            //        CopyStage(WARPSTATE.TO_LEFT);
+            //        isCopy = true;
+            //    }
+            //}
+            //else if (isCopy)
+            //{
+            //    DeleteCopy();
+            //    isCopy = false;
+            //}
+
+            if (Player.transform.position.x - Bar_List[LeftBarIdx].transform.position.x < 2)
             {
-                if (!isCopy && !rerotFlg)
+                if (!isCopy && !rerotFlg && Player.transform.position.x > Bar_List[LeftBarIdx].transform.position.x)
                 {
                     CopyStage(WARPSTATE.TO_RIGHT);
                     isCopy = true;
                 }
             }
             // プレイヤーが右端のバーに接触した場合
-            else if (isRightBar(HitBarIdx))
+            else if (Bar_List[RightBarIdx].transform.position.x - Player.transform.position.x < 2)
             {
-                if (!isCopy && !rerotFlg)
+                if (!isCopy && !rerotFlg && Player.transform.position.x < Bar_List[RightBarIdx].transform.position.x)
                 {
                     CopyStage(WARPSTATE.TO_LEFT);
                     isCopy = true;
@@ -237,6 +266,7 @@ public class StageManager : MonoBehaviour
                 {
                     if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
                     {
+                        rotateNum++;
                         FirstFunc();
                         break;
                     }
@@ -244,12 +274,20 @@ public class StageManager : MonoBehaviour
             }
         }
         
-        if (Player.transform.position.x < Bar_List[LeftBarIdx].transform.position.x || Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
+        if (Player.transform.position.x < Bar_List[LeftBarIdx].transform.position.x)
         {
             if (isCopy)
             {
-                DecidedStage();
-                isCopy = false;
+                DecidedStage(WARPSTATE.TO_RIGHT);
+                //isCopy = false;
+            }
+        }
+        else if (Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
+        {
+            if (isCopy)
+            {
+                DecidedStage(WARPSTATE.TO_LEFT);
+                //isCopy = false;
             }
         }
 
@@ -266,36 +304,37 @@ public class StageManager : MonoBehaviour
         // ゲームオーバー検知
         if (UnderBorder.GetComponent<HitAction>().isHit)
         {
+            SceneManager.LoadScene("Stage1Scene");
             IsGameOver = true;
         }
-       
+
         // ワープエフェクトの位置更新
-        for (int i = 0; i < Bar_List.Count; i++)
-        {
-            ParticleSystem ps = Bar_List[i].transform.GetChild(0).GetComponent<ParticleSystem>();
-            if (isLeftBar(i) || isRightBar(i))
-            {
-                if (!ps.isPlaying)
-                {
-                    ps.gameObject.SetActive(true);
-                    ps.Play();
-                }
-            }
-            else
-            {
-                ps.gameObject.SetActive(false);
-                ps.Stop();
-            }
-        }
+        //for (int i = 0; i < Bar_List.Count; i++)
+        //{
+        //    ParticleSystem ps = Bar_List[i].transform.GetChild(0).GetComponent<ParticleSystem>();
+        //    if (isLeftBar(i) || isRightBar(i))
+        //    {
+        //        if (!ps.isPlaying)
+        //        {
+        //            ps.gameObject.SetActive(true);
+        //            ps.Play();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ps.gameObject.SetActive(false);
+        //        ps.Stop();
+        //    }
+        //}
 
         if (!isStopStage())
         {
-            for (int i = 0; i < Bar_List.Count; i++)
-            {
-                ParticleSystem ps = Bar_List[i].transform.GetChild(0).GetComponent<ParticleSystem>();
-                ps.Stop();
-                ps.gameObject.SetActive(false);
-            }
+            //for (int i = 0; i < Bar_List.Count; i++)
+            //{
+            //    ParticleSystem ps = Bar_List[i].transform.GetChild(0).GetComponent<ParticleSystem>();
+            //    ps.Stop();
+            //    ps.gameObject.SetActive(false);
+            //}
             resetFlg = true;
         }
         else
@@ -311,6 +350,13 @@ public class StageManager : MonoBehaviour
             ParentReset();
         }
 
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            foreach(var tile in Tile_List)
+            {
+                tile.GetComponent<InvisibleBlock>().AlphaState = InvisibleBlock.ALPHASTATE.DECREASE;
+            }
+        }
     }
 
     // バーの回転処理
@@ -529,7 +575,7 @@ public class StageManager : MonoBehaviour
         stageNum = stage_idx;
         initFlg = true;
     }
-    private void CopyStage(WARPSTATE state)
+    private void CopyStage(WARPSTATE state, bool flg = false)
     {
         BigParent = new GameObject();
         ParentReset();
@@ -549,6 +595,7 @@ public class StageManager : MonoBehaviour
                     child.transform.position = new Vector3(child.transform.position.x, -child.transform.position.y, child.transform.position.z);
                 }
             }
+            
             Tile_subList.Add(tile);
         }
 
@@ -561,18 +608,37 @@ public class StageManager : MonoBehaviour
             Bar_subList.Add(bar);
         }
 
+        BigParent.AddComponent<InvisibleBlock>();
+        BigParent.GetComponent<InvisibleBlock>().SetAlpha(0);
+        BigParent.GetComponent<InvisibleBlock>().AlphaState = InvisibleBlock.ALPHASTATE.INCREASE;
+
+
         // ずらす
         if (state == WARPSTATE.TO_LEFT)
         {
-            MapPos_Add = Vector3.right * (((Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x)));
-            MapPos += MapPos_Add;
-            BigParent.transform.position = MapPos_Add;
+            if (!flg)
+            {
+                MapPos_Add = Vector3.right * (((Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x)));
+                BigParent.transform.position = MapPos_Add;
+            }
+            else
+            {
+                BigParent.transform.position = Vector3.left * (((Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x)));
+                if (MapPos_Add.x < 0) MapPos_Add.x = -MapPos_Add.x;
+            }
         }
         else
         {
-            MapPos_Add = Vector3.left * (((Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x)));
-            MapPos += MapPos_Add;
-            BigParent.transform.position = MapPos_Add;
+            if (!flg)
+            {
+                MapPos_Add = Vector3.left * (((Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x)));
+                BigParent.transform.position = MapPos_Add;
+            }
+            else
+            {
+                BigParent.transform.position = Vector3.right * (((Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x)));
+                if (MapPos_Add.x > 0) MapPos_Add.x = -MapPos_Add.x;
+            }
         }
 
 
@@ -583,17 +649,36 @@ public class StageManager : MonoBehaviour
             yugami = GameObject.Instantiate(yugami);
             yugami.transform.localScale = new Vector3(Mathf.Abs(MapPos_Add.x) * 0.1f, Block_Map.GetLength(0), 1.0f);
 
-            int hitBarIdx = GetHitBarIndex();
-            yugami.transform.position = new Vector3(Bar_List[hitBarIdx].transform.position.x, 0.0f, -0.5f);
-            float addPos = (yugami.transform.localScale.x * 10.0f) / 2.0f;
-
-            if (isLeftBar(hitBarIdx))
+            float addPos;
+            if (state == WARPSTATE.TO_LEFT)
             {
-                yugami.transform.Translate(Vector3.left * addPos);
+                if (!flg)
+                {
+                    yugami.transform.position = new Vector3(Bar_List[RightBarIdx].transform.position.x, 0.0f, -0.5f);
+                    addPos = (yugami.transform.localScale.x * 10.0f) / 2.0f;
+                    yugami.transform.Translate(Vector3.right * addPos);
+                }
+                else
+                {
+                    yugami.transform.position = new Vector3(Bar_List[LeftBarIdx].transform.position.x, 0.0f, -0.5f);
+                    addPos = (yugami.transform.localScale.x * 10.0f) / 2.0f;
+                    yugami.transform.Translate(Vector3.left * addPos);
+                }
             }
-            if (isRightBar(hitBarIdx))
+            else
             {
-                yugami.transform.Translate(Vector3.right * addPos);
+                if (!flg)
+                {
+                    yugami.transform.position = new Vector3(Bar_List[LeftBarIdx].transform.position.x, 0.0f, -0.5f);
+                    addPos = (yugami.transform.localScale.x * 10.0f) / 2.0f;
+                    yugami.transform.Translate(Vector3.left * addPos);
+                }
+                else
+                {
+                    yugami.transform.position = new Vector3(Bar_List[RightBarIdx].transform.position.x, 0.0f, -0.5f);
+                    addPos = (yugami.transform.localScale.x * 10.0f) / 2.0f;
+                    yugami.transform.Translate(Vector3.right * addPos);
+                }
             }
         }
     }
@@ -623,25 +708,46 @@ public class StageManager : MonoBehaviour
             isCopy = false;
         }
     }
-    private void DecidedStage()
+    private void DecidedStage(WARPSTATE state)
     {
-        for (int i = 0; i < Tile_List.Count; i++) Destroy(Tile_List[i]);
+        
+
+        BigParent.GetComponent<InvisibleBlock>().SetAlpha(1.0f);
+
+        for (int i = 0; i < Tile_List.Count; i++) Tile_List[i].transform.parent = BigParent.transform;
         Tile_List.Clear();
 
-        for (int i = 0; i < Bar_List.Count; i++) Destroy(Bar_List[i]);
+        for (int i = 0; i < Bar_List.Count; i++) Bar_List[i].transform.parent = BigParent.transform;
         Bar_List.Clear();
 
 
         Tile_List = new List<GameObject>(Tile_subList);
         Tile_subList.Clear();
-
-
         Bar_List = new List<GameObject>(Bar_subList);
         Bar_subList.Clear();
 
-        Camera.main.GetComponent<MoveCamera>().Move(MapPos_Add.x);
+        ParentReset();
+
+
+        Destroy(BigParent);
+        //BigParent = new GameObject();
 
         Destroy(yugami);
+
+        CopyStage(state, true);
+        //isCopy = true;
+
+
+        //BigParent.GetComponent<InvisibleBlock>().SetAlpha(0.2f);
+        //BigParent.GetComponent<InvisibleBlock>().AlphaState = InvisibleBlock.ALPHASTATE.DECREASE;
+
+        //float addPos = (yugami.transform.localScale.x * 10.0f) / 2.0f;
+
+        //yugami.transform.Translate(Vector3.left * MapPos_Add.x);
+
+
+        Camera.main.GetComponent<MoveCamera>().Move(MapPos_Add.x);
+
 
     }
     private void DeleteCopy()
@@ -652,7 +758,11 @@ public class StageManager : MonoBehaviour
         //for (int i = 0; i < Bar_List.Count; i++) Destroy(Bar_List[i]);
         Bar_subList.Clear();
 
-        Destroy(BigParent);
+        if (isCopy)
+        {
+            BigParent.GetComponent<InvisibleBlock>().AlphaState = InvisibleBlock.ALPHASTATE.DECREASE;
+        }
+        //Destroy(BigParent);
 
         Destroy(yugami);
     }

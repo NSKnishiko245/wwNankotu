@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f33b29c26574244b4ab560f6fe6478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AlphaState: 0
 --- !u!1001 &604084661256975619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -144,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1130739402948118453, guid: f0cb8f01ec4e5be478f5245f0c47c651, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1133688821584074703, guid: f0cb8f01ec4e5be478f5245f0c47c651, type: 3}
       propertyPath: m_RootOrder
