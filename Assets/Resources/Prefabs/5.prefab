@@ -302,6 +302,10 @@ PrefabInstance:
       value: Cansee_clear_block
       objectReference: {fileID: 0}
     - target: {fileID: 7276668372334816559, guid: bfea48bbc610d8147832c2ba492edcc0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7276668372334816559, guid: bfea48bbc610d8147832c2ba492edcc0, type: 3}
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
@@ -406,7 +410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8047998471856617365, guid: bfea48bbc610d8147832c2ba492edcc0, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.02
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 8047998471856617365, guid: bfea48bbc610d8147832c2ba492edcc0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -418,7 +422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8047998471856617365, guid: bfea48bbc610d8147832c2ba492edcc0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.004492361
+      value: -0.366
       objectReference: {fileID: 0}
     - target: {fileID: 8047998471856617365, guid: bfea48bbc610d8147832c2ba492edcc0, type: 3}
       propertyPath: m_LocalRotation.w

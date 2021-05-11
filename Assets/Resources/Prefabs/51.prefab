@@ -214,6 +214,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: clear_block
       objectReference: {fileID: 0}
+    - target: {fileID: 7276668372334816559, guid: bfea48bbc610d8147832c2ba492edcc0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8047998471856617365, guid: bfea48bbc610d8147832c2ba492edcc0, type: 3}
       propertyPath: m_RootOrder
       value: 4
