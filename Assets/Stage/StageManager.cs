@@ -304,8 +304,9 @@ public class StageManager : MonoBehaviour
         // ゲームオーバー検知
         if (UnderBorder.GetComponent<HitAction>().isHit)
         {
-            SceneManager.LoadScene("Stage1Scene");
+            //SceneManager.LoadScene("Stage1Scene");
             IsGameOver = true;
+            Debug.Log("gameover");
         }
 
         // ワープエフェクトの位置更新

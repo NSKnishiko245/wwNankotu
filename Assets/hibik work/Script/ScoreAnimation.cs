@@ -51,6 +51,8 @@ public class ScoreAnimation : MonoBehaviour
     private bool firstClearFlg = true; // クリア後に1度だけ行う処理
     private bool startFlg = false;      // クリアアニメーション開始
     private bool endFlg = false;      // クリアアニメーション終了
+    private bool silverFlg = false;
+    private bool goldFlg = false;
 
     //==============================================================
     // 初期処理
@@ -182,11 +184,11 @@ public class ScoreAnimation : MonoBehaviour
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
                     }
-                    if (StageSelectManager.score[StageManager.stageNum].isSilver && medalNum == 1)
+                    if (silverFlg && medalNum == 1)
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
                     }
-                    if (StageSelectManager.score[StageManager.stageNum].isGold && medalNum == 2)
+                    if (goldFlg && medalNum == 2)
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
                     }
@@ -227,5 +229,15 @@ public class ScoreAnimation : MonoBehaviour
     public void EndFlgOn()
     {
         endFlg = true;
+    }
+
+    public void SilverFlgOn()
+    {
+        silverFlg = true;
+    }
+
+    public void GoldFlgOn()
+    {
+        goldFlg = true;
     }
 }

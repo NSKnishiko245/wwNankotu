@@ -148,16 +148,52 @@ public class StageSelectManager : MonoBehaviour
     // 銀メダルの獲得条件をセット(ステージを折った回数)
     private void SilverConditionsSet()
     {
-        silverConditions[0] = 3;
-        silverConditions[1] = 5;
-        silverConditions[2] = 20;
-        silverConditions[3] = 20;
-        silverConditions[4] = 20;
-        silverConditions[5] = 20;
-        silverConditions[6] = 20;
-        silverConditions[7] = 20;
-        silverConditions[8] = 20;
-        silverConditions[9] = 20;
-        silverConditions[10] = 20;
+        silverConditions[0] = 0;
+        silverConditions[1] = 3;
+        silverConditions[2] = 3;
+        silverConditions[3] = 3;
+        silverConditions[4] = 3;
+        silverConditions[5] = 3;
+        silverConditions[6] = 3;
+        silverConditions[7] = 3;
+        silverConditions[8] = 3;
+        silverConditions[9] = 3;
+        silverConditions[10] = 3;
+
+        silverConditions[11] = 3;
+        silverConditions[12] = 3;
+        silverConditions[13] = 3;
+        silverConditions[14] = 3;
+        silverConditions[15] = 3;
+        silverConditions[16] = 3;
+        silverConditions[17] = 3;
+        silverConditions[18] = 3;
+        silverConditions[19] = 3;
+        silverConditions[20] = 3;
+
+        silverConditions[21] = 3;
+        silverConditions[22] = 3;
+        silverConditions[23] = 3;
+        silverConditions[24] = 3;
+        silverConditions[25] = 3;
+        silverConditions[26] = 3;
+        silverConditions[27] = 3;
+        silverConditions[28] = 3;
+        silverConditions[29] = 3;
+        silverConditions[30] = 3;
+
+        silverConditions[31] = 3;
+        silverConditions[32] = 3;
+        silverConditions[33] = 3;
+        silverConditions[34] = 3;
+        silverConditions[35] = 3;
+        silverConditions[36] = 3;
+        silverConditions[37] = 3;
+        silverConditions[38] = 3;
+        silverConditions[39] = 3;
+        silverConditions[40] = 3;
+
+        silverConditions[41] = 3;
+        silverConditions[42] = 3;
     }
 }

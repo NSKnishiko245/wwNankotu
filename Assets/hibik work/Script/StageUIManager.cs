@@ -3,27 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class StageUIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject eventSystem;
-    [SerializeField] private GameObject stageManager;
-    [SerializeField] private GameObject tutorialManager;
-    [SerializeField] private GameObject editCanvas;
-    [SerializeField] private GameObject player;
+    private GameObject eventSystem;
+    private GameObject stageManager;
+    private GameObject tutorialManager;
+    private GameObject editCanvas;
+    private GameObject player;
 
-    [SerializeField] private GameObject bookL;
+    private GameObject bookL;
     private Animator bookLAnim;
 
     // メニューのUI
-    [SerializeField] private GameObject menuSelectGear;
-    [SerializeField] private GameObject menuRetryGear;
+    private GameObject menuSelectGear;
+    private GameObject menuRetryGear;
 
     // クリアのUI
-    [SerializeField] private GameObject clearSelectGear;
-    [SerializeField] private GameObject clearSelectGear2;
-    [SerializeField] private GameObject clearNextGear;
-    [SerializeField] private GameObject clearNextGear2;
+    private GameObject clearSelectGear;
+    private GameObject clearSelectGear2;
+    private GameObject clearNextGear;
+    private GameObject clearNextGear2;
 
     // サウンド
     [SerializeField] private AudioSource bgmSource;
@@ -32,6 +33,12 @@ public class StageUIManager : MonoBehaviour
 
     [SerializeField] private bool editFlg = false;  // true:エディット表示
     [SerializeField] private int stageNum;   // ステージ番号
+
+    // デバック用テキスト
+    Text stageNumText;
+    Text rotateNumText;
+    Text silverMedalNumText;
+    InputField inputField;
 
     // シーン遷移までの時間
     private int sceneChangeCnt;
@@ -45,6 +52,10 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private int clearCommandOperationCntInit;
     private int clearCommandOperationCnt = 0;
 
+    // 死亡してからリトライするまでの時間
+    [SerializeField] private int gameOverCntInit;
+    private int gameOverCnt;
+
     private int startPageCnt = 45;  // 開始時のページがめくれるまでの時間
     private int endBookCnt;    // 終了時の本が閉じるまでの時間
 
@@ -52,6 +63,7 @@ public class StageUIManager : MonoBehaviour
     private bool menuCommandFirstFlg = true;
     private bool clearCommandFirstFlg = true;
     private bool goldMedalFlg = false;
+    private bool inputFlg = false;
 
     // シーンの状態
     private enum STATUS
@@ -80,6 +92,20 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     private void Awake()
     {
+        eventSystem = GameObject.Find("EventSystem");
+        stageManager = GameObject.Find("stageManager");
+        tutorialManager = GameObject.Find("TutorialManager");
+        editCanvas = GameObject.Find("EditCanvas");
+        player = GameObject.Find("Player");
+        bookL = GameObject.Find("book_L");
+        menuSelectGear = GameObject.Find("SelectGearImage");
+        menuRetryGear = GameObject.Find("RetryGearImage");
+        clearSelectGear = GameObject.Find("C_SelectGearImage");
+        clearSelectGear2 = GameObject.Find("SelectUnderGearImage");
+        clearNextGear = GameObject.Find("NextGearImage");
+        clearNextGear2 = GameObject.Find("NextUnderGearImage");
+
+
         // ステージ番号取得
         stageNum = StageManager.stageNum;
 
@@ -95,8 +121,19 @@ public class StageUIManager : MonoBehaviour
         status = STATUS.START;
         stageDisplayCnt = stageDisplayCntInit;
         clearCommandOperationCnt = clearCommandOperationCntInit;
+        gameOverCnt = gameOverCntInit;
 
         bookLAnim = bookL.GetComponent<Animator>();
+
+        stageNumText = GameObject.Find("StageNumText").GetComponent<Text>();
+        stageNumText.text = "ステージ番号:" + StageManager.stageNum;
+
+        rotateNumText = GameObject.Find("RotateNumText").GetComponent<Text>();
+
+        silverMedalNumText = GameObject.Find("SilverMedalNumText").GetComponent<Text>();
+        silverMedalNumText.text = "銀メダルの回数:" + StageSelectManager.silverConditions[StageManager.stageNum];
+
+        inputField = GameObject.Find("InputField").GetComponent<InputField>();
     }
 
     //==============================================================
@@ -131,6 +168,20 @@ public class StageUIManager : MonoBehaviour
                     if (stageNum == 1) tutorialManager.SetActive(true);
                 }
                 else stageDisplayCnt--;
+
+                // プレイヤーが落ちたらリトライ
+                if (stageManager.GetComponent<StageManager>().IsGameOver)
+                {
+                    if (gameOverCnt == 0)
+                    {
+                        stageManager.SetActive(false);
+                        changeSceneName = "Stage1Scene";
+                        status = STATUS.COMMAND_DECISION;
+                        sceneChangeCnt = 120;
+                        endBookCnt = 0;
+                    }
+                    else gameOverCnt--;
+                }
 
                 // メニューを開く
                 if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 3"))
@@ -208,7 +259,11 @@ public class StageUIManager : MonoBehaviour
                     SilverMedalConditions();
 
                     // 金メダル取得
-                    if(goldMedalFlg) StageSelectManager.score[StageManager.stageNum].isGold = true;
+                    if (goldMedalFlg)
+                    {
+                        StageSelectManager.score[StageManager.stageNum].isGold = true;
+                        this.GetComponent<ScoreAnimation>().GoldFlgOn();
+                    }
 
                     statusFirstFlg = false;
                 }
@@ -240,7 +295,7 @@ public class StageUIManager : MonoBehaviour
                 {
                     // ランタンの火を消す
                     this.GetComponent<PostEffectController>().SetFireFlg(false);
-                    
+
                     statusFirstFlg = false;
                 }
 
@@ -258,6 +313,9 @@ public class StageUIManager : MonoBehaviour
         }
 
         if (tempStatus != status) statusFirstFlg = true;
+
+        // デバッグ用テキスト更新処理
+        DebugUpdate();
     }
 
     //==============================================================
@@ -378,8 +436,34 @@ public class StageUIManager : MonoBehaviour
             stageManager.GetComponent<StageManager>().rotateNum)
         {
             StageSelectManager.score[StageManager.stageNum].isSilver = true;
+            this.GetComponent<ScoreAnimation>().SilverFlgOn();
             Debug.Log("ノルマ" + StageSelectManager.silverConditions[1]);
             Debug.Log("折った回数" + stageManager.GetComponent<StageManager>().rotateNum);
+        }
+    }
+
+    //==============================================================
+    // デバッグ用テキスト更新処理
+    //==============================================================
+    private void DebugUpdate()
+    {
+        rotateNumText.text = "折った回数:" + stageManager.GetComponent<StageManager>().rotateNum;
+
+        if (!inputFlg)
+        {
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                inputField.ActivateInputField();
+                inputFlg = true;
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                StageManager.stageNum = int.Parse(inputField.text);
+                SceneManager.LoadScene("Stage1Scene");
+            }
         }
     }
 
@@ -388,7 +472,7 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     public void StageDisplay(bool sts)
     {
-        if(sts)
+        if (sts)
         {
             // プレイヤーとステージを表示
             player.SetActive(true);
