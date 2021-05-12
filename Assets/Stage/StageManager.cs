@@ -16,6 +16,8 @@ public class StageManager : MonoBehaviour
 
     public GameObject MapManager;
 
+    public GameObject Effect;
+
     private int[,] BlockNum_Map;
     private GameObject[,] Block_Map;
     private bool isCopy = false;
@@ -72,6 +74,11 @@ public class StageManager : MonoBehaviour
 
     bool oneFrame = false;
 
+    bool is3D = true;
+
+    public float waitInterval = 0.5f;
+    
+
 
     private enum CONTROLLERSTATE
     {
@@ -126,8 +133,6 @@ public class StageManager : MonoBehaviour
 
         BigParent = new GameObject();
         BigParent.AddComponent<InvisibleBlock>();
-
-
 
     }
 
@@ -219,8 +224,13 @@ public class StageManager : MonoBehaviour
             }
 
             timer += Time.deltaTime;
-            if (timer >= 0.5f) CanYouCopy = true;
+            if (timer >= waitInterval) CanYouCopy = true;
 
+
+            if (!rerotFlg)
+            {
+                FrontEffectCamera.SetActive(true);
+            }
         }
         else
         {
@@ -298,13 +308,12 @@ public class StageManager : MonoBehaviour
             {
                 if (Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().isFinishedScreenShot())
                 {
-
                     SetAllBlockActive(false);
                     Player.transform.Find("walk_UV").gameObject.SetActive(true);
+                    FrontEffectCamera.SetActive(true);
                     break;
                 }
             }
-            FrontEffectCamera.SetActive(true);
         }
 
         // 回転済みのステージを戻す処理
@@ -374,17 +383,13 @@ public class StageManager : MonoBehaviour
             ParentReset();
         }
 
-
-
         L_Smoke.transform.position = Bar_List[LeftBarIdx].transform.position;
         R_Smoke.transform.position = Bar_List[RightBarIdx].transform.position;
-
 
         if (Player.transform.position.x < Bar_List[LeftBarIdx].transform.position.x || Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
         {
             Camera.main.GetComponent<MoveCamera>().isMove = false;
         }
-
     }
 
     // バーの回転処理
@@ -788,6 +793,13 @@ public class StageManager : MonoBehaviour
                 if (childTransform.tag == "Block" || childTransform.tag == "GoalBlock" || childTransform.tag == "GimicMoveBlock" || childTransform.tag == "GimicMoveBar" || childTransform.tag == "GimicBreakBlock" || childTransform.tag == "GimicClearBlock")
                 {
                     childTransform.gameObject.SetActive(activeFlg);
+                    //if (is3D != activeFlg)
+                    //{
+                    //    GameObject ef = Instantiate(Effect);
+                    //    ef.transform.position = childTransform.position;
+                    //    ef.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+                    //    ef.GetComponent<ParticleSystem>().Play();
+                    //}
                 }
             }
         }
@@ -796,6 +808,8 @@ public class StageManager : MonoBehaviour
         {
             obj.GetComponent<MeshRenderer>().enabled = activeFlg;
         }
+
+        is3D = activeFlg;
     }
 
     private void ScreenShot()
