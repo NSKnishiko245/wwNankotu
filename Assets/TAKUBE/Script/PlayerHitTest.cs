@@ -33,12 +33,13 @@ public class PlayerHitTest : MonoBehaviour
         string tag = other.transform.tag;
         if (tag == "ClimbBlock"||tag=="GimicClearBlock"||tag == "Block")
         {
-            Vector3 ray_pos = other.transform.position - Vector3.up * 0.1f;
+            Vector3 ray_pos = other.transform.position + Vector3.down * 0.1f + Vector3.right * 0.38f;
             Ray ray = new Ray(ray_pos, Vector3.up);
             if (!Physics.Raycast(ray, out RaycastHit hit, other.transform.lossyScale.y))
             {
                 HitBlockHeight = other.transform.lossyScale.y;
                 isHit = true;
+
             }
             else
             {
@@ -65,15 +66,33 @@ public class PlayerHitTest : MonoBehaviour
                         }
                     }
 
+                    if (tag == "GimicMoveBlock")
+                    {
+                         isHit = false;
+                         return;
+                    }
+
+                    if (tag == "GimicMoveBar")
+                    {
+                        if (hit.transform.GetComponent<MoveBarHitCheck>().isHit)
+                        {
+                            isHit = false;
+                            return;
+                        }
+                    }
+
                     HitBlockHeight = other.transform.lossyScale.y;
                     isHit = true;
+                }
+                else
+                {
+                    isHit = false;
                 }
             }
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("now");
         isHit = false;
     }
     public void ResetHitFlg()
