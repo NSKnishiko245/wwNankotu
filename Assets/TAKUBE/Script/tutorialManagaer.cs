@@ -113,7 +113,7 @@ public class tutorialManagaer : MonoBehaviour
             ControllerAnim.SetBool("FukidasiFlg", false);
         }
 
-        Debug.Log(Animnum);
+        //Debug.Log(Animnum);
     }
 
 
