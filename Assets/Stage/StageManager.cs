@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 public class StageManager : MonoBehaviour
 {
     public GameObject Player;
+    public GameObject FrontEffectCamera;
 
     public GameObject MapManager;
 
@@ -67,6 +68,9 @@ public class StageManager : MonoBehaviour
 
     bool CanYouCopy = true;
     float timer = 0.0f;
+
+
+    bool oneFrame = false;
 
 
     private enum CONTROLLERSTATE
@@ -147,7 +151,11 @@ public class StageManager : MonoBehaviour
         if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMoveEx)
         {
             // プレイヤーの更新、プレイヤーにおける移動可能領域の設定など
-            Player.GetComponent<Player>().TurnOnMove();
+
+            if (CanYouCopy)
+            {
+                Player.GetComponent<Player>().TurnOnMove();
+            }
             if (Bar_List.Count > 0)
             {
                 Player.GetComponent<Player>().BorderLine_l = Bar_List[LeftBarIdx].transform.position.x;
@@ -210,11 +218,8 @@ public class StageManager : MonoBehaviour
                 R_Smoke.GetComponent<ParticleSystem>().Play();
             }
 
-
-
-
             timer += Time.deltaTime;
-            if (timer >= 1.0f) CanYouCopy = true;
+            if (timer >= 0.5f) CanYouCopy = true;
 
         }
         else
@@ -234,8 +239,19 @@ public class StageManager : MonoBehaviour
         // 右スティックからの入力情報を取得
         float R_Stick_Value = Input.GetAxis("Horizontal2");
 
+
+        if (oneFrame)
+        {
+            oneFrame = false;
+
+            for (int i = 0; i < Tile_List.Count; i++)
+            {
+                Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+                Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().TurnOnScreenShot();
+            }
+        }
         // ステージの状況を見て回転できるかどうかを判断
-        if (CanYouRotate())
+        if (CanYouRotate() && !IsGameClear)
         {
             // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
             if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.J))
@@ -253,6 +269,7 @@ public class StageManager : MonoBehaviour
                 rotateNum++;
             }
         }
+
 
         if (rerotFlg)
         {
@@ -287,12 +304,13 @@ public class StageManager : MonoBehaviour
                     break;
                 }
             }
+            FrontEffectCamera.SetActive(true);
         }
 
         // 回転済みのステージを戻す処理
         if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
         {
-            if (!Camera.main.GetComponent<MoveCamera>().isMoveEx)
+            if (!Camera.main.GetComponent<MoveCamera>().isMoveEx && !IsGameClear)
             {
                 // 回転済みのバーを検出したら元に戻す回転処理を開始
                 for (int i = 0; i < Bar_List.Count; i++)
@@ -312,7 +330,6 @@ public class StageManager : MonoBehaviour
             if (isCopy)
             {
                 DecidedStage(WARPSTATE.TO_RIGHT);
-                //isCopy = false;
             }
         }
         else if (Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
@@ -320,7 +337,6 @@ public class StageManager : MonoBehaviour
             if (isCopy)
             {
                 DecidedStage(WARPSTATE.TO_LEFT);
-                //isCopy = false;
             }
         }
 
@@ -337,20 +353,9 @@ public class StageManager : MonoBehaviour
         // ゲームオーバー検知
         if (UnderBorder.GetComponent<HitAction>().isHit)
         {
-            //SceneManager.LoadScene("Stage1Scene");
             IsGameOver = true;
         }
-
-
-
-        //foreach (var bar in Bar_List)
-        //{
-        //    bar.GetComponent<MeshRenderer>().enabled = false;
-        //}
-        //Bar_List[LeftBarIdx].GetComponent<MeshRenderer>().enabled = true;
-        //Bar_List[RightBarIdx].GetComponent<MeshRenderer>().enabled = true;
-
-
+        
 
         if (!isStopStage())
         {
@@ -699,32 +704,6 @@ public class StageManager : MonoBehaviour
             }
         }
     }
-    private void CreateCopy()
-    {
-        // プレイヤーが左端のバーに接触した場合
-        if (isLeftBar(HitBarIdx))
-        {
-            if (!isCopy)
-            {
-                CopyStage(WARPSTATE.TO_RIGHT);
-                isCopy = true;
-            }
-        }
-        // プレイヤーが右端のバーに接触した場合
-        else if (isRightBar(HitBarIdx))
-        {
-            if (!isCopy)
-            {
-                CopyStage(WARPSTATE.TO_LEFT);
-                isCopy = true;
-            }
-        }
-        else if (isCopy)
-        {
-            DeleteCopy();
-            isCopy = false;
-        }
-    }
     private void DecidedStage(WARPSTATE state)
     {
 
@@ -784,6 +763,16 @@ public class StageManager : MonoBehaviour
         Destroy(yugami);
     }
 
+    public void DeleteCopyForMenu()
+    {
+        //Tile_subList.Clear();
+        //Bar_subList.Clear();
+        Destroy(BigParent);
+        Destroy(yugami);
+
+        isCopy = false;
+    }
+
     private void SetAllBlockActive(bool activeFlg)
     {
         foreach (var obj in Tile_List)
@@ -805,12 +794,10 @@ public class StageManager : MonoBehaviour
 
     private void ScreenShot()
     {
-        for (int i = 0; i < Tile_List.Count; i++)
-        {
-            Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
-            Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().TurnOnScreenShot();
-        }
+        oneFrame = true;
+        
         Player.transform.Find("walk_UV").gameObject.SetActive(false);
+        FrontEffectCamera.SetActive(false);
     }
 
     private void FirstFunc()
@@ -827,6 +814,7 @@ public class StageManager : MonoBehaviour
             }
         }
         Player.transform.Find("walk_UV").gameObject.SetActive(false);
+        FrontEffectCamera.SetActive(false);
         DeleteCopy();
         isCopy = false;
 
@@ -887,6 +875,7 @@ public class StageManager : MonoBehaviour
             }
         }
         Player.transform.Find("walk_UV").gameObject.SetActive(true);
+        FrontEffectCamera.SetActive(true);
         rerotFlg = false;
         RotateState = ROTATESTATE.NEUTRAL;
 

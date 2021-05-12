@@ -105,7 +105,6 @@ public class StageUIManager : MonoBehaviour
         clearNextGear = GameObject.Find("NextGearImage");
         clearNextGear2 = GameObject.Find("NextUnderGearImage");
 
-
         // ステージ番号取得
         stageNum = StageManager.stageNum;
 
@@ -483,6 +482,7 @@ public class StageUIManager : MonoBehaviour
             // プレイヤーとステージを非表示
             player.SetActive(false);
             stageManager.SetActive(false);
+            stageManager.GetComponent<StageManager>().DeleteCopyForMenu();
         }
     }
 
