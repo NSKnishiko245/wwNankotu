@@ -610,6 +610,7 @@ public class StageManager : MonoBehaviour
     }
     private void CopyStage(WARPSTATE state, bool flg = false)
     {
+        Destroy(BigParent);
         BigParent = new GameObject();
         ParentReset();
 
@@ -736,7 +737,7 @@ public class StageManager : MonoBehaviour
         ParentReset();
 
 
-        Destroy(BigParent);
+        //Destroy(BigParent);
         //BigParent = new GameObject();
 
         Destroy(yugami);

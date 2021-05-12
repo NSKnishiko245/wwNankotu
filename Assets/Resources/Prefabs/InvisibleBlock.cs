@@ -13,7 +13,7 @@ public class InvisibleBlock : MonoBehaviour
     public ALPHASTATE AlphaState;
 
     private List<Renderer> MeshList = new List<Renderer>();
-    private Color alpha = new Color(0.0f, 0.0f, 0.0f, 0.025f);
+    private Color alpha = new Color(0.0f, 0.0f, 0.0f, 0.02f);
 
     void Start()
     {
