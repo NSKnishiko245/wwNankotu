@@ -9,7 +9,7 @@ public class StageUIManager : MonoBehaviour
 {
     private GameObject eventSystem;
     private GameObject stageManager;
-    private GameObject tutorialManager;
+    private GameObject tutorialUI;
     private GameObject editCanvas;
     private GameObject player;
 
@@ -94,7 +94,7 @@ public class StageUIManager : MonoBehaviour
     {
         eventSystem = GameObject.Find("EventSystem");
         stageManager = GameObject.Find("stageManager");
-        tutorialManager = GameObject.Find("TutorialManager");
+        tutorialUI = GameObject.Find("TutorialUI");
         editCanvas = GameObject.Find("EditCanvas");
         player = GameObject.Find("Player");
         bookL = GameObject.Find("book_L");
@@ -108,8 +108,7 @@ public class StageUIManager : MonoBehaviour
         // ステージ番号取得
         stageNum = StageManager.stageNum;
 
-        // ステージ１だけチュートリアル表示
-        if (stageNum != 1) tutorialManager.SetActive(false);
+        if (stageNum != 1) tutorialUI.SetActive(false);
 
         // エディットを非表示
         if (!editFlg) editCanvas.SetActive(false);
@@ -164,7 +163,7 @@ public class StageUIManager : MonoBehaviour
                 if (stageDisplayCnt == 0)
                 {
                     StageDisplay(true);
-                    if (stageNum == 1) tutorialManager.SetActive(true);
+                    if (stageNum == 1) tutorialUI.SetActive(true);
                 }
                 else stageDisplayCnt--;
 
@@ -173,6 +172,7 @@ public class StageUIManager : MonoBehaviour
                 {
                     if (gameOverCnt == 0)
                     {
+                        if (stageNum == 1) tutorialUI.SetActive(false);
                         stageManager.SetActive(false);
                         changeSceneName = "Stage1Scene";
                         status = STATUS.COMMAND_DECISION;
@@ -183,7 +183,7 @@ public class StageUIManager : MonoBehaviour
                 }
 
                 // メニューを開く
-                if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 3"))
+                if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                 {
                     status = STATUS.MENU;
 
@@ -191,7 +191,7 @@ public class StageUIManager : MonoBehaviour
                     eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
 
                     // チュートリアル非表示
-                    if (stageNum == 1) tutorialManager.SetActive(false);
+                    if (stageNum == 1) tutorialUI.SetActive(false);
                 }
 
                 // ステージクリア
@@ -224,7 +224,7 @@ public class StageUIManager : MonoBehaviour
                 }
 
                 // メニューを閉じる
-                if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 3"))
+                if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                 {
                     status = STATUS.PLAY;
 
@@ -246,7 +246,7 @@ public class StageUIManager : MonoBehaviour
                     this.GetComponent<ScoreAnimation>().StartFlgOn();
 
                     // チュートリアル非表示
-                    if (stageNum == 1) tutorialManager.SetActive(false);
+                    if (stageNum == 1) tutorialUI.SetActive(false);
 
                     bgmSource.Stop();
                     resultSource.Play();

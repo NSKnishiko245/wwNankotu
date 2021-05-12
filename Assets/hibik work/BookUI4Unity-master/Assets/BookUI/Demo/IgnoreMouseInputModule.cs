@@ -321,7 +321,6 @@ public class IgnoreMouseInputModule : BaseInputModule
     public void PageChange(string str)
     {
         //Debug.Log(str);
-        pageSeSource.Play();
         nextPageFlg = false;
         backPageFlg = false;
 
@@ -332,6 +331,7 @@ public class IgnoreMouseInputModule : BaseInputModule
                 {
                     pageNum++;
                     movement.x++;
+                    pageSeSource.Play();
                 }
                 break;
 
@@ -360,6 +360,7 @@ public class IgnoreMouseInputModule : BaseInputModule
                 {
                     pageNum--;
                     movement.x--;
+                    pageSeSource.Play();
                 }
                 break;
         }

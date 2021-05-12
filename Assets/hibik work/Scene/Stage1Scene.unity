@@ -3648,7 +3648,7 @@ MonoBehaviour:
   stageNum: 0
   stageDisplayCntInit: 30
   clearCommandOperationCntInit: 260
-  gameOverCntInit: 100
+  gameOverCntInit: 0
 --- !u!114 &1576787887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4054,6 +4054,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1394268284143104155, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 911df1d8516e7054ea122234ebc43b00, type: 2}
+    - target: {fileID: 7904459240833186205, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 911df1d8516e7054ea122234ebc43b00, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
 --- !u!1 &1638704869

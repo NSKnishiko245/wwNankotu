@@ -23,26 +23,38 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private int operationCntInit;  // シーン遷移して操作可能になるまでの時間
     private int operationCnt = 0;
 
-    private GameObject[] goldImage;
-    private GameObject[] silverImage;
-    private GameObject[] copperImage;
+    private GameObject[] goldImage = new GameObject[42];
+    private GameObject[] silverImage = new GameObject[42];
+    private GameObject[] copperImage = new GameObject[42];
     public struct Score
     {
         public bool isGold;
         public bool isSilver;
         public bool isCopper;
     }
-    public static Score[] score = new Score[51];
-    public static int[] silverConditions = new int[51];
+    public static Score[] score = new Score[43];
+    public static int[] silverConditions = new int[43];
 
     private void Awake()
     {
         pageInterval = pageIntervalInit;
         operationCnt = operationCntInit;
 
-        goldImage = GameObject.FindGameObjectsWithTag("GoldImage");
-        silverImage = GameObject.FindGameObjectsWithTag("SilverImage");
-        copperImage = GameObject.FindGameObjectsWithTag("CopperImage");
+        for (int i = 1; i < 42; i++)
+        {
+            goldImage[i] = GameObject.Find("GoldImage" + i);
+            silverImage[i] = GameObject.Find("SilverImage" + i);
+            copperImage[i] = GameObject.Find("CopperImage" + i);
+
+            if (score[i].isGold) goldImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            else goldImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+
+            if (score[i].isSilver) silverImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            else silverImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+
+            if (score[i].isCopper) copperImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            else copperImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+        }
 
         //ScoreReset();            
         SilverConditionsSet();
@@ -67,7 +79,7 @@ public class StageSelectManager : MonoBehaviour
 
         if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
         {
-            ScoreDisplay();
+            //ScoreDisplay();
         }
     }
 
@@ -121,29 +133,29 @@ public class StageSelectManager : MonoBehaviour
         }
     }
 
-    private void ScoreDisplay()
-    {
-        // 現在のページ取得(ステージ番号)
-        StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+    //private void ScoreDisplay()
+    //{
+    //    // 現在のページ取得(ステージ番号)
+    //    StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
 
-        for (int i = 0; i < goldImage.Length; i++)
-        {
-            if (score[StageManager.stageNum].isGold) goldImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else goldImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-        }
+    //    for (int i = 0; i < 42; i++)
+    //    {
+    //        if (score[StageManager.stageNum].isGold) goldImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    //        else goldImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+    //    }
 
-        for (int i = 0; i < silverImage.Length; i++)
-        {
-            if (score[StageManager.stageNum].isSilver) silverImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else silverImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-        }
+    //    for (int i = 0; i < 42; i++)
+    //    {
+    //        if (score[StageManager.stageNum].isSilver) silverImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    //        else silverImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+    //    }
 
-        for (int i = 0; i < copperImage.Length; i++)
-        {
-            if (score[StageManager.stageNum].isCopper) copperImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else copperImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-        }
-    }
+    //    for (int i = 0; i < 42; i++)
+    //    {
+    //        if (score[StageManager.stageNum].isCopper) copperImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    //        else copperImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+    //    }
+    //}
 
     // 銀メダルの獲得条件をセット(ステージを折った回数)
     private void SilverConditionsSet()

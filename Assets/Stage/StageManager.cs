@@ -326,7 +326,7 @@ public class StageManager : MonoBehaviour
                 {
                     if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
                     {
-                        rotateNum++;
+                        //rotateNum++;
                         FirstFunc();
                         break;
                     }
