@@ -208,7 +208,7 @@ public class StageManager : MonoBehaviour
                 DeleteCopy();
                 isCopy = false;
             }
-
+            
 
             L_Smoke.SetActive(true);
             R_Smoke.SetActive(true);
@@ -378,6 +378,12 @@ public class StageManager : MonoBehaviour
 
         L_Smoke.transform.position = Bar_List[LeftBarIdx].transform.position;
         R_Smoke.transform.position = Bar_List[RightBarIdx].transform.position;
+
+
+        if (Player.transform.position.x < Bar_List[LeftBarIdx].transform.position.x || Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
+        {
+            Camera.main.GetComponent<MoveCamera>().isMove = false;
+        }
 
     }
 
