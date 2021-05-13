@@ -14,29 +14,21 @@ public class BrittleBlock : MonoBehaviour
 
     [Header("消滅時SE")]
     public AudioClip m_sound;
-    // private AudioSource m_audioSource;
+    [Header("壊れた時に散らすオブジェクト")]
+    public GameObject[] m_obj;
+
+    [Header("破棄するオブジェクト")]
     public GameObject m_blockobj;
 
-    private bool m_IsBroke = false;
-    private int m_frame = 0;
-    // Start is called before the first frame update
     void Start()
     {
-        //Componentを取得
-       // m_audioSource = this.GetComponent<AudioSource>();
+  
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (m_IsBroke)//接触後1秒後に破棄
-        {
-            m_frame += 1;
-            if (m_frame >= 60)
-            {
-                Destroy(m_blockobj.gameObject);
-            }
-        }
+ 
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -45,22 +37,12 @@ public class BrittleBlock : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(m_sound, this.transform.position);//SE再生
             Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
-            //Destroy(m_blockobj.gameObject);
-            m_IsBroke = true;
+            for (int i = 0; i < m_obj.Length; i++)
+            {
+                Instantiate(m_obj[i], this.transform.position, Quaternion.identity);
+            }
+            Destroy(m_blockobj.gameObject);
         }
     }
 
-    public bool GetIsBroke()
-    {
-        return m_IsBroke;
-    }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.transform.tag == "Block")
-    //    {
-    //        m_audioSource.PlayOneShot(m_sound); //SE再生
-    //        Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
-    //        Destroy(this.gameObject);
-    //    }
-    //}
 }

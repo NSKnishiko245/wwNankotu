@@ -34,7 +34,6 @@ public class HitCreateEffect : MonoBehaviour
             for(int i = 0; i < m_objParts.Length; i++)
             {
                 Instantiate(m_objParts[i],other.transform.position, Quaternion.identity);
-                Debug.Log("¶¬");
             }
         }
     }
