@@ -6,7 +6,7 @@ public class ClearBlockEffect : MonoBehaviour
 {
     public ParticleSystem m_objMist;
     [Header("¶¬ŠÔŠu")]
-    public float timeOut = 1;
+    public float frameOut = 1;
     private float timeElapsed = 0;
     // Start is called before the first frame update
     void Start()
@@ -17,9 +17,9 @@ public class ClearBlockEffect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeElapsed += 1 * Time.deltaTime;
+        timeElapsed += 1;
 
-        if (timeElapsed >= timeOut)
+        if (timeElapsed >= frameOut)
         {
             Instantiate(m_objMist, this.transform.position, Quaternion.identity);
             //‰Œ¶¬

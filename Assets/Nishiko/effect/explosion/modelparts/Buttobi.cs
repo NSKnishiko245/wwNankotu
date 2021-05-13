@@ -21,6 +21,8 @@ public class Buttobi : MonoBehaviour
     {
         timeElapsed += 1 * Time.deltaTime;
 
+        transform.Rotate(new Vector3(5, 0, 5));
+
         if (timeElapsed >= timeOut)
         {
             //Instantiate(m_objMist, this.transform.position, Quaternion.identity);

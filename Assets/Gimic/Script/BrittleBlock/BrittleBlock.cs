@@ -17,6 +17,8 @@ public class BrittleBlock : MonoBehaviour
     // private AudioSource m_audioSource;
     public GameObject m_blockobj;
 
+    private bool m_IsBroke = false;
+    private int m_frame = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +29,14 @@ public class BrittleBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (m_IsBroke)//接触後1秒後に破棄
+        {
+            m_frame += 1;
+            if (m_frame >= 60)
+            {
+                Destroy(m_blockobj.gameObject);
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -36,8 +45,14 @@ public class BrittleBlock : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(m_sound, this.transform.position);//SE再生
             Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
-            Destroy(m_blockobj.gameObject);
+            //Destroy(m_blockobj.gameObject);
+            m_IsBroke = true;
         }
+    }
+
+    public bool GetIsBroke()
+    {
+        return m_IsBroke;
     }
     //private void OnTriggerEnter(Collider other)
     //{

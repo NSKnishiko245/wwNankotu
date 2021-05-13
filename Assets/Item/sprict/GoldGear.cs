@@ -10,6 +10,7 @@ public class GoldGear : MonoBehaviour
     private int stageNum;
 
     public ParticleSystem m_particle;//取得時のエフェクト
+    public AudioClip m_getSound;
 
     private Animator m_anim;   //取得時のアニメーション
 
@@ -68,6 +69,7 @@ public class GoldGear : MonoBehaviour
         stageUIManager.GetComponent<StageUIManager>().SetGoldMedalFlg(true);
 
         Instantiate(m_particle, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
+        AudioSource.PlayClipAtPoint(m_getSound, this.transform.position);//SE再生
         Destroy(this.gameObject);
 
     }

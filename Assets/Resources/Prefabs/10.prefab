@@ -79,6 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageUIManager: {fileID: 0}
   m_particle: {fileID: 4878400324908020692, guid: ca6c2a484c1799c4abf547332a333030, type: 3}
+  m_getSound: {fileID: 8300000, guid: 9d90fcf74ccde0945b90c2e7b16049c2, type: 3}
   speed: 1
 --- !u!114 &1739184140549456088
 MonoBehaviour:
