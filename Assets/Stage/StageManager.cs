@@ -157,7 +157,7 @@ public class StageManager : MonoBehaviour
         {
             // プレイヤーの更新、プレイヤーにおける移動可能領域の設定など
 
-            if (CanYouCopy)
+            if (CanYouCopy && !rerotFlg)
             {
                 Player.GetComponent<Player>().TurnOnMove();
             }
@@ -167,30 +167,7 @@ public class StageManager : MonoBehaviour
                 Player.GetComponent<Player>().BorderLine_r = Bar_List[RightBarIdx].transform.position.x;
             }
             Player.transform.parent = null;
-
-            // プレイヤーが左端のバーに接触した場合
-            //if (isLeftBar(HitBarIdx))
-            //{
-            //    if (!isCopy && !rerotFlg)
-            //    {
-            //        CopyStage(WARPSTATE.TO_RIGHT);
-            //        isCopy = true;
-            //    }
-            //}
-            //// プレイヤーが右端のバーに接触した場合
-            //else if (isRightBar(HitBarIdx))
-            //{
-            //    if (!isCopy && !rerotFlg)
-            //    {
-            //        CopyStage(WARPSTATE.TO_LEFT);
-            //        isCopy = true;
-            //    }
-            //}
-            //else if (isCopy)
-            //{
-            //    DeleteCopy();
-            //    isCopy = false;
-            //}
+            
             if (Player.transform.position.x - Bar_List[LeftBarIdx].transform.position.x < 1)
             {
                 if (!isCopy && !rerotFlg && Player.transform.position.x > Bar_List[LeftBarIdx].transform.position.x && CanYouCopy)
@@ -242,8 +219,6 @@ public class StageManager : MonoBehaviour
 
             L_Smoke.SetActive(false);
             R_Smoke.SetActive(false);
-            //L_Smoke.GetComponent<ParticleSystem>().Stop();
-            //R_Smoke.GetComponent<ParticleSystem>().Stop();
         }
 
         // 右スティックからの入力情報を取得
@@ -328,6 +303,8 @@ public class StageManager : MonoBehaviour
                     {
                         //rotateNum++;
                         FirstFunc();
+                        Player.GetComponent<Player>().TurnOffMove();
+                        Player.GetComponent<Player>().FixPos();
                         break;
                     }
                 }
@@ -899,6 +876,8 @@ public class StageManager : MonoBehaviour
         FrontEffectCamera.SetActive(true);
         rerotFlg = false;
         RotateState = ROTATESTATE.NEUTRAL;
+
+        Player.GetComponent<Player>().TurnOnGravity();
 
         SetAllBlockActive(true);
         ChangeBlockClear(false);

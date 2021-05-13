@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
 
     public bool IsHitBar { get; private set; }
 
+    private Vector3 moveValue;
+
     //ÉvÉåÉCÉÑÅ[ÇÃå¸Ç´ÇïœÇ¶ÇÈ
     private Vector3 prev;
     public bool IsMove { get; private set; }
@@ -47,7 +49,6 @@ public class Player : MonoBehaviour
 
         transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().dir = PlayerHitTest.COLLISIONDIRECTION.RIGHT;
         transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().dir = PlayerHitTest.COLLISIONDIRECTION.LEFT;
-
     }
 
     // Update is called once per frame
@@ -58,12 +59,12 @@ public class Player : MonoBehaviour
 
         // ì¸óÕÇÇ»ÇµÇ…Ç∑ÇÈèÍçá
         if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.2f) inputValue_x = 0.0f;
-
+        if (!transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit) inputValue_x = 0.0f;
 
         if (!IsHitGoalBlock)
         {
             //à⁄ìÆèàóù
-            Vector3 moveValue = transform.right * Speed * Time.deltaTime;
+            moveValue = transform.right * Speed * Time.deltaTime;
             if (inputValue_x > 0)
             {
                 transform.position += moveValue;
@@ -117,6 +118,22 @@ public class Player : MonoBehaviour
     {
         GetComponent<Rigidbody>().isKinematic = true;
         inputFlg = false;
+    }
+    public void TurnOnGravity()
+    {
+        GetComponent<Rigidbody>().isKinematic = false;
+    }
+
+    public void FixPos()
+    {
+        if (inputValue_x > 0)
+        {
+            transform.position -= moveValue;
+        }
+        else if (inputValue_x < 0)
+        {
+            transform.position += moveValue;
+        }
     }
 
     private void HitTest()
