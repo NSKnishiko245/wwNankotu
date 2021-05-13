@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
         BOTTOM,
     }
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
 
         // ì¸óÕÇÇ»ÇµÇ…Ç∑ÇÈèÍçá
         if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.2f) inputValue_x = 0.0f;
-        if (!transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit) inputValue_x = 0.0f;
+        //if (!transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit) inputValue_x = 0.0f;
 
         if (!IsHitGoalBlock)
         {
@@ -103,10 +103,11 @@ public class Player : MonoBehaviour
         //{
         //    transform.rotation = Quaternion.LookRotation(diff);
         //}
-       // Debug.Log(transform.rotation);
+        // Debug.Log(transform.rotation);
         //prev=transform.position;
+
     }
-    
+
     public void TurnOnMove()
     {
         GetComponent<Rigidbody>().isKinematic = false;
@@ -126,6 +127,7 @@ public class Player : MonoBehaviour
 
     public void FixPos()
     {
+
         if (inputValue_x > 0)
         {
             transform.position -= moveValue;
@@ -150,7 +152,7 @@ public class Player : MonoBehaviour
                 {
                     Debug.Log("ìoÇ¡ÇΩ");
                     transform.position += Vector3.up * transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().HitBlockHeight;
-                    transform.position += Vector3.left * 0.2f;
+                    transform.position += Vector3.left * 0.3f;
                     transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().ResetHitFlg();
                 }
             }
@@ -160,7 +162,7 @@ public class Player : MonoBehaviour
                 {
                     Debug.Log("ìoÇ¡ÇΩ");
                     transform.position += Vector3.up * transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().HitBlockHeight;
-                    transform.position += Vector3.right * 0.2f;
+                    transform.position += Vector3.right * 0.3f;
                     transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().ResetHitFlg();
                 }
             }
@@ -168,7 +170,7 @@ public class Player : MonoBehaviour
         else
         {
             //ë´èÍÇ…êGÇÍÇƒÇ¢Ç»Ç¢ÇÃÇ≈useGravityÇóLå¯
-           // this.gameObject.GetComponent<Rigidbody>().useGravity = true;
+            // this.gameObject.GetComponent<Rigidbody>().useGravity = true;
         }
     }
 
@@ -184,7 +186,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
             string tag = hit.transform.tag;
-            if (tag == "ClimbBlock" || tag== "GimicMoveBlock" || tag == "GimicBreakBlock" || tag == "GimicClearBlock") return false;
+            if (tag == "ClimbBlock" || tag == "GimicMoveBlock" || tag == "GimicBreakBlock" || tag == "GimicClearBlock") return false;
             //if (hit.transform.tag == "ClimbBlock") return false;
         }
         return true;

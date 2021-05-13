@@ -77,7 +77,7 @@ public class StageManager : MonoBehaviour
     bool is3D = true;
 
     public float waitInterval = 0.5f;
-    
+
 
 
     private enum CONTROLLERSTATE
@@ -156,7 +156,7 @@ public class StageManager : MonoBehaviour
         if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMoveEx)
         {
             // プレイヤーの更新、プレイヤーにおける移動可能領域の設定など
-
+            Player.GetComponent<Player>().TurnOnGravity();
             if (CanYouCopy && !rerotFlg)
             {
                 Player.GetComponent<Player>().TurnOnMove();
@@ -167,7 +167,7 @@ public class StageManager : MonoBehaviour
                 Player.GetComponent<Player>().BorderLine_r = Bar_List[RightBarIdx].transform.position.x;
             }
             Player.transform.parent = null;
-            
+
             if (Player.transform.position.x - Bar_List[LeftBarIdx].transform.position.x < 1)
             {
                 if (!isCopy && !rerotFlg && Player.transform.position.x > Bar_List[LeftBarIdx].transform.position.x && CanYouCopy)
@@ -190,7 +190,7 @@ public class StageManager : MonoBehaviour
                 DeleteCopy();
                 isCopy = false;
             }
-            
+
 
             L_Smoke.SetActive(true);
             R_Smoke.SetActive(true);
@@ -341,7 +341,7 @@ public class StageManager : MonoBehaviour
         {
             IsGameOver = true;
         }
-        
+
 
         if (!isStopStage())
         {
@@ -793,7 +793,7 @@ public class StageManager : MonoBehaviour
     private void ScreenShot()
     {
         oneFrame = true;
-        
+
         Player.transform.Find("walk_UV").gameObject.SetActive(false);
         FrontEffectCamera.SetActive(false);
     }
@@ -877,7 +877,7 @@ public class StageManager : MonoBehaviour
         rerotFlg = false;
         RotateState = ROTATESTATE.NEUTRAL;
 
-        Player.GetComponent<Player>().TurnOnGravity();
+        //Player.GetComponent<Player>().TurnOnGravity();
 
         SetAllBlockActive(true);
         ChangeBlockClear(false);
