@@ -122,6 +122,7 @@ public class StageUIManager : MonoBehaviour
         gameOverCnt = gameOverCntInit;
 
         bookLAnim = bookL.GetComponent<Animator>();
+        bookLAnim.SetBool("isAnim", true);
 
         stageNumText = GameObject.Find("StageNumText").GetComponent<Text>();
         stageNumText.text = "ステージ番号:" + StageManager.stageNum;

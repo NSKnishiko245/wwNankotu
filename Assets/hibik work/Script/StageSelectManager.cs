@@ -12,6 +12,7 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private AudioSource selectDecSource;
 
     [SerializeField] private GameObject eventSystem;
+    private Animator bookLAnim;
 
     [SerializeField] private float sceneChangeTime; // シーン遷移までの時間
     private int sceneChangeCnt = 0;                 // シーン遷移のカウンタ
@@ -38,6 +39,9 @@ public class StageSelectManager : MonoBehaviour
     private void Awake()
     {
         pageInterval = pageIntervalInit;
+
+        bookLAnim = GameObject.Find("book_L").GetComponent<Animator>();
+        bookLAnim.SetBool("isAnim", true);
         operationCnt = operationCntInit;
 
         for (int i = 1; i < 42; i++)
