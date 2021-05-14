@@ -26,7 +26,7 @@ public class MapEdit : MonoBehaviour
     public List<GameObject> TileList { get; private set; }
 
 
-    private Vector2Int MapSize = new Vector2Int(16, 10);
+    private Vector2Int MapSize = new Vector2Int(12, 8);
     private int BarNum;
 
     private Vector3 BarScale;
@@ -419,8 +419,6 @@ public class MapEdit : MonoBehaviour
                 }
             }
         }
-
-
     }
 }
 

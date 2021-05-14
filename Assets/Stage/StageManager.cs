@@ -191,13 +191,15 @@ public class StageManager : MonoBehaviour
                 isCopy = false;
             }
 
-
-            L_Smoke.SetActive(true);
-            R_Smoke.SetActive(true);
-            if (!L_Smoke.GetComponent<ParticleSystem>().isPlaying)
+            if (!IsGameClear)
             {
-                L_Smoke.GetComponent<ParticleSystem>().Play();
-                R_Smoke.GetComponent<ParticleSystem>().Play();
+                L_Smoke.SetActive(true);
+                R_Smoke.SetActive(true);
+                if (!L_Smoke.GetComponent<ParticleSystem>().isPlaying)
+                {
+                    L_Smoke.GetComponent<ParticleSystem>().Play();
+                    R_Smoke.GetComponent<ParticleSystem>().Play();
+                }
             }
 
             timer += Time.deltaTime;
@@ -217,6 +219,12 @@ public class StageManager : MonoBehaviour
             // ステージが動いている時はプレイヤーを停止
             Player.GetComponent<Player>().TurnOffMove();
 
+            L_Smoke.SetActive(false);
+            R_Smoke.SetActive(false);
+        }
+
+        if (IsGameClear)
+        {
             L_Smoke.SetActive(false);
             R_Smoke.SetActive(false);
         }
@@ -604,6 +612,11 @@ public class StageManager : MonoBehaviour
                 {
                     child.parent = tile.transform;
                     child.transform.position = new Vector3(child.transform.position.x, -child.transform.position.y, child.transform.position.z);
+
+                    if (child.tag == "GimicMoveBlock")
+                    {
+                        child.GetComponent<MoveBlock>().TurnOffGravity();
+                    }
                 }
             }
 
@@ -695,8 +708,6 @@ public class StageManager : MonoBehaviour
     }
     private void DecidedStage(WARPSTATE state)
     {
-
-
         BigParent.GetComponent<InvisibleBlock>().SetAlpha(1.0f);
 
         for (int i = 0; i < Tile_List.Count; i++) Tile_List[i].transform.parent = BigParent.transform;
@@ -713,6 +724,16 @@ public class StageManager : MonoBehaviour
 
         ParentReset();
 
+        foreach (var tile in Tile_List)
+        {
+            foreach (Transform child in tile.transform)
+            {
+                if (child.tag == "GimicMoveBlock")
+                {
+                    child.GetComponent<MoveBlock>().TurnOnGravity();
+                }
+            }
+        }
 
         //Destroy(BigParent);
         //BigParent = new GameObject();

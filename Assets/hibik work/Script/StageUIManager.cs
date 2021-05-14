@@ -12,6 +12,7 @@ public class StageUIManager : MonoBehaviour
     private GameObject tutorialUI;
     private GameObject editCanvas;
     private GameObject player;
+    public  GameObject frontEffectCamera;
 
     private GameObject bookL;
     private Animator bookLAnim;
@@ -64,6 +65,8 @@ public class StageUIManager : MonoBehaviour
     private bool clearCommandFirstFlg = true;
     private bool goldMedalFlg = false;
     private bool inputFlg = false;
+
+    private bool stageDisplayFlg = true;
 
     // シーンの状態
     private enum STATUS
@@ -472,11 +475,14 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     public void StageDisplay(bool sts)
     {
+        if (stageDisplayFlg == sts) return;
+
         if (sts)
         {
             // プレイヤーとステージを表示
             player.SetActive(true);
             stageManager.SetActive(true);
+            frontEffectCamera.SetActive(true);
         }
         else
         {
@@ -484,7 +490,9 @@ public class StageUIManager : MonoBehaviour
             player.SetActive(false);
             stageManager.SetActive(false);
             stageManager.GetComponent<StageManager>().DeleteCopyForMenu();
+            frontEffectCamera.SetActive(false);
         }
+        stageDisplayFlg = sts;
     }
 
     public void SetGoldMedalFlg(bool sts)

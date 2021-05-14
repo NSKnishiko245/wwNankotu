@@ -12,6 +12,8 @@ public class MoveBlock : MonoBehaviour
     private int m_nowCnt = 0;
     private int m_addCnt = 0;
 
+    private bool isGravity = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,20 +22,19 @@ public class MoveBlock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if (m_addCnt < m_nowCnt)
         {
            // this.gameObject.GetComponent<Rigidbody>().useGravity = false;
             this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition|RigidbodyConstraints.FreezeRotation;
             this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
         }
-
         m_nowCnt++;
     }
 
     //’[‚Á‚±‚Ì“–‚½‚è”»’è
     private void OnTriggerStay(Collider other)
     {
+        if (!isGravity) return;
         if (other.transform.tag == "GimicMoveBar")
         {
             this.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
@@ -55,5 +56,13 @@ public class MoveBlock : MonoBehaviour
         }
     }
 
-   
+    public void TurnOnGravity()
+    {
+        isGravity = true;
+    }
+    public void TurnOffGravity()
+    {
+        isGravity = false;
+        this.gameObject.GetComponent<Rigidbody>().useGravity = false;
+    }
 }
