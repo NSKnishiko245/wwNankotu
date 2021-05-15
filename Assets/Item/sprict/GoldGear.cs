@@ -39,6 +39,7 @@ public class GoldGear : MonoBehaviour
         //{
         //    this.transform.position = m_objPlayer.transform.position;
         //}
+        //transform.Rotate(new Vector3(0, 1, 0));
         if (m_animend)
         {
 

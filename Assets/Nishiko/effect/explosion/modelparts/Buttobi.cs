@@ -25,9 +25,7 @@ public class Buttobi : MonoBehaviour
 
         if (timeElapsed >= timeOut)
         {
-            //Instantiate(m_objMist, this.transform.position, Quaternion.identity);
-            //煙生成
-            //timeElapsed = 0.0f;
+           //オブジェクト破棄
             Destroy(this.gameObject);
         }
     }
