@@ -3566,7 +3566,7 @@ GameObject:
   - component: {fileID: 134798657}
   - component: {fileID: 134798658}
   m_Layer: 0
-  m_Name: book_L
+  m_Name: book_L4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4942,16 +4942,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 522342267881663799, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 522342267881663799, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 522342267881663799, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522342267881663799, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.77
       objectReference: {fileID: 0}
     - target: {fileID: 522342267881663799, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.665453
+      value: -2.66
       objectReference: {fileID: 0}
     - target: {fileID: 522342267881663799, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.152718
+      value: 11.15
       objectReference: {fileID: 0}
     - target: {fileID: 522342267881663799, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
       propertyPath: m_LocalRotation.w
@@ -19778,6 +19790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3adce02c4f37a14a85c77af39d3db4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bookNum: 0
   BgmSource: {fileID: 729740260}
   DecSource: {fileID: 729740259}
   sceneChangeTime: 0
@@ -20645,7 +20658,7 @@ GameObject:
   - component: {fileID: 769719974}
   - component: {fileID: 769719975}
   m_Layer: 0
-  m_Name: book_L
+  m_Name: book_L2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33621,7 +33634,7 @@ GameObject:
   - component: {fileID: 1272309500}
   - component: {fileID: 1272309501}
   m_Layer: 0
-  m_Name: book_L
+  m_Name: book_L5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46430,7 +46443,7 @@ GameObject:
   - component: {fileID: 1778386521}
   - component: {fileID: 1778386522}
   m_Layer: 0
-  m_Name: book_L
+  m_Name: book_L3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55624,7 +55637,7 @@ GameObject:
   - component: {fileID: 2369473901756578104}
   - component: {fileID: 2839720262484062751}
   m_Layer: 0
-  m_Name: book_L
+  m_Name: book_L1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

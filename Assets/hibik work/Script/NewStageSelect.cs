@@ -10,10 +10,13 @@ public class NewStageSelect : MonoBehaviour
 {
     private GameObject eventSystem;
     private Animator[] bookAnim;
+    private Animator[] bookLAnim;
+    private GameObject[] book;
+
     private int bookMax = 5;    // 本の最大数
     private int stageMax = 43;  // ステージの最大数
 
-    private int bookNum = 0;    // 本の番号
+    [SerializeField] private int bookNum = 0;    // 本の番号
     private int bookSelectCntInit = 30;
     private int bookSelectCnt = 0;
 
@@ -55,6 +58,9 @@ public class NewStageSelect : MonoBehaviour
 
 
 
+    //==============================================================
+    // 初期処理
+    //==============================================================
     private void Awake()
     {
         pageInterval = pageIntervalInit;
@@ -63,9 +69,13 @@ public class NewStageSelect : MonoBehaviour
         eventSystem = GameObject.Find("EventSystem");
 
         bookAnim = new Animator[bookMax];
+        bookLAnim = new Animator[bookMax];
+        book = new GameObject[bookMax];
         for (int i = 0; i < bookMax; i++)
         {
             bookAnim[i] = GameObject.Find("BookModel" + (i + 1)).GetComponent<Animator>();
+            bookLAnim[i] = GameObject.Find("book_L" + (i + 1)).GetComponent<Animator>();
+            book[i] = GameObject.Find("BookModel" + (i + 1));
         }
         bookAnim[bookNum].SetBool("isUp", true);
 
@@ -96,38 +106,77 @@ public class NewStageSelect : MonoBehaviour
         this.GetComponent<PostEffectController>().SetVigFlg(false);
     }
 
+    //==============================================================
+    // 更新処理
+    //==============================================================
     private void Update()
     {
         switch (status)
         {
+            //-----------------------------------
+            // 本選択中
+            //-----------------------------------
             case STATUS.BOOK_SELECT:
+
                 if (bookSelectCnt == 0)
                 {
+                    // 左の本を選択
                     if (Input.GetAxis("Horizontal") < 0)
                     {
                         if (bookNum > 0)
                         {
                             bookNum--;
+                            bookSelectCnt = bookSelectCntInit;
+                            // 選択中の本が上に上がる
                             bookAnim[bookNum].SetBool("isUp", true);
                             bookAnim[bookNum + 1].SetBool("isUp", false);
                         }
                     }
-
+                    // 右の本を選択
                     if (Input.GetAxis("Horizontal") > 0)
                     {
                         if (bookNum < bookMax - 1)
                         {
                             bookNum++;
+                            bookSelectCnt = bookSelectCntInit;
+                            // 選択中の本が上に上がる
                             bookAnim[bookNum].SetBool("isUp", true);
+
                             bookAnim[bookNum - 1].SetBool("isUp", false);
                         }
                     }
                 }
                 else bookSelectCnt--;
 
+                // 本を決定
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+                {
+                    // 選択中の本を机に移動
+                    //bookAnim[bookNum].SetBool("isCome", true);
+                    book[bookNum].transform.DOScale(new Vector3(4.43f, 4.23f, 5.6f), 1.0f);
+                    book[bookNum].transform.DOLocalMove(new Vector3(-0.77f, -2.66f, 11.15f), 1.0f);
+                    book[bookNum].transform.DOLocalRotate(new Vector3(88.8f, 180.0f, 0.0f), 1.0f);
+                    status = STATUS.STAGE_SELECT;
+                }
                 break;
 
+            //-----------------------------------
+            // ステージ選択中
+            //-----------------------------------
             case STATUS.STAGE_SELECT:
+                if (operationCnt == 1) eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+
+                if (operationCnt == 0)
+                {
+                    if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
+                    {
+                        PageOperation();
+                    }
+                }
+                else operationCnt--;
+
+                SceneChange();      // シーン遷移
+
                 break;
 
             default:
@@ -136,23 +185,6 @@ public class NewStageSelect : MonoBehaviour
 
 
 
-        if (operationCnt == 1) eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-
-        if (operationCnt == 0)
-        {
-            if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
-            {
-                PageOperation();
-            }
-        }
-        else operationCnt--;
-
-        SceneChange();      // シーン遷移
-
-        if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
-        {
-            //ScoreDisplay();
-        }
     }
 
     // ページをめくる
