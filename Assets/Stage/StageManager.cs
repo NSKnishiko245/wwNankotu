@@ -13,6 +13,7 @@ public class StageManager : MonoBehaviour
 {
     public GameObject Player;
     public GameObject FrontEffectCamera;
+    public GameObject Grid;
 
     public GameObject MapManager;
 
@@ -134,6 +135,8 @@ public class StageManager : MonoBehaviour
         BigParent = new GameObject();
         BigParent.AddComponent<InvisibleBlock>();
 
+
+        Grid.GetComponent<CreateGrid>().SetAlpha(0);
     }
 
     void Update()
@@ -151,6 +154,18 @@ public class StageManager : MonoBehaviour
         HitBarIdx = GetHitBarIndex();       // プレイヤーと衝突中のバーを取得
         LeftBarIdx = GetLeftBarIndex();     // ステージの一番左のバーを取得
         RightBarIdx = GetRightBarIndex();   // ステージの一番右のバーを取得
+
+        if (HitBarIdx != -1)
+        {
+            if (HitBarIdx != RightBarIdx && HitBarIdx != LeftBarIdx && Grid.GetComponent<MeshRenderer>().enabled)
+            {
+                Grid.GetComponent<CreateGrid>().AlphaIncrease = true;
+            }
+        }
+        else
+        {
+            Grid.GetComponent<CreateGrid>().AlphaIncrease = false;
+        }
 
         // ステージが停止している時、プレイヤーを動かせる
         if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMoveEx)
@@ -221,6 +236,8 @@ public class StageManager : MonoBehaviour
 
             L_Smoke.SetActive(false);
             R_Smoke.SetActive(false);
+
+            Grid.GetComponent<MeshRenderer>().enabled = false;
         }
 
         if (IsGameClear)
@@ -282,6 +299,7 @@ public class StageManager : MonoBehaviour
                 if (Tile_List[Tile_List.Count - 1].transform.Find("TileChild").GetComponent<ScreenShot>().isFinishedScreenShot())
                 {
                     FourFunc();
+
                 }
             }
         }
@@ -294,6 +312,8 @@ public class StageManager : MonoBehaviour
                     SetAllBlockActive(false);
                     Player.transform.Find("walk_UV").gameObject.SetActive(true);
                     FrontEffectCamera.SetActive(true);
+                    Grid.GetComponent<MeshRenderer>().enabled = false;
+
                     break;
                 }
             }
@@ -755,6 +775,9 @@ public class StageManager : MonoBehaviour
         Camera.main.GetComponent<MoveCamera>().Move(MapPos_Add.x);
 
 
+
+        Grid.transform.position += MapPos_Add;
+
     }
     private void DeleteCopy()
     {
@@ -808,7 +831,18 @@ public class StageManager : MonoBehaviour
             obj.GetComponent<MeshRenderer>().enabled = activeFlg;
         }
 
+        if (is3D != activeFlg)
+        {
+            Grid.GetComponent<MeshRenderer>().enabled = true;
+
+        }
         is3D = activeFlg;
+
+        int x = (int)(Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x);
+        Grid.GetComponent<CreateGrid>().ReGrid(x, 0);
+        Grid.transform.position = new Vector3(
+            Bar_List[LeftBarIdx].transform.position.x + (Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x) / 2.0f, 0.0f, 0.0f
+        );
     }
 
     private void ScreenShot()
@@ -817,6 +851,8 @@ public class StageManager : MonoBehaviour
 
         Player.transform.Find("walk_UV").gameObject.SetActive(false);
         FrontEffectCamera.SetActive(false);
+        Grid.GetComponent<MeshRenderer>().enabled = false;
+        Grid.GetComponent<CreateGrid>().SetAlpha(0);
     }
 
     private void FirstFunc()

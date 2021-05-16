@@ -353,13 +353,13 @@ public class MapEdit : MonoBehaviour
     // ステージサイズ変更時にボタンオブジェクトから呼び出されるメソッド
     public void StageScaleUp()
     {
-        StageGrid.GetComponent<CreateGrid>().size += 2;
+        StageGrid.GetComponent<CreateGrid>().size_x += 2;
         MapSize.x += 2;
         MapSize.y += 2;
     }
     public void StageScaleDown()
     {
-        StageGrid.GetComponent<CreateGrid>().size -= 2;
+        StageGrid.GetComponent<CreateGrid>().size_x -= 2;
         MapSize.x -= 2;
         MapSize.y -= 2;
     }

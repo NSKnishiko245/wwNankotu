@@ -2,8 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+
 public class CreateGrid : MonoBehaviour
 {
+    public bool AlphaIncrease { private get; set; }
 
     public enum Face
     {
@@ -13,10 +15,13 @@ public class CreateGrid : MonoBehaviour
     };
 
     public float gridSize = 1f;
-    public int size = 8;
+    public int size_x = 8;
+    public int size_y = 4;
     public Color color = Color.white;
     public Face face = Face.xy;
     public bool back = true;
+
+    public float alphaDownValue = 0.01f;
 
     //更新検出用
     float preGridSize = 0;
@@ -29,13 +34,12 @@ public class CreateGrid : MonoBehaviour
 
     void Start()
     {
-
         GetComponent<MeshFilter>().mesh = mesh = new Mesh();
-        mesh = ReGrid(mesh);
-
+        mesh = ReGrid();
+        AlphaIncrease = false;
     }
 
-    Mesh ReGrid(Mesh mesh)
+    public Mesh ReGrid(int x = 0, int y = 0)
     {
         if (back)
         {
@@ -57,10 +61,16 @@ public class CreateGrid : MonoBehaviour
         int[] lines;
         Color[] colors;
 
-        drawSize = size * 2;
+        int size_w = size_x;
+        int size_h = size_y;
+
+        if (x != 0) size_w = x;
+        if (y != 0) size_h = y;
+
+        drawSize = size_w * 2;
         width = gridSize * drawSize / 4.0f;
-        Vector2 startPosition = new Vector2(-width, -width);
-        Vector2 endPosition = new Vector2(width, width);
+        Vector2 startPosition = new Vector2(-width, -gridSize * size_h * 2 / 4.0f);
+        Vector2 endPosition = new Vector2(width, gridSize * size_h * 2 / 4.0f);
         diff = width / drawSize;
         resolution = (drawSize + 2) * 2;
         //最期の２辺を追加している
@@ -82,7 +92,7 @@ public class CreateGrid : MonoBehaviour
         {
             uvs[i] = Vector2.zero;
             lines[i] = i;
-            colors[i] = color;
+            colors[i] = new Color(color.r, color.g, color.b, color.a);
         }
 
         Vector3 rotDirection;
@@ -108,7 +118,7 @@ public class CreateGrid : MonoBehaviour
         mesh.SetIndices(lines, MeshTopology.Lines, 0);
 
         preGridSize = gridSize;
-        preSize = size;
+        preSize = size_x;
         preColor = color;
         preFace = face;
         preBack = back;
@@ -130,11 +140,27 @@ public class CreateGrid : MonoBehaviour
     void Update()
     {
         //関係値の更新を検出したらメッシュも更新
-        if (gridSize != preGridSize || size != preSize || preColor != color || preFace != face || preBack != back)
+        if (gridSize != preGridSize || size_x != preSize || preColor != color || preFace != face || preBack != back)
         {
             if (gridSize < 0) { gridSize = 0.000001f; }
-            if (size < 0) { size = 1; }
-            ReGrid(mesh);
+            if (size_x < 0) { size_x = 1; }
+            ReGrid();
         }
+
+        if (AlphaIncrease)
+        {
+            color.a += alphaDownValue;
+            if (color.a > 1) color.a = 1;
+        }
+        else
+        {
+            color.a -= alphaDownValue;
+            if (color.a < 0) color.a = 0.0f;
+        }
+    }
+    
+    public void SetAlpha(float alphaValue)
+    {
+        color.a = alphaValue;
     }
 }
