@@ -237,7 +237,7 @@ public class StageManager : MonoBehaviour
             L_Smoke.SetActive(false);
             R_Smoke.SetActive(false);
 
-            Grid.GetComponent<MeshRenderer>().enabled = false;
+            //Grid.GetComponent<MeshRenderer>().enabled = false;
         }
 
         if (IsGameClear)
