@@ -1411,10 +1411,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 1
-  size: 16
+  size_x: 12
+  size_y: 8
   color: {r: 1, g: 1, b: 1, a: 1}
   face: 0
   back: 1
+  alphaDownValue: 0.01
 --- !u!23 &328160713
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1471,12 +1473,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328160711}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_Father: {fileID: 2081052302}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &358648315
 GameObject:
@@ -5635,6 +5637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 682792883}
   FrontEffectCamera: {fileID: 1016961393}
+  Grid: {fileID: 328160711}
   MapManager: {fileID: 375336877}
   Effect: {fileID: 6797351756067995477, guid: 447ba65fbd439914ba066b4908615494, type: 3}
   UnderBorder: {fileID: 1377248554}
@@ -5656,6 +5659,7 @@ Transform:
   m_Children:
   - {fileID: 1069936272}
   - {fileID: 1862847114}
+  - {fileID: 328160715}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
