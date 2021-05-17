@@ -4,17 +4,38 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class StageSelectManager : MonoBehaviour
 {
-    // サウンド
-    [SerializeField] private AudioSource selectBgmSource;
-    [SerializeField] private AudioSource selectDecSource;
-
-    [SerializeField] private GameObject eventSystem;
+    private GameObject eventSystem;
+    [SerializeField] private GameObject bookL;
     private Animator bookLAnim;
+    [SerializeField] private GameObject bookBack;
+    private GameObject book;
+    private GameObject bookUI;
+    private Animator cameraAnim;
+    [SerializeField] private int bookNum;
+    [SerializeField] GameObject mist;
+    private int bookMax = 6;    // 本の最大数
+    private int bookStageMax = 10;  // 一冊あたりのステージの最大数
+    private int stageMax = 42;
+    private int firstStageNum;
+    private int endStageNum;
 
-    [SerializeField] private float sceneChangeTime; // シーン遷移までの時間
+
+    private int bookSelectCntInit = 30;
+    private int bookSelectCnt = 0;
+    private bool bookSelectFlg = false;
+    private int bookRemoveCnt = 90;
+    private bool stageEnterFlg = true;
+
+    // サウンド
+    [SerializeField] private AudioSource BgmSource;
+    [SerializeField] private AudioSource DecSource;
+
+
+    [SerializeField] private int sceneChangeCntInit; // シーン遷移までの時間
     private int sceneChangeCnt = 0;                 // シーン遷移のカウンタ
     private bool sceneChangeFlg = false;
 
@@ -24,9 +45,10 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private int operationCntInit;  // シーン遷移して操作可能になるまでの時間
     private int operationCnt = 0;
 
-    private GameObject[] goldImage = new GameObject[42];
-    private GameObject[] silverImage = new GameObject[42];
-    private GameObject[] copperImage = new GameObject[42];
+    // メダル
+    private GameObject[] goldMedal;
+    private GameObject[] silverMedal;
+    private GameObject[] copperMedal;
     public struct Score
     {
         public bool isGold;
@@ -36,36 +58,87 @@ public class StageSelectManager : MonoBehaviour
     public static Score[] score = new Score[43];
     public static int[] silverConditions = new int[43];
 
+    //==============================================================
+    // 初期処理
+    //==============================================================
     private void Awake()
     {
+        sceneChangeCnt = sceneChangeCntInit;
         pageInterval = pageIntervalInit;
-
-        bookLAnim = GameObject.Find("book_L").GetComponent<Animator>();
-        bookLAnim.SetBool("isAnim", true);
         operationCnt = operationCntInit;
 
-        for (int i = 1; i < 42; i++)
+        eventSystem = GameObject.Find("EventSystem");
+        bookLAnim = bookL.GetComponent<Animator>();
+        bookLAnim.SetBool("isAnim", true);
+        bookBack.SetActive(false);
+        book = GameObject.Find("BookModel");
+        bookUI = GameObject.Find("BookCanvas");
+        cameraAnim = GameObject.Find("Main Camera").GetComponent<Animator>();
+        mist = GameObject.Find("Mist");
+        mist.SetActive(false);
+        //score = new Score[stageMax];
+        //silverConditions = new int[stageMax];
+        goldMedal = new GameObject[stageMax + 1];
+        silverMedal = new GameObject[stageMax + 1];
+        copperMedal = new GameObject[stageMax + 1];
+
+        BookSelect.bookNum = bookNum - 1;
+        if (BookSelect.bookNum == 0)
         {
-            goldImage[i] = GameObject.Find("GoldImage" + i);
-            silverImage[i] = GameObject.Find("SilverImage" + i);
-            copperImage[i] = GameObject.Find("CopperImage" + i);
-
-            if (score[i].isGold) goldImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else goldImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-
-            if (score[i].isSilver) silverImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else silverImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-
-            if (score[i].isCopper) copperImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else copperImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+            firstStageNum = 1;
+            endStageNum = 8;
+        }
+        if (BookSelect.bookNum == 1)
+        {
+            firstStageNum = 9;
+            endStageNum = 15;
+        }
+        if (BookSelect.bookNum == 2)
+        {
+            firstStageNum = 16;
+            endStageNum = 21;
+        }
+        if (BookSelect.bookNum == 3)
+        {
+            firstStageNum = 22;
+            endStageNum = 28;
+        }
+        if (BookSelect.bookNum == 4)
+        {
+            firstStageNum = 29;
+            endStageNum = 35;
+        }
+        if (BookSelect.bookNum == 5)
+        {
+            firstStageNum = 36;
+            endStageNum = 42;
         }
 
-        //ScoreReset();            
+
+
+        for (int i = firstStageNum; i <= endStageNum; i++)
+        {
+            goldMedal[i] = GameObject.Find("GoldImage" + i);
+            silverMedal[i] = GameObject.Find("SilverImage" + i);
+            copperMedal[i] = GameObject.Find("CopperImage" + i);
+            if (score[i].isGold) goldMedal[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            else goldMedal[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+
+            if (score[i].isSilver) silverMedal[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            else silverMedal[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+
+            if (score[i].isCopper) copperMedal[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            else copperMedal[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+        }
+
         SilverConditionsSet();
 
         this.GetComponent<PostEffectController>().SetVigFlg(false);
     }
 
+    //==============================================================
+    // 更新処理
+    //==============================================================
     private void Update()
     {
         if (operationCnt == 1) eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
@@ -79,12 +152,9 @@ public class StageSelectManager : MonoBehaviour
         }
         else operationCnt--;
 
+        ExtraConditions();
         SceneChange();      // シーン遷移
 
-        if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
-        {
-            //ScoreDisplay();
-        }
     }
 
     // ページをめくる
@@ -113,53 +183,94 @@ public class StageSelectManager : MonoBehaviour
     {
         if (!sceneChangeFlg && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
         {
-            selectDecSource.Play();
+            DecSource.Play();
 
             // 現在のページ取得(ステージ番号)
-            StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+            StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum() + firstStageNum - 1;
 
             // シーン遷移開始
             if (StageManager.stageNum > 0)
             {
-                // 本を閉じる
-                eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-                // 部屋を暗くする
-                this.GetComponent<PostEffectController>().SetVigFlg(true);
+                if (stageEnterFlg)
+                {
+                    // 本を閉じる
+                    eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+                    // 部屋を暗くする
+                    this.GetComponent<PostEffectController>().SetVigFlg(true);
 
-                sceneChangeFlg = true;
+                    sceneChangeFlg = true;
+                }
             }
+        }
+
+        if (!sceneChangeFlg && (Input.GetKeyDown(KeyCode.B)))
+        {
+            DecSource.Play();
+
+            // 本を閉じる
+            eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+            sceneChangeFlg = true;
+            bookSelectFlg = true;
+            mist.SetActive(false);
         }
 
         if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetBookCloseFlg())
         {
-            // 遷移
-            SceneManager.LoadScene("Stage1Scene");
+            bookUI.SetActive(false);
+            cameraAnim.SetBool("isAnim", true);
+            if (bookSelectFlg)
+            {
+                bookBack.SetActive(true);
+
+                if (bookRemoveCnt == 0)
+                {
+                    book.transform.localPosition = new Vector3(-2.0f, 49.73f, -50.55f);
+                    book.transform.localEulerAngles = new Vector3(25.0f, 0.0f, -90.0f);
+                    book.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+                    book.transform.DOLocalMove(new Vector3((-2.0f + (BookSelect.bookNum * 0.75f)), 9.73f, -0.55f), 1.0f).OnComplete(() =>
+                         {
+                             SceneManager.LoadScene("NewSelectScene");
+                         });
+                    bookRemoveCnt = -1;
+                }
+                else
+                {
+                    Vector3 pos = new Vector3(0.0f, 0.5f, -0.5f);
+                    book.transform.position += pos;
+                    bookRemoveCnt--;
+                }
+            }
+            else
+            {
+                // 遷移
+                SceneManager.LoadScene("Stage1Scene");
+            }
         }
     }
 
-    //private void ScoreDisplay()
-    //{
-    //    // 現在のページ取得(ステージ番号)
-    //    StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+    private void ExtraConditions()
+    {
+        if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum() + firstStageNum - 1 == endStageNum)
+        {
+            int cnt = 0;
 
-    //    for (int i = 0; i < 42; i++)
-    //    {
-    //        if (score[StageManager.stageNum].isGold) goldImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-    //        else goldImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-    //    }
+            for (int i = firstStageNum; i <= endStageNum - 1; i++)
+            {
+                if (score[i].isCopper && score[i].isSilver && score[i].isGold) cnt++;
+            }
 
-    //    for (int i = 0; i < 42; i++)
-    //    {
-    //        if (score[StageManager.stageNum].isSilver) silverImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-    //        else silverImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-    //    }
-
-    //    for (int i = 0; i < 42; i++)
-    //    {
-    //        if (score[StageManager.stageNum].isCopper) copperImage[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-    //        else copperImage[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-    //    }
-    //}
+            if (cnt != endStageNum - 1)
+            {
+                stageEnterFlg = false;
+                mist.SetActive(true);
+            }
+        }
+        else
+        {
+            stageEnterFlg = true;
+            mist.SetActive(false);
+        }
+    }
 
     // 銀メダルの獲得条件をセット(ステージを折った回数)
     private void SilverConditionsSet()

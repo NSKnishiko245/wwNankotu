@@ -334,7 +334,7 @@ public class StageUIManager : MonoBehaviour
             case COMMAND.STAGE_SELECT:
                 if (menuCommandFirstFlg)
                 {
-                    changeSceneName = "SelectScene";
+                    changeSceneName = "StageSelect" + (BookSelect.bookNum + 1);
                     // Ž•ŽÔ‰ñ“]
                     menuSelectGear.GetComponent<GearRotation>().SetRotFlg(true);
                     menuRetryGear.GetComponent<GearRotation>().SetRotFlg(false);
@@ -386,7 +386,7 @@ public class StageUIManager : MonoBehaviour
             case COMMAND.STAGE_SELECT:
                 if (clearCommandFirstFlg)
                 {
-                    changeSceneName = "SelectScene";
+                    changeSceneName = "StageSelect" + (BookSelect.bookNum + 1);
                     // Ž•ŽÔ‰ñ“]
                     clearSelectGear.GetComponent<GearRotation>().SetRotFlg(true);
                     clearSelectGear2.GetComponent<GearRotation>().SetRotFlg(true);

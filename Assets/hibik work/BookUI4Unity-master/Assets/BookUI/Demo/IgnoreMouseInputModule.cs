@@ -32,6 +32,7 @@ public class IgnoreMouseInputModule : BaseInputModule
     private int pageCnt = 20;
     private int bookCloseCnt = 90;
     private bool bookCloseFlg = false;
+    private int bookNum = 0;
 
     [SerializeField] private AudioSource pageSeSource;
     //========================================
@@ -340,8 +341,16 @@ public class IgnoreMouseInputModule : BaseInputModule
                 {
                     if (bookCloseCnt == 60)
                     {
-                        bookLAnim = bookL.GetComponent<Animator>();
-                        bookLAnim.SetBool("isAnim", false);
+                        if (SceneManager.GetActiveScene().name == "NewSelectScene")
+                        {
+                            bookLAnim = GameObject.Find("book_L" + (bookNum + 1)).GetComponent<Animator>();
+                            bookLAnim.SetBool("isOpen", false);
+                        }
+                        else
+                        {
+                            bookLAnim = bookL.GetComponent<Animator>();
+                            bookLAnim.SetBool("isAnim", false);
+                        }
                     }
                     if (bookCloseCnt == 0) bookCloseFlg = true;
                     else bookCloseCnt--;
@@ -369,6 +378,11 @@ public class IgnoreMouseInputModule : BaseInputModule
     public bool GetBookCloseFlg()
     {
         return bookCloseFlg;
+    }
+
+    public void SetBookNum(int num)
+    {
+        bookNum = num;
     }
     //========================================
 }

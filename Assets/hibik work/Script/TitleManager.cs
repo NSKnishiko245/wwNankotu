@@ -9,10 +9,9 @@ public class TitleManager : MonoBehaviour
 {
     [SerializeField] private GameObject canvas;
     [SerializeField] private GameObject mainCamera;
-    [SerializeField] private GameObject book;
     private Animator canvasAnim;
     private Animator cameraAnim;
-    private Animator bookAnim;
+    private Animator pressAAnim;
 
     // サウンド
     [SerializeField] private AudioSource titleBgmSource;
@@ -25,14 +24,13 @@ public class TitleManager : MonoBehaviour
 
     [SerializeField] private int canvasAnimStartCnt;
     [SerializeField] private int cameraAnimStartCnt;
-    [SerializeField] private int bookAnimStartCnt;
 
 
     private void Awake()
     {
         canvasAnim = canvas.GetComponent<Animator>();
         cameraAnim = mainCamera.GetComponent<Animator>();
-        bookAnim = book.GetComponent<Animator>(); ;
+        pressAAnim = GameObject.Find("PressAImage").GetComponent<Animator>();
     }
 
     private void Update()
@@ -40,6 +38,7 @@ public class TitleManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
         {
             sceneChangeFlg = true;
+            pressAAnim.SetFloat("speed", 5.0f);
         }
 
         // シーン遷移開始
@@ -65,17 +64,11 @@ public class TitleManager : MonoBehaviour
             }
             else cameraAnimStartCnt--;
 
-            if (bookAnimStartCnt == 0)
-            {
-                bookAnim.SetBool("isAnim", true);
-            }
-            else bookAnimStartCnt--;
-
 
             // 一定時間経過すると遷移する
             if (sceneChangeCnt > sceneChangeTime)
             {
-                SceneManager.LoadScene("SelectScene");
+                SceneManager.LoadScene("NewSelectScene");
             }
             sceneChangeCnt++;
         }
