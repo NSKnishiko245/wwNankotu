@@ -23,9 +23,15 @@ public class ClearBlock : MonoBehaviour
     private int testcnt = 0;
     private int addcnt = 0;
 
+    private GameObject player;
+    private GameObject underline;
+
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("Player");
+        underline = GameObject.Find("UnderBorder");
+
         m_objblock.SetActive(false);
         m_collision.SetActive(false);
     }
@@ -88,6 +94,14 @@ public class ClearBlock : MonoBehaviour
                 m_objblock.SetActive(true);
                 m_collision.SetActive(true);
                 m_objNotblock.SetActive(false);
+            }
+
+            if (Mathf.Abs(transform.position.x - player.transform.position.x) < 0.25f)
+            {
+                if (Mathf.Abs(transform.position.y - player.transform.position.y) < 0.25f)
+                {
+                    underline.GetComponent<HitCreateEffect>().Bakuhatu(player);
+                }
             }
         }
     }

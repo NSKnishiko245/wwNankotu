@@ -481,6 +481,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 138375397197557065, guid: 5ebc2a45cc4bf0141ba2e816e9d9847c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 173634233433911215, guid: 5ebc2a45cc4bf0141ba2e816e9d9847c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1624029975710556119, guid: 5ebc2a45cc4bf0141ba2e816e9d9847c, type: 3}
       propertyPath: m_IsKinematic
       value: 1
@@ -5723,6 +5731,7 @@ MonoBehaviour:
   UnderBorder: {fileID: 1377248554}
   L_Smoke: {fileID: 1069936269}
   R_Smoke: {fileID: 1862847111}
+  waitTime: 1
   particleObject: {fileID: 6797351756067995477, guid: 447ba65fbd439914ba066b4908615494, type: 3}
   rotateNum: 0
   waitInterval: 0.2

@@ -46,6 +46,9 @@ public class StageManager : MonoBehaviour
     public GameObject L_Smoke;
     public GameObject R_Smoke;
 
+    public float waitTime = 1.0f;
+    private float waitTimer = 0.0f;
+
     //パーティクル描画用
     public GameObject particleObject;
 
@@ -366,8 +369,15 @@ public class StageManager : MonoBehaviour
         {
             IsGameClear = true;
         }
+
+        if (UnderBorder.GetComponent<HitCreateEffect>().isFinished)
+        {
+            waitTimer += Time.deltaTime;
+            Player.transform.Find("walk_UV").gameObject.SetActive(false);
+        }
+
         // ゲームオーバー検知
-        if (UnderBorder.GetComponent<HitAction>().isHit)
+        if (UnderBorder.GetComponent<HitAction>().isHit || waitTime <= waitTimer)
         {
             IsGameOver = true;
         }
@@ -406,6 +416,7 @@ public class StageManager : MonoBehaviour
         //        Bar_List[i].
         //    }
         //}
+        
     }
 
     // バーの回転処理
@@ -626,6 +637,8 @@ public class StageManager : MonoBehaviour
     }
     private void CopyStage(WARPSTATE state, bool flg = false)
     {
+        if (UnderBorder.GetComponent<HitCreateEffect>().isFinished) return;
+
         Destroy(BigParent);
         BigParent = new GameObject();
         ParentReset();

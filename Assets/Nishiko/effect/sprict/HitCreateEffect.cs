@@ -7,16 +7,18 @@ public class HitCreateEffect : MonoBehaviour
     public GameObject[] m_objParts;
     public ParticleSystem m_objExplosion;
     public AudioClip m_sound;
+
+    public bool isFinished { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        isFinished = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
     //private void OnCollisionEnter(Collision collision)
     //{
@@ -29,12 +31,21 @@ public class HitCreateEffect : MonoBehaviour
     {
         if (other.transform.tag == "Player")
         {
-            AudioSource.PlayClipAtPoint(m_sound, other.transform.position);//SEçƒê∂
-            Instantiate(m_objExplosion, other.transform.position, Quaternion.identity);
-            for(int i = 0; i < m_objParts.Length; i++)
+            Bakuhatu(other.gameObject);
+        }
+    }
+    
+    public void Bakuhatu(GameObject player)
+    {
+        if (!isFinished)
+        {
+            AudioSource.PlayClipAtPoint(m_sound, player.transform.position);//SEçƒê∂
+            Instantiate(m_objExplosion, player.transform.position, Quaternion.identity);
+            for (int i = 0; i < m_objParts.Length; i++)
             {
-                Instantiate(m_objParts[i],other.transform.position, Quaternion.identity);
+                Instantiate(m_objParts[i], player.transform.position, Quaternion.identity);
             }
+            isFinished = true;
         }
     }
 }
