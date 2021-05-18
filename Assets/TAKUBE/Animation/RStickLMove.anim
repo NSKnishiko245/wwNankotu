@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: tutorialUI_StickAnim
+  m_Name: RStickLMove
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -22,7 +22,7 @@ AnimationClip:
     - time: 0
       value: {fileID: 21300000, guid: d393e8aa5d93c9b489ed8d79eccc35b2, type: 3}
     - time: 0.33333334
-      value: {fileID: 21300000, guid: 48df46e44c328c24baddfc8446fa705b, type: 3}
+      value: {fileID: 21300000, guid: 9ddd4cbc1a199ca4398a205687515d10, type: 3}
     - time: 0.6666667
       value: {fileID: 21300000, guid: d393e8aa5d93c9b489ed8d79eccc35b2, type: 3}
     - time: 1
@@ -51,7 +51,7 @@ AnimationClip:
       isPPtrCurve: 1
     pptrCurveMapping:
     - {fileID: 21300000, guid: d393e8aa5d93c9b489ed8d79eccc35b2, type: 3}
-    - {fileID: 21300000, guid: 48df46e44c328c24baddfc8446fa705b, type: 3}
+    - {fileID: 21300000, guid: 9ddd4cbc1a199ca4398a205687515d10, type: 3}
     - {fileID: 21300000, guid: d393e8aa5d93c9b489ed8d79eccc35b2, type: 3}
     - {fileID: 21300000, guid: 9ddd4cbc1a199ca4398a205687515d10, type: 3}
     - {fileID: 21300000, guid: d393e8aa5d93c9b489ed8d79eccc35b2, type: 3}

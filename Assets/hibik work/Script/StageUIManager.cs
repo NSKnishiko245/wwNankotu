@@ -13,6 +13,7 @@ public class StageUIManager : MonoBehaviour
     private GameObject editCanvas;
     private GameObject player;
     public GameObject frontEffectCamera;
+    private GameObject Point;
 
     private GameObject bookL;
     private Animator bookLAnim;
@@ -183,6 +184,12 @@ public class StageUIManager : MonoBehaviour
             // プレイ中
             //-----------------------------------
             case STATUS.PLAY:
+
+                if (stageNum == 1)
+                {
+                    Point = GameObject.FindGameObjectWithTag("Point");
+                   
+                }
                 // カウントが０になるとプレイヤーとステージを表示する
                 if (stageDisplayCnt == 0)
                 {
@@ -215,7 +222,11 @@ public class StageUIManager : MonoBehaviour
                     eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
 
                     // チュートリアル非表示
-                    if (stageNum == 1) tutorialUI.SetActive(false);
+                    if (stageNum == 1)
+                    {
+                        Point.SetActive(false);
+                        tutorialUI.SetActive(false);
+                    }
                 }
 
                 // ステージクリア
@@ -257,6 +268,9 @@ public class StageUIManager : MonoBehaviour
 
                     // ステージを表示するまでの時間をセット
                     stageDisplayCnt = stageDisplayCntInit;
+
+                    Point.SetActive(true);
+                    tutorialUI.SetActive(true);
                 }
                 break;
 

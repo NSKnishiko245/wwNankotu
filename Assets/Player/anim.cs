@@ -36,6 +36,10 @@ public class anim : MonoBehaviour
         {
             m_anim.SetBool("move_flg", true);
         }
+        else if(m_playobj.GetComponent<Player>().IsHitBar)
+        {
+            m_anim.SetBool("move_flg", false);
+        }
         else
         {
             m_anim.SetBool("move_flg", false);
