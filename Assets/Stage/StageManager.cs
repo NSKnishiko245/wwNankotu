@@ -270,6 +270,7 @@ public class StageManager : MonoBehaviour
                 RotateState = ROTATESTATE.L_ROTATE;
                 ScreenShot();
                 rotateNum++;
+                Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.RIGHT;
             }
             if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.L))
             {
@@ -277,6 +278,7 @@ public class StageManager : MonoBehaviour
                 RotateState = ROTATESTATE.R_ROTATE;
                 ScreenShot();
                 rotateNum++;
+                Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.LEFT;
             }
         }
 
@@ -286,6 +288,7 @@ public class StageManager : MonoBehaviour
             if (flg)
             {
                 SecondFunc();
+
             }
             if (Tile_List[0].activeSelf)
             {
@@ -299,7 +302,6 @@ public class StageManager : MonoBehaviour
                 if (Tile_List[Tile_List.Count - 1].transform.Find("TileChild").GetComponent<ScreenShot>().isFinishedScreenShot())
                 {
                     FourFunc();
-
                 }
             }
         }
@@ -395,6 +397,14 @@ public class StageManager : MonoBehaviour
         {
             Camera.main.GetComponent<MoveCamera>().isMove = false;
         }
+        
+        //for (int i = 0; i < Tile_List.Count; i++)
+        //{
+        //    if (i == LeftBarIdx || i == RightBarIdx)
+        //    {
+        //        Bar_List[i].
+        //    }
+        //}
     }
 
     // ƒo[‚Ì‰ñ“]ˆ—
@@ -417,7 +427,7 @@ public class StageManager : MonoBehaviour
             {
                 playerPos.x -= Player.transform.localScale.x * 0.6f;
             }
-            Player.transform.position = playerPos;
+            //Player.transform.position = playerPos;
         }
         else
         {
@@ -831,15 +841,27 @@ public class StageManager : MonoBehaviour
             obj.GetComponent<MeshRenderer>().enabled = activeFlg;
         }
 
-        if (is3D != activeFlg)
+        if (is3D == false && activeFlg == true)
         {
             Grid.GetComponent<MeshRenderer>().enabled = true;
-
         }
         is3D = activeFlg;
 
-        int x = (int)(Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x);
-        Grid.GetComponent<CreateGrid>().ReGrid(x, 0);
+        float x = Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x;
+        int result;
+        float excess = x % 1.0f;
+        if (Mathf.Abs(excess) >= 0.5)
+        {
+            result = Mathf.CeilToInt(x);
+        }
+        else
+        {
+            result = Mathf.FloorToInt(x);
+        }
+
+        Debug.Log(result);
+       
+        Grid.GetComponent<CreateGrid>().ReGrid(result, 0);
         Grid.transform.position = new Vector3(
             Bar_List[LeftBarIdx].transform.position.x + (Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x) / 2.0f, 0.0f, 0.0f
         );
@@ -872,9 +894,10 @@ public class StageManager : MonoBehaviour
         FrontEffectCamera.SetActive(false);
         DeleteCopy();
         isCopy = false;
+        Grid.GetComponent<MeshRenderer>().enabled = false;
+        Grid.GetComponent<CreateGrid>().SetAlpha(0);
 
-        flg = true;
-
+        flg = true; 
     }
     private void SecondFunc()
     {

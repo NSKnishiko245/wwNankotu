@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
@@ -36,10 +37,19 @@ public class Player : MonoBehaviour
         BOTTOM,
     }
 
+    public enum MOVEDIR
+    {
+        NEUTRAL,
+        RIGHT,
+        LEFT
+    }
+    public MOVEDIR moveDir { private get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
+        moveDir = MOVEDIR.NEUTRAL;
+
         IsHitGoalBlock = false;
         pos = transform.position;
         rb = GetComponent<Rigidbody>();
@@ -106,6 +116,16 @@ public class Player : MonoBehaviour
         // Debug.Log(transform.rotation);
         //prev=transform.position;
 
+        if (moveDir == MOVEDIR.RIGHT)
+        {
+            this.transform.DOMoveX(transform.position.x + 0.5f, 1.0f);
+            moveDir = MOVEDIR.NEUTRAL;
+        }
+        else if (moveDir == MOVEDIR.LEFT)
+        {
+            this.transform.DOMoveX(transform.position.x - 0.5f, 1.0f);
+            moveDir = MOVEDIR.NEUTRAL;
+        }
     }
 
     public void TurnOnMove()
@@ -150,7 +170,6 @@ public class Player : MonoBehaviour
             {
                 if (transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().isHit)
                 {
-                    Debug.Log("“o‚Á‚½");
                     transform.position += Vector3.up * transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().HitBlockHeight;
                     transform.position += Vector3.left * 0.3f;
                     transform.GetChild((int)PLAYERHITBOX.RIGHT).gameObject.GetComponent<PlayerHitTest>().ResetHitFlg();
@@ -160,7 +179,6 @@ public class Player : MonoBehaviour
             {
                 if (transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().isHit)
                 {
-                    Debug.Log("“o‚Á‚½");
                     transform.position += Vector3.up * transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().HitBlockHeight;
                     transform.position += Vector3.right * 0.3f;
                     transform.GetChild((int)PLAYERHITBOX.LEFT).gameObject.GetComponent<PlayerHitTest>().ResetHitFlg();

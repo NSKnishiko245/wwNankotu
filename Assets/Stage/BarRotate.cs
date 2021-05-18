@@ -7,7 +7,9 @@ public class BarRotate : MonoBehaviour
     // –Ú•W‚ÌŠp“x
     private float Angle_Destination = 0.0f;
     // Šp‘¬“x‚ð–Ú•WŠp‚Ì‰½Š„‚É‚·‚é‚©
-    public float Angle_Speed = 3.0f;
+    public float Angle_Speed1 = 1.0f;
+    public float Angle_Speed2 = 2.0f;
+    public float slowAngle = 40.0f;
 
     //“–‚½‚Á‚Ä‚¢‚é‚©H
     public bool IsHit{ get; private set; }
@@ -90,10 +92,12 @@ public class BarRotate : MonoBehaviour
     // Šp‘¬“x‚Ì•„†Œˆ’è
     private void AngleSpeedJudge()
     {
-        Angle_Speed = Mathf.Abs(Angle_Speed);
+        Angle_Speed1 = Mathf.Abs(Angle_Speed1);
+        Angle_Speed2 = Mathf.Abs(Angle_Speed2);
         if (transform.localRotation.ToEuler().y > Angle_Destination)
         {
-            Angle_Speed *= -1.0f;
+            Angle_Speed1 *= -1.0f;
+            Angle_Speed2 *= -1.0f;
         }
     }
 
@@ -103,11 +107,18 @@ public class BarRotate : MonoBehaviour
         // Œ»Ý‚ÌŠp“x‚ª–Ú•W‚ÌŠp“x‚É“ž’B‚µ‚Ä‚¢‚È‚¯‚ê‚Î‰ñ“]‚ð‘±‚¯‚é
         if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) > 0.02f)
         {
+            Debug.Log(Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)));
             // ‰ñ“]
-            transform.Rotate(0.0f, Angle_Speed, 0.0f);
-
+            if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) > (180.0f - slowAngle) && Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) < (180.0f + slowAngle))
+            {
+                transform.Rotate(0.0f, Angle_Speed1, 0.0f);
+            }
+            else
+            {
+                transform.Rotate(0.0f, Angle_Speed2, 0.0f);
+            }
             // –Ú•W‚Ì’l‚ð’´‚¦‚½ê‡‚Í•â³
-            if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) < 0.02f)
+            if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) < 5.0f)
             {
                 transform.localRotation = Quaternion.Euler(0.0f, -Angle_Destination, 0.0f);
                 // ‰ñ“]I—¹Žž‚É‰ñ“]ó‘Ô‚ðXV
