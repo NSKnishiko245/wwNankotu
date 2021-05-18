@@ -4284,7 +4284,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 173389466}
   Bar: {fileID: 4194655685549358900, guid: 224478d88c8eb3647925ff4f47f222cc, type: 3}
-  movecountdown: 5
+  stagemanager: {fileID: 2081052301}
+  Pointcountdown: 2.5
   Oricountdown: 1
   Lstick: {fileID: 2038287220}
   Rstick: {fileID: 2038287219}
@@ -5565,7 +5566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7810287351447957913, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 288
+      value: -429
       objectReference: {fileID: 0}
     - target: {fileID: 7810287351447957913, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
       propertyPath: m_AnchoredPosition.y

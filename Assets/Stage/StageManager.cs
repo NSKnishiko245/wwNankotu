@@ -17,6 +17,8 @@ public class StageManager : MonoBehaviour
 
     public GameObject MapManager;
 
+    private GameObject tutorialManager;
+
     public GameObject Effect;
 
     private int[,] BlockNum_Map;
@@ -66,6 +68,7 @@ public class StageManager : MonoBehaviour
     public bool IsGameOver { get; private set; }
     public bool IsGameClear { get; private set; }
 
+    public bool IsRotate { get; private set; }
 
     bool flg = false;
     bool rerotFlg = false;
@@ -125,8 +128,10 @@ public class StageManager : MonoBehaviour
         GetComponent<StageRotate>().Init();
         ParentReset();
 
+        //チュートリアルマネージャー取得
+        tutorialManager = GameObject.Find("TutorialManager");
         // フラグ初期化
-        IsGameClear = IsGameOver = false;
+        IsGameClear = IsGameOver =IsRotate= false;
 
         Tile_subList = new List<GameObject>();
         Bar_subList = new List<GameObject>();
@@ -266,22 +271,30 @@ public class StageManager : MonoBehaviour
         // ステージの状況を見て回転できるかどうかを判断
         if (CanYouRotate() && !IsGameClear)
         {
-            // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
-            if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.J))
+            if (tutorialManager.GetComponent<tutorialManagaer>().IsRMove)
             {
-                RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_LEFT);
-                RotateState = ROTATESTATE.L_ROTATE;
-                ScreenShot();
-                rotateNum++;
-                Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.RIGHT;
+                // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
+                if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.J))
+                {
+                    RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_LEFT);
+                    RotateState = ROTATESTATE.L_ROTATE;
+                    ScreenShot();
+                    rotateNum++;
+                    Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.RIGHT;
+                    IsRotate = true;
+                }
             }
-            if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.L))
+            if (tutorialManager.GetComponent<tutorialManagaer>().IsLMove)
             {
-                RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_RIGHT);
-                RotateState = ROTATESTATE.R_ROTATE;
-                ScreenShot();
-                rotateNum++;
-                Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.LEFT;
+                if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.L))
+                {
+                    RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_RIGHT);
+                    RotateState = ROTATESTATE.R_ROTATE;
+                    ScreenShot();
+                    rotateNum++;
+                    Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.LEFT;
+                    IsRotate = true;
+                }
             }
         }
 
@@ -324,21 +337,25 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        // 回転済みのステージを戻す処理
-        if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
+        if (tutorialManager.GetComponent<tutorialManagaer>().IsRotateMove)
         {
-            if (!Camera.main.GetComponent<MoveCamera>().isMoveEx && !IsGameClear)
+            // 回転済みのステージを戻す処理
+            if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
             {
-                // 回転済みのバーを検出したら元に戻す回転処理を開始
-                for (int i = 0; i < Bar_List.Count; i++)
+                IsRotate = false;
+                if (!Camera.main.GetComponent<MoveCamera>().isMoveEx && !IsGameClear)
                 {
-                    if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
+                    // 回転済みのバーを検出したら元に戻す回転処理を開始
+                    for (int i = 0; i < Bar_List.Count; i++)
                     {
-                        //rotateNum++;
-                        FirstFunc();
-                        Player.GetComponent<Player>().TurnOffMove();
-                        Player.GetComponent<Player>().FixPos();
-                        break;
+                        if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
+                        {
+                            //rotateNum++;
+                            FirstFunc();
+                            Player.GetComponent<Player>().TurnOffMove();
+                            Player.GetComponent<Player>().FixPos();
+                            break;
+                        }
                     }
                 }
             }

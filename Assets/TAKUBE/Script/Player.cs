@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     [Header("プレイヤーのジャンプ力")]
     public float Jump;
 
+    private GameObject tutorialManager;
+
     private Rigidbody rb;
     private Vector3 pos;
     private bool Jumpflg;
@@ -23,6 +25,8 @@ public class Player : MonoBehaviour
     public bool IsHitGoalBlock { get; private set; }
 
     public bool IsHitBar { get; private set; }
+
+    public bool IsHitPoint { get; private set; }
 
     private Vector3 moveValue;
 
@@ -52,6 +56,7 @@ public class Player : MonoBehaviour
     {
         moveDir = MOVEDIR.NEUTRAL;
 
+        tutorialManager = GameObject.Find("TutorialManager");
         IsHitGoalBlock = false;
         pos = transform.position;
         rb = GetComponent<Rigidbody>();
@@ -75,20 +80,27 @@ public class Player : MonoBehaviour
 
         if (!IsHitGoalBlock)
         {
-            //移動処理
-            moveValue = transform.right * Speed * Time.deltaTime;
-            if (inputValue_x > 0)
+            if (tutorialManager.GetComponent<tutorialManagaer>().IsPlayerMove)
             {
-                transform.position += moveValue;
-                // transform.rotation = Quaternion.Euler(0, 0, 0);
-                IsMove = true;
-            }
-            else if (inputValue_x < 0)
-            {
-                transform.position -= moveValue;
-                //transform.rotation = Quaternion.Euler(0, 180, 0);
-                //m_anim.SetBool("move_flg", true);
-                IsMove = true;
+                //移動処理
+                moveValue = transform.right * Speed * Time.deltaTime;
+                if (inputValue_x > 0)
+                {
+                    transform.position += moveValue;
+                    // transform.rotation = Quaternion.Euler(0, 0, 0);
+                    IsMove = true;
+                }
+                else if (inputValue_x < 0)
+                {
+                    transform.position -= moveValue;
+                    //transform.rotation = Quaternion.Euler(0, 180, 0);
+                    //m_anim.SetBool("move_flg", true);
+                    IsMove = true;
+                }
+                else
+                {
+                    IsMove = false;
+                }
             }
             else
             {
@@ -127,6 +139,11 @@ public class Player : MonoBehaviour
         {
             this.transform.DOMoveX(transform.position.x - 0.5f, 1.0f);
             moveDir = MOVEDIR.NEUTRAL;
+        }
+
+        if (tutorialManager.GetComponent<tutorialManagaer>().IsPoint)
+        {
+            IsHitPoint = false;
         }
     }
 
@@ -233,6 +250,11 @@ public class Player : MonoBehaviour
             IsHitBar = true;
         }
 
+        if (other.transform.tag == "Point")
+        {
+            IsHitPoint = true;
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -240,6 +262,11 @@ public class Player : MonoBehaviour
         if (other.transform.tag == "Bar")
         {
             IsHitBar = false;
+        }
+
+        if (other.transform.tag == "Point")
+        {
+            IsHitPoint = false;
         }
     }
 }
