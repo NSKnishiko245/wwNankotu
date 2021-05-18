@@ -341,29 +341,21 @@ public class IgnoreMouseInputModule : BaseInputModule
                 {
                     if (bookCloseCnt == 60)
                     {
-                        if (SceneManager.GetActiveScene().name == "NewSelectScene")
-                        {
-                            bookLAnim = GameObject.Find("book_L" + (bookNum + 1)).GetComponent<Animator>();
-                            bookLAnim.SetBool("isOpen", false);
-                        }
-                        else
-                        {
-                            bookLAnim = bookL.GetComponent<Animator>();
-                            bookLAnim.SetBool("isAnim", false);
-                        }
+                        bookLAnim = bookL.GetComponent<Animator>();
+                        bookLAnim.SetBool("isAnim", false);
                     }
+
                     if (bookCloseCnt == 0) bookCloseFlg = true;
                     else bookCloseCnt--;
                 }
 
-                if (allBackFlg && pageCnt == 0)
+                if (allBackFlg && pageCnt <= 0)
                 {
                     pageNum--;
                     movement.x--;
                     pageCnt = pageCntInit;
                 }
                 else pageCnt--;
-
 
                 if (!allBackFlg && pageNum > 1)
                 {

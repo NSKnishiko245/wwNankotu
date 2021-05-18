@@ -35,9 +35,16 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] private AudioSource DecSource;
 
 
-    [SerializeField] private int sceneChangeCntInit; // シーン遷移までの時間
-    private int sceneChangeCnt = 0;                 // シーン遷移のカウンタ
+    private int sceneChangeCnt = 60;                 // シーン遷移のカウンタ
     private bool sceneChangeFlg = false;
+
+    enum COMMAND
+    {
+        EMPTY,
+        BOOK_SELECT,
+        STAGE,
+    }
+    COMMAND command;
 
     [SerializeField] private int pageIntervalInit;  // ページをめくれるまでの待機時間の初期値
     private int pageInterval = 0;
@@ -63,7 +70,6 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void Awake()
     {
-        sceneChangeCnt = sceneChangeCntInit;
         pageInterval = pageIntervalInit;
         operationCnt = operationCntInit;
 
@@ -81,6 +87,7 @@ public class StageSelectManager : MonoBehaviour
         goldMedal = new GameObject[stageMax + 1];
         silverMedal = new GameObject[stageMax + 1];
         copperMedal = new GameObject[stageMax + 1];
+        command = COMMAND.EMPTY;
 
         BookSelect.bookNum = bookNum - 1;
         if (BookSelect.bookNum == 0)
@@ -141,23 +148,28 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void Update()
     {
+        // １ページ目をめくる
         if (operationCnt == 1) eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
 
+        // 操作可能
         if (operationCnt == 0)
         {
+            // 本が閉じるときは操作不能にする
             if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
             {
-                PageOperation();
+                PageOperation(); // ページをめくる操作
             }
         }
         else operationCnt--;
 
-        ExtraConditions();
-        SceneChange();      // シーン遷移
-
+        //ExtraConditions();  // エクストラステージに入れるかチェック
+        StageSceneChange(); // ステージ画面への遷移
+        BookSelectChange(); // 本の選択画面への遷移
     }
 
-    // ページをめくる
+    //==============================================================
+    // ページをめくる操作
+    //==============================================================
     private void PageOperation()
     {
         if (pageInterval == 0)
@@ -178,10 +190,12 @@ public class StageSelectManager : MonoBehaviour
         else pageInterval--;
     }
 
-    // シーン遷移
-    private void SceneChange()
+    //==============================================================
+    // ステージ画面への遷移
+    //==============================================================
+    private void StageSceneChange()
     {
-        if (!sceneChangeFlg && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
+        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
         {
             DecSource.Play();
 
@@ -193,54 +207,21 @@ public class StageSelectManager : MonoBehaviour
             {
                 if (stageEnterFlg)
                 {
-                    // 本を閉じる
-                    eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-                    // 部屋を暗くする
-                    this.GetComponent<PostEffectController>().SetVigFlg(true);
-
-                    sceneChangeFlg = true;
+                    command = COMMAND.STAGE;
+                    Debug.Log(StageManager.stageNum);
                 }
             }
         }
 
-        if (!sceneChangeFlg && (Input.GetKeyDown(KeyCode.B)))
+        if (command == COMMAND.STAGE)
         {
-            DecSource.Play();
-
             // 本を閉じる
             eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-            sceneChangeFlg = true;
-            bookSelectFlg = true;
-            mist.SetActive(false);
-        }
+            // 部屋を暗くする
+            this.GetComponent<PostEffectController>().SetVigFlg(true);
 
-        if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetBookCloseFlg())
-        {
-            bookUI.SetActive(false);
-            cameraAnim.SetBool("isAnim", true);
-            if (bookSelectFlg)
-            {
-                bookBack.SetActive(true);
-
-                if (bookRemoveCnt == 0)
-                {
-                    book.transform.localPosition = new Vector3(-2.0f, 49.73f, -50.55f);
-                    book.transform.localEulerAngles = new Vector3(25.0f, 0.0f, -90.0f);
-                    book.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-                    book.transform.DOLocalMove(new Vector3((-2.0f + (BookSelect.bookNum * 0.75f)), 9.73f, -0.55f), 1.0f).OnComplete(() =>
-                         {
-                             SceneManager.LoadScene("NewSelectScene");
-                         });
-                    bookRemoveCnt = -1;
-                }
-                else
-                {
-                    Vector3 pos = new Vector3(0.0f, 0.5f, -0.5f);
-                    book.transform.position += pos;
-                    bookRemoveCnt--;
-                }
-            }
-            else
+            // 本が閉じ終わった
+            if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetBookCloseFlg())
             {
                 // 遷移
                 SceneManager.LoadScene("Stage1Scene");
@@ -248,23 +229,81 @@ public class StageSelectManager : MonoBehaviour
         }
     }
 
+    //==============================================================
+    // 本の選択画面への遷移
+    //==============================================================
+    private void BookSelectChange()
+    {
+        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.B)) || Input.GetKeyDown("joystick button 1"))
+        {
+            DecSource.Play();
+
+            // 本を閉じる
+            eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+            mist.SetActive(false);
+            command = COMMAND.BOOK_SELECT;
+        }
+
+        // 本が閉じ終わった
+        if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetBookCloseFlg() && command == COMMAND.BOOK_SELECT)
+        {
+            bookUI.SetActive(false);
+            bookBack.SetActive(true);
+            cameraAnim.SetBool("isAnim", true);
+
+            // 本が上に上がる
+            if (bookRemoveCnt > 0)
+            {
+                Vector3 pos = new Vector3(0.0f, 0.5f, -0.5f);
+                book.transform.position += pos;
+                bookRemoveCnt--;
+            }
+            // 本が棚に戻る
+            if (bookRemoveCnt == 0)
+            {
+                book.transform.localPosition = new Vector3(-2.0f, 49.73f, -50.55f);
+                book.transform.localEulerAngles = new Vector3(25.0f, 0.0f, -90.0f);
+                book.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+                book.transform.DOLocalMove(new Vector3((-2.0f + (BookSelect.bookNum * 0.75f)), 9.73f, -0.55f), 0.75f).OnComplete(() =>
+                {
+                    sceneChangeFlg = true;
+                });
+                bookRemoveCnt = -1;
+            }
+
+            // シーン遷移
+            if (sceneChangeFlg)
+            {
+                if (sceneChangeCnt == 0) SceneManager.LoadScene("NewSelectScene");
+                else sceneChangeCnt--;
+            }
+        }
+    }
+
+    //==============================================================
+    // エクストラステージに入れるかチェック
+    //==============================================================
     private void ExtraConditions()
     {
+        // 開いているページがエクストラステージの時
         if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum() + firstStageNum - 1 == endStageNum)
         {
             int cnt = 0;
 
+            // 各ステージのメダルを取得できているかチェック
             for (int i = firstStageNum; i <= endStageNum - 1; i++)
             {
                 if (score[i].isCopper && score[i].isSilver && score[i].isGold) cnt++;
             }
 
+            // 条件を満たしていない時は入れない
             if (cnt != endStageNum - 1)
             {
                 stageEnterFlg = false;
                 mist.SetActive(true);
             }
         }
+        // 開いているページがエクストラステージ以外の時
         else
         {
             stageEnterFlg = true;
@@ -272,7 +311,9 @@ public class StageSelectManager : MonoBehaviour
         }
     }
 
+    //==============================================================
     // 銀メダルの獲得条件をセット(ステージを折った回数)
+    //==============================================================
     private void SilverConditionsSet()
     {
         silverConditions[0] = 0;

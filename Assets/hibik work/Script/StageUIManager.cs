@@ -12,7 +12,7 @@ public class StageUIManager : MonoBehaviour
     private GameObject tutorialUI;
     private GameObject editCanvas;
     private GameObject player;
-    public  GameObject frontEffectCamera;
+    public GameObject frontEffectCamera;
 
     private GameObject bookL;
     private Animator bookLAnim;
@@ -20,6 +20,8 @@ public class StageUIManager : MonoBehaviour
     // メニューのUI
     private GameObject menuSelectGear;
     private GameObject menuRetryGear;
+    private GameObject menuSelect;
+    private GameObject menuRetry;
 
     // クリアのUI
     private GameObject clearSelectGear;
@@ -27,15 +29,20 @@ public class StageUIManager : MonoBehaviour
     private GameObject clearNextGear;
     private GameObject clearNextGear2;
 
+    [SerializeField] private Material[] material = new Material[6];
+
     // サウンド
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource resultSource;
     [SerializeField] private AudioSource selectDecSource;
 
     [SerializeField] private bool editFlg = false;  // true:エディット表示
+    [SerializeField] private bool debugFlg = false;  // true:デバッグテキスト表示
+
     [SerializeField] private int stageNum;   // ステージ番号
 
     // デバック用テキスト
+    GameObject debug;
     Text stageNumText;
     Text rotateNumText;
     Text silverMedalNumText;
@@ -107,6 +114,11 @@ public class StageUIManager : MonoBehaviour
         clearSelectGear2 = GameObject.Find("SelectUnderGearImage");
         clearNextGear = GameObject.Find("NextGearImage");
         clearNextGear2 = GameObject.Find("NextUnderGearImage");
+        menuSelect = GameObject.Find("StageSelect");
+        menuRetry = GameObject.Find("Retry");
+
+        GameObject.Find("book_L2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
+        GameObject.Find("book_R2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
 
         // ステージ番号取得
         stageNum = StageManager.stageNum;
@@ -127,15 +139,23 @@ public class StageUIManager : MonoBehaviour
         bookLAnim = bookL.GetComponent<Animator>();
         bookLAnim.SetBool("isAnim", true);
 
-        stageNumText = GameObject.Find("StageNumText").GetComponent<Text>();
-        stageNumText.text = "ステージ番号:" + StageManager.stageNum;
+        if (debugFlg)
+        {
+            stageNumText = GameObject.Find("StageNumText").GetComponent<Text>();
+            stageNumText.text = "ステージ番号:" + StageManager.stageNum;
 
-        rotateNumText = GameObject.Find("RotateNumText").GetComponent<Text>();
+            rotateNumText = GameObject.Find("RotateNumText").GetComponent<Text>();
 
-        silverMedalNumText = GameObject.Find("SilverMedalNumText").GetComponent<Text>();
-        silverMedalNumText.text = "銀メダルの回数:" + StageSelectManager.silverConditions[StageManager.stageNum];
+            silverMedalNumText = GameObject.Find("SilverMedalNumText").GetComponent<Text>();
+            silverMedalNumText.text = "銀メダルの回数:" + StageSelectManager.silverConditions[StageManager.stageNum];
 
-        inputField = GameObject.Find("InputField").GetComponent<InputField>();
+            inputField = GameObject.Find("InputField").GetComponent<InputField>();
+        }
+        else
+        {
+            debug = GameObject.Find("DebugCanvas");
+            debug.SetActive(false);
+        }
     }
 
     //==============================================================
@@ -273,17 +293,20 @@ public class StageUIManager : MonoBehaviour
 
                 if (clearCommandOperationCnt == 0)
                 {
-                    // クリアコマンド更新処理
-                    ClearCommandOperation();
-
-                    // コマンド決定
-                    if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+                    if (this.GetComponent<ScoreAnimation>().GetOperationFlg())
                     {
-                        status = STATUS.COMMAND_DECISION;
-                        selectDecSource.Play();
-                        this.GetComponent<ScoreAnimation>().EndFlgOn();
-                        sceneChangeCnt = 180;
-                        endBookCnt = 90;
+                        // クリアコマンド更新処理
+                        ClearCommandOperation();
+
+                        // コマンド決定
+                        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+                        {
+                            status = STATUS.COMMAND_DECISION;
+                            selectDecSource.Play();
+                            this.GetComponent<ScoreAnimation>().EndFlgOn();
+                            sceneChangeCnt = 180;
+                            endBookCnt = 90;
+                        }
                     }
                 }
                 else clearCommandOperationCnt--;
@@ -318,7 +341,7 @@ public class StageUIManager : MonoBehaviour
         if (tempStatus != status) statusFirstFlg = true;
 
         // デバッグ用テキスト更新処理
-        DebugUpdate();
+        if(debugFlg) DebugUpdate();
     }
 
     //==============================================================
@@ -337,7 +360,9 @@ public class StageUIManager : MonoBehaviour
                     changeSceneName = "StageSelect" + (BookSelect.bookNum + 1);
                     // 歯車回転
                     menuSelectGear.GetComponent<GearRotation>().SetRotFlg(true);
+                    menuSelect.transform.localScale = new Vector3(2.75f, 2.75f, 1.0f);
                     menuRetryGear.GetComponent<GearRotation>().SetRotFlg(false);
+                    menuRetry.transform.localScale = new Vector3(2.5f, 2.5f, 1.0f);
                     menuCommandFirstFlg = false;
                 }
 
@@ -357,7 +382,9 @@ public class StageUIManager : MonoBehaviour
                     changeSceneName = SceneManager.GetActiveScene().name;
                     // 歯車回転
                     menuSelectGear.GetComponent<GearRotation>().SetRotFlg(false);
+                    menuSelect.transform.localScale = new Vector3(2.5f, 2.5f, 1.0f);
                     menuRetryGear.GetComponent<GearRotation>().SetRotFlg(true);
+                    menuRetry.transform.localScale = new Vector3(2.75f, 2.75f, 1.0f);
                     menuCommandFirstFlg = false;
                 }
 

@@ -8271,7 +8271,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'fps:'
+  m_Text: 
 --- !u!222 &1240232786
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13247,7 +13247,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1980304283}
-  - component: {fileID: 1980304281}
   - component: {fileID: 1980304280}
   - component: {fileID: 1980304279}
   - component: {fileID: 1980304278}
@@ -13467,18 +13466,6 @@ MonoBehaviour:
   fire: {fileID: 1636840331}
   intensityMax: 0.25
   intensityVal: 0.01
---- !u!114 &1980304281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980304277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cfe35f7973b97c4996f808803b3816f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1980304282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13497,7 +13484,6 @@ MonoBehaviour:
   mist: {fileID: 0}
   BgmSource: {fileID: 1980304279}
   DecSource: {fileID: 1980304278}
-  sceneChangeCntInit: 0
   pageIntervalInit: 15
   operationCntInit: 45
 --- !u!4 &1980304283

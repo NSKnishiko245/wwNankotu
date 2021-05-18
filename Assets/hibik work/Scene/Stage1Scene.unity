@@ -3678,7 +3678,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1576787888}
-  - component: {fileID: 1576787887}
   - component: {fileID: 1576787886}
   - component: {fileID: 1576787890}
   - component: {fileID: 1576787891}
@@ -3801,26 +3800,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frontEffectCamera: {fileID: 1016961393}
+  material:
+  - {fileID: 2100000, guid: 911df1d8516e7054ea122234ebc43b00, type: 2}
+  - {fileID: 2100000, guid: a78d181cffb1651449cc232916a802f6, type: 2}
+  - {fileID: 2100000, guid: 34ad06bd026f30645b15b374f29865fa, type: 2}
+  - {fileID: 2100000, guid: c267d7ac30f64f546872f516aff4ccfd, type: 2}
+  - {fileID: 2100000, guid: 16158d5af88d6a44b984553cf4e65d3a, type: 2}
+  - {fileID: 2100000, guid: 3b7addecb650930438cba955b448c0ed, type: 2}
   bgmSource: {fileID: 1576787884}
   resultSource: {fileID: 1576787889}
   selectDecSource: {fileID: 1576787892}
   editFlg: 0
+  debugFlg: 0
   stageNum: 0
   stageDisplayCntInit: 30
   clearCommandOperationCntInit: 260
   gameOverCntInit: 0
---- !u!114 &1576787887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1576787883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cfe35f7973b97c4996f808803b3816f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1576787888
 Transform:
   m_ObjectHideFlags: 0
@@ -4218,6 +4213,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 911df1d8516e7054ea122234ebc43b00, type: 2}
+    - target: {fileID: 2907117055490682171, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
+      propertyPath: m_Name
+      value: book_L2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3570141748446138385, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
+      propertyPath: m_Name
+      value: book_R2
+      objectReference: {fileID: 0}
     - target: {fileID: 7904459240833186205, guid: f4d941b6b4ad69041b4fbaa9034a78af, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

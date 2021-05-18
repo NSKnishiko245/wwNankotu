@@ -19,7 +19,7 @@ public class BookSelect : MonoBehaviour
     private int stageMax = 43;  // ステージの最大数
 
     public static int bookNum = 0;    // 本の番号
-    private int bookSelectCntInit = 30;
+    private int bookSelectCntInit = 15;
     private int bookSelectCnt = 0;
     private bool bookSelectFlg = false;
     private int bookRemoveCnt = 60;
@@ -141,7 +141,7 @@ public class BookSelect : MonoBehaviour
                         book[bookNum].transform.localScale = new Vector3(2.215f, 2.115f, 2.8f);
                         book[bookNum].transform.localEulerAngles = new Vector3(88.8f, 180.0f, 0.0f);
                         bookRemoveCnt = -1;
-                        book[bookNum].transform.DOLocalMove(new Vector3(-0.77f, -0.08f, 0.61f), 1.0f).OnComplete(() =>
+                        book[bookNum].transform.DOLocalMove(new Vector3(-0.77f, -0.08f, 0.61f), 0.75f).OnComplete(() =>
                         {
                             sceneChangeFlg = true;
                         });

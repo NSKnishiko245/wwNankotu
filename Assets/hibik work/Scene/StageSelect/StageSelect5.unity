@@ -343,7 +343,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'fps:'
+  m_Text: 
 --- !u!222 &5784508
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5100,7 +5100,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 911df1d8516e7054ea122234ebc43b00, type: 2}
+  - {fileID: 2100000, guid: 16158d5af88d6a44b984553cf4e65d3a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12805,7 +12805,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2025055471}
-  - component: {fileID: 2025055470}
   - component: {fileID: 2025055469}
   - component: {fileID: 2025055468}
   - component: {fileID: 2025055467}
@@ -12835,7 +12834,6 @@ MonoBehaviour:
   mist: {fileID: 0}
   BgmSource: {fileID: 2025055468}
   DecSource: {fileID: 2025055467}
-  sceneChangeCntInit: 0
   pageIntervalInit: 15
   operationCntInit: 45
 --- !u!82 &2025055467
@@ -13046,18 +13044,6 @@ MonoBehaviour:
   fire: {fileID: 321404885}
   intensityMax: 0.25
   intensityVal: 0.01
---- !u!114 &2025055470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2025055465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cfe35f7973b97c4996f808803b3816f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2025055471
 Transform:
   m_ObjectHideFlags: 0

@@ -27,7 +27,7 @@ public class ScoreAnimation : MonoBehaviour
     private Vector3 cameraMovePos;      // カメラが１フレームに移動する座標
     [SerializeField] private int cameraMoveSpeed; // カメラが移動する速度
     private int cameraStartMoveCnt;          // カメラが移動する回数
-    private int stageDeleteCnt=120;
+    private int stageDeleteCnt = 120;
 
     // ステージクリアしてからステージクリアのテキストが出るまでの時間
     [SerializeField] private int stageClearTextCnt;
@@ -53,6 +53,7 @@ public class ScoreAnimation : MonoBehaviour
     private bool endFlg = false;      // クリアアニメーション終了
     private bool silverFlg = false;
     private bool goldFlg = false;
+    private bool operationFlg = false;
 
     //==============================================================
     // 初期処理
@@ -150,6 +151,7 @@ public class ScoreAnimation : MonoBehaviour
         else stageClearTextCnt--;
 
         // ステージクリアしてからNextStageとStageSelectが出るまでの時間が０
+
         if (clearUiCnt == 0)
         {
             nextStageAnim.SetBool("isMove", true);
@@ -160,10 +162,23 @@ public class ScoreAnimation : MonoBehaviour
         // 〃が回転するまでの時間が０
         if (clearUiRotCnt == 0)
         {
-            nextStageAnim.SetBool("isRot", true);
-            stageSelectAnim.SetBool("isRot", true);
+            if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
+            {
+                nextStageAnim.SetBool("isRot", true);
+                stageSelectAnim.SetBool("isRot", true);
+                operationFlg = true;
+            }
         }
         else clearUiRotCnt--;
+
+        if (operationFlg)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Vector3 pos = new Vector3(0.0f, -0.1f, 0.0f);
+                medal[i].transform.position += pos;
+            }
+        }
     }
 
     //==============================================================
@@ -219,6 +234,11 @@ public class ScoreAnimation : MonoBehaviour
             }
         }
         else medalRotationStartCnt--;
+    }
+
+    public bool GetOperationFlg()
+    {
+        return operationFlg;
     }
 
     public void StartFlgOn()

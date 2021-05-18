@@ -1386,7 +1386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BgmSource: {fileID: 729740260}
   DecSource: {fileID: 729740259}
-  sceneChangeCntInit: 45
+  sceneChangeCntInit: 0
   pageIntervalInit: 15
   operationCntInit: 60
 --- !u!1 &752061466
