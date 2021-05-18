@@ -48,7 +48,6 @@ public class tutorialManagaer : MonoBehaviour
 
         if (input_x==0)
         {
-            
             movecountdown -= Time.deltaTime;
             if (movecountdown <= 0.0f)
             {
@@ -68,13 +67,10 @@ public class tutorialManagaer : MonoBehaviour
         else
         {
             movecountdown = 5.0f;
-            
-
         }
 
         if (Player.GetComponent<Player>().IsHitBar)
         {
-            
             Oricountdown -= Time.deltaTime;
             if (Oricountdown <= 0)
             {

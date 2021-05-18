@@ -107,7 +107,6 @@ public class BarRotate : MonoBehaviour
         // Œ»Ý‚ÌŠp“x‚ª–Ú•W‚ÌŠp“x‚É“ž’B‚µ‚Ä‚¢‚È‚¯‚ê‚Î‰ñ“]‚ð‘±‚¯‚é
         if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) > 0.02f)
         {
-            Debug.Log(Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)));
             // ‰ñ“]
             if (Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) > (180.0f - slowAngle) && Mathf.Abs(Mathf.Abs(transform.localEulerAngles.y) - Mathf.Abs(Angle_Destination)) < (180.0f + slowAngle))
             {

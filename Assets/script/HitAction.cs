@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HitAction : MonoBehaviour
 {
-    public bool isHit { get; private set; }
+    public bool isHit { get; set; }
 
     // Start is called before the first frame update
     void Start()

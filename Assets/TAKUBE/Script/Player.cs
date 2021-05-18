@@ -26,11 +26,13 @@ public class Player : MonoBehaviour
 
     private Vector3 moveValue;
 
+    public float downSpeed = 5.0f;
+
     //プレイヤーの向きを変える
     private Vector3 prev;
     public bool IsMove { get; private set; }
 
-    private enum PLAYERHITBOX
+    public enum PLAYERHITBOX
     {
         RIGHT,
         LEFT,
@@ -189,7 +191,9 @@ public class Player : MonoBehaviour
         {
             //足場に触れていないのでuseGravityを有効
             // this.gameObject.GetComponent<Rigidbody>().useGravity = true;
+            //transform.position -= Vector3.up * 0.1f;
         }
+        rb.AddForce(Vector3.down * downSpeed);
     }
 
     public bool IsPut()

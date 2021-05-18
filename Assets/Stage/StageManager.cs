@@ -376,6 +376,7 @@ public class StageManager : MonoBehaviour
         if (!isStopStage())
         {
             resetFlg = true;
+            //Player.transform.GetChild((int)global::Player.PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit = false;
         }
         else
         {
@@ -858,8 +859,6 @@ public class StageManager : MonoBehaviour
         {
             result = Mathf.FloorToInt(x);
         }
-
-        Debug.Log(result);
        
         Grid.GetComponent<CreateGrid>().ReGrid(result, 0);
         Grid.transform.position = new Vector3(
