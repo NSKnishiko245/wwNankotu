@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3382238162715750276}
   - component: {fileID: 8957469900344240128}
   - component: {fileID: 1739184140549456088}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 10
   m_TagString: Block
   m_Icon: {fileID: 0}
@@ -230,6 +230,10 @@ PrefabInstance:
     - target: {fileID: 1336258831749181835, guid: 58eeb837baef9b44db266e013769a09e, type: 3}
       propertyPath: m_Name
       value: kirakira
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336258831749181835, guid: 58eeb837baef9b44db266e013769a09e, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58eeb837baef9b44db266e013769a09e, type: 3}

@@ -4169,10 +4169,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 706a1a2ea6525ad46982a6531ad46fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectBgmSource: {fileID: 162986742}
-  selectDecSource: {fileID: 162986741}
-  eventSystem: {fileID: 484743433}
-  sceneChangeTime: 0
+  bookL: {fileID: 0}
+  bookBack: {fileID: 0}
+  bookNum: 0
+  mist: {fileID: 0}
+  BgmSource: {fileID: 0}
+  DecSource: {fileID: 0}
   pageIntervalInit: 15
   operationCntInit: 45
 --- !u!4 &162986745

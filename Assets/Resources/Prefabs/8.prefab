@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &994643194513195408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7901606167877267943}
+  m_Layer: 0
+  m_Name: RightGear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7901606167877267943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994643194513195408}
+  m_LocalRotation: {x: 0, y: 0, z: 0.99933165, w: 0.036556564}
+  m_LocalPosition: {x: 0.425, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7855497590069846774}
+  m_Father: {fileID: 1567604604047025453}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 175.81}
 --- !u!1 &5229814969356415906
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,8 +59,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5438012739968564814}
-  - {fileID: 7855497590069846774}
-  - {fileID: 2612110446376228073}
+  - {fileID: 8963871100654188796}
+  - {fileID: 7901606167877267943}
   m_Father: {fileID: 2581296486799144762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46,7 +77,7 @@ GameObject:
   - component: {fileID: 7767222620934341066}
   - component: {fileID: 6815929571747309702}
   - component: {fileID: 6197315779747000731}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: 8
   m_TagString: GimicMoveBlock
   m_Icon: {fileID: 0}
@@ -77,10 +108,10 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6764095809881595932}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.95, y: 0.95, z: 0.95}
+  m_Size: {x: 0.93, y: 0.93, z: 0.93}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7767222620934341066
 Rigidbody:
@@ -96,7 +127,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &6815929571747309702
 MonoBehaviour:
@@ -112,6 +143,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_audioClip: {fileID: 8300000, guid: e0106850a4ab43a48ae3218ce7f9e795, type: 3}
   m_objCollision: {fileID: 8043617913724248156}
+  m_objLeftGear: {fileID: 7623081923466730480}
+  m_objRightGear: {fileID: 994643194513195408}
+  m_objParticle: {fileID: 4040988916393352794, guid: 8b73a0bfc8decc445ad343da4a16ec63, type: 3}
 --- !u!114 &6197315779747000731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +159,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AlphaState: 0
+--- !u!1 &7623081923466730480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8963871100654188796}
+  m_Layer: 0
+  m_Name: LeftGear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8963871100654188796
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7623081923466730480}
+  m_LocalRotation: {x: -0, y: 0, z: -0.98977625, w: -0.14262867}
+  m_LocalPosition: {x: -0.425, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2612110446376228073}
+  m_Father: {fileID: 1567604604047025453}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -196.4}
 --- !u!1 &8043617913724248156
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 109563604472988491}
   - component: {fileID: 4486248107316481578}
-  m_Layer: 12
+  m_Layer: 11
   m_Name: collisiion
   m_TagString: ClimbBlock
   m_Icon: {fileID: 0}
@@ -167,30 +232,30 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.95, y: 0.95, z: 0.95}
+  m_Size: {x: 0.93, y: 0.93, z: 0.93}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2579064922678424322
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1567604604047025453}
+    m_TransformParent: {fileID: 8963871100654188796}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 38389d03b0e74fc49af1d0847ea2e23f, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 38389d03b0e74fc49af1d0847ea2e23f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.009999999
+      value: 0.009999998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 38389d03b0e74fc49af1d0847ea2e23f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.009999999
+      value: 0.009999998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 38389d03b0e74fc49af1d0847ea2e23f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.425
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 38389d03b0e74fc49af1d0847ea2e23f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -346,23 +411,23 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1567604604047025453}
+    m_TransformParent: {fileID: 7901606167877267943}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6c4100ca044a3f64bb464776cbac64fe, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c4100ca044a3f64bb464776cbac64fe, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.009999999
+      value: 0.009999998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c4100ca044a3f64bb464776cbac64fe, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.009999999
+      value: 0.009999998
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c4100ca044a3f64bb464776cbac64fe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.425
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c4100ca044a3f64bb464776cbac64fe, type: 3}
       propertyPath: m_LocalPosition.y

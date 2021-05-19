@@ -3819,7 +3819,7 @@ MonoBehaviour:
   resultSource: {fileID: 1576787889}
   selectDecSource: {fileID: 1576787892}
   editFlg: 0
-  debugFlg: 0
+  debugFlg: 1
   stageNum: 0
   stageDisplayCntInit: 30
   clearCommandOperationCntInit: 260

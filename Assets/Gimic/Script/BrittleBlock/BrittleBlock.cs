@@ -31,10 +31,12 @@ public class BrittleBlock : MonoBehaviour
  
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-        if (collision.transform.tag == "ClimbBlock")
+        Debug.Log(collision.transform.tag);
+        if (collision.transform.tag == "ClimbBlock"||collision.transform.tag=="GimicMoveBlock")
         {
+            
             AudioSource.PlayClipAtPoint(m_sound, this.transform.position);//SE再生
             Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
             for (int i = 0; i < m_obj.Length; i++)
@@ -43,6 +45,20 @@ public class BrittleBlock : MonoBehaviour
             }
             Destroy(m_blockobj.gameObject);
         }
+        
     }
 
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.transform.tag == "ClimbBlock")
+    //    {
+    //        AudioSource.PlayClipAtPoint(m_sound, this.transform.position);//SE再生
+    //        Instantiate(m_endeffect, this.transform.position, Quaternion.identity); //消滅時にエフェクトを使用する
+    //        for (int i = 0; i < m_obj.Length; i++)
+    //        {
+    //            Instantiate(m_obj[i], this.transform.position, Quaternion.identity);
+    //        }
+    //        Destroy(m_blockobj.gameObject);
+    //    }
+    //}
 }
