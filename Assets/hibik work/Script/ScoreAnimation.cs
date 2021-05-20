@@ -230,7 +230,6 @@ public class ScoreAnimation : MonoBehaviour
                 StageSelectManager.score[StageManager.stageNum].isGold)
             {
                 for (int i = 0; i < 3; i++) medal[i].GetComponent<GearRotation>().SetRotFlg(true);
-                startFlg = false;
             }
         }
         else medalRotationStartCnt--;

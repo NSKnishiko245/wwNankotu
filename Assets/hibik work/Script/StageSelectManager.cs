@@ -72,7 +72,6 @@ public class StageSelectManager : MonoBehaviour
     {
         pageInterval = pageIntervalInit;
         operationCnt = operationCntInit;
-
         eventSystem = GameObject.Find("EventSystem");
         bookLAnim = bookL.GetComponent<Animator>();
         bookLAnim.SetBool("isAnim", true);
