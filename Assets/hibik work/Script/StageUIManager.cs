@@ -49,6 +49,9 @@ public class StageUIManager : MonoBehaviour
     Text silverMedalNumText;
     InputField inputField;
 
+    // ステージ画像用
+    GameObject stageImage;
+
     // シーン遷移までの時間
     private int sceneChangeCnt;
     private string changeSceneName;
@@ -103,6 +106,11 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     private void Awake()
     {
+        // ステージの画像を取得
+        stageImage = GameObject.Find("StageImage");
+        Sprite sprite = Resources.Load<Sprite>("StageImage/st" + StageManager.stageNum);
+        stageImage.GetComponent<Image>().sprite = sprite;
+
         eventSystem = GameObject.Find("EventSystem");
         stageManager = GameObject.Find("stageManager");
         tutorialUI = GameObject.Find("TutorialUI");
@@ -194,6 +202,7 @@ public class StageUIManager : MonoBehaviour
                 if (stageDisplayCnt == 0)
                 {
                     StageDisplay(true);
+                    stageImage.SetActive(false);
                     if (stageNum == 1) tutorialUI.SetActive(true);
                 }
                 else stageDisplayCnt--;
@@ -217,6 +226,7 @@ public class StageUIManager : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                 {
                     status = STATUS.MENU;
+                    stageImage.SetActive(true);
 
                     // ページを進める
                     eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
@@ -269,8 +279,12 @@ public class StageUIManager : MonoBehaviour
                     // ステージを表示するまでの時間をセット
                     stageDisplayCnt = stageDisplayCntInit;
 
-                    Point.SetActive(true);
-                    tutorialUI.SetActive(true);
+                    // チュートリアル表示
+                    if (stageNum == 1)
+                    {
+                        Point.SetActive(true);
+                        tutorialUI.SetActive(true);
+                    }
                 }
                 break;
 
@@ -534,6 +548,11 @@ public class StageUIManager : MonoBehaviour
             frontEffectCamera.SetActive(false);
         }
         stageDisplayFlg = sts;
+    }
+
+    public void StageImageDisplay(bool sts)
+    {
+        stageImage.SetActive(sts);
     }
 
     public void SetGoldMedalFlg(bool sts)

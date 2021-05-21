@@ -110,6 +110,7 @@ public class ScoreAnimation : MonoBehaviour
                 for (int i = 0; i < 3; i++) medal[i].SetActive(false);
 
                 this.GetComponent<StageUIManager>().StageDisplay(false);
+                this.GetComponent<StageUIManager>().StageImageDisplay(true);
             }
             else stageDeleteCnt--;
         }
