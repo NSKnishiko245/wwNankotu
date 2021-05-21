@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class SelectBgm : MonoBehaviour
 {
-    // GameControllerインスタンスの実体
+    // インスタンスの実体
     private static SelectBgm instance = null;
 
-    // GameControllerインスタンスのプロパティーは、実体が存在しないとき（＝初回参照時）実体を探して登録する
+    // インスタンスのプロパティーは、実体が存在しないとき（＝初回参照時）実体を探して登録する
     public static SelectBgm Instance => instance
         ?? (instance = GameObject.FindWithTag("SelectBgm").GetComponent<SelectBgm>());
 
@@ -23,6 +23,19 @@ public class SelectBgm : MonoBehaviour
 
         // 唯一のインスタンスなら、シーン遷移しても残す
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void Update()
+    {
+        // ステージシーンでは一時停止
+        if (SceneManager.GetActiveScene().name == "Stage1Scene")
+        {
+            this.GetComponent<AudioSource>().Pause();
+        }
+        else
+        {
+            this.gameObject.GetComponent<AudioSource>().UnPause();
+        }
     }
 
     private void OnDestroy()

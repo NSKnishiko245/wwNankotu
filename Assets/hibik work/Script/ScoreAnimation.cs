@@ -155,7 +155,7 @@ public class ScoreAnimation : MonoBehaviour
 
         if (clearUiCnt == 0)
         {
-            nextStageAnim.SetBool("isMove", true);
+            if(StageUIManager.nextPossibleFlg) nextStageAnim.SetBool("isMove", true);
             stageSelectAnim.SetBool("isMove", true);
         }
         else clearUiCnt--;
@@ -165,7 +165,7 @@ public class ScoreAnimation : MonoBehaviour
         {
             if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
             {
-                nextStageAnim.SetBool("isRot", true);
+                if (StageUIManager.nextPossibleFlg) nextStageAnim.SetBool("isRot", true);
                 stageSelectAnim.SetBool("isRot", true);
                 operationFlg = true;
             }

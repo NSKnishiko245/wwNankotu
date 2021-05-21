@@ -125,6 +125,7 @@ public class BookSelect : MonoBehaviour
                     // –{‚ðŒˆ’è
                     if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                     {
+                        DecSource.Play();
                         // ‘I‘ð’†‚Ì–{‚ðŠ÷‚ÉˆÚ“®
                         bookAnim[bookNum].SetBool("isRemove", true);
                         cameraAnim.SetBool("isAnim", true);

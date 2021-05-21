@@ -78,6 +78,7 @@ public class StageUIManager : MonoBehaviour
     private bool inputFlg = false;
 
     private bool stageDisplayFlg = true;
+    public static bool nextPossibleFlg = true;
 
     // シーンの状態
     private enum STATUS
@@ -196,7 +197,7 @@ public class StageUIManager : MonoBehaviour
                 if (stageNum == 1)
                 {
                     Point = GameObject.FindGameObjectWithTag("Point");
-                   
+
                 }
                 // カウントが０になるとプレイヤーとステージを表示する
                 if (stageDisplayCnt == 0)
@@ -244,6 +245,7 @@ public class StageUIManager : MonoBehaviour
                 {
                     status = STATUS.CLEAR;
                 }
+
                 if (goldMedalFlg)
                 {
                     GameObject goal1 = GameObject.Find("2(Clone)/GoalObj").gameObject;
@@ -251,7 +253,7 @@ public class StageUIManager : MonoBehaviour
                     goal1.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.GOLD);
                     goal2.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.GOLD);
                 }
-                    break;
+                break;
 
             //-----------------------------------
             // メニュー表示中
@@ -321,8 +323,16 @@ public class StageUIManager : MonoBehaviour
                     {
                         StageSelectManager.score[StageManager.stageNum].isGold = true;
                         this.GetComponent<ScoreAnimation>().GoldFlgOn();
-                        
                     }
+
+                    // ネクストステージが選択可能か判定
+                    if (StageManager.stageNum % 6 == 0) nextPossibleFlg = false;
+                    if (StageManager.stageNum % 6 == 5)
+                    {
+                        if (StageSelectManager.enterExtraFlg[BookSelect.bookNum] == true) nextPossibleFlg = true;
+                        else nextPossibleFlg = false;
+                    }
+                    else nextPossibleFlg = true;
 
                     statusFirstFlg = false;
                 }
@@ -358,6 +368,7 @@ public class StageUIManager : MonoBehaviour
                     // ランタンの火を消す
                     this.GetComponent<PostEffectController>().SetFireFlg(false);
 
+                    if (command == COMMAND.NEXT) StageSelectManager.selectPageNum++;
                     statusFirstFlg = false;
                 }
 
@@ -377,7 +388,7 @@ public class StageUIManager : MonoBehaviour
         if (tempStatus != status) statusFirstFlg = true;
 
         // デバッグ用テキスト更新処理
-        if(debugFlg) DebugUpdate();
+        if (debugFlg) DebugUpdate();
     }
 
     //==============================================================
@@ -458,10 +469,13 @@ public class StageUIManager : MonoBehaviour
                     clearCommandFirstFlg = false;
                 }
 
-                if (Input.GetAxis("Horizontal") > 0)
+                if (nextPossibleFlg)
                 {
-                    command = COMMAND.NEXT;
-                    clearCommandFirstFlg = true;
+                    if (Input.GetAxis("Horizontal") > 0)
+                    {
+                        command = COMMAND.NEXT;
+                        clearCommandFirstFlg = true;
+                    }
                 }
                 break;
 
@@ -562,7 +576,9 @@ public class StageUIManager : MonoBehaviour
         }
         stageDisplayFlg = sts;
     }
-    public bool GetStageDisplayFlg() { return stageDisplayFlg;}
+
+    public bool GetStageDisplayFlg() { return stageDisplayFlg; }
+
     public void StageImageDisplay(bool sts)
     {
         stageImage.SetActive(sts);
