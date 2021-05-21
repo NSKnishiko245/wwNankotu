@@ -15,6 +15,7 @@ public class tutorialManagaer : MonoBehaviour
 
     private GameObject Point_prefab;
     private GameObject Point;
+    private GameObject mainCam;
 
     private bool PushFlg;
 
@@ -61,7 +62,7 @@ public class tutorialManagaer : MonoBehaviour
         IsPoint = false;
         CountFlg = true;
         PushFlg = false;
-
+        mainCam = Camera.main.gameObject;
         Stagenum = StageManager.stageNum;
 
         if (Stagenum != 1)
@@ -81,6 +82,14 @@ public class tutorialManagaer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //ステージ開始時のカメラワーク中は、操作しない
+        if (mainCam.GetComponent<StartCamera>().isMoving)
+        { 
+            return;
+        }
+
+
         //時間をカウントダウンする
         Controller.GetComponent<RectTransform>().SetAsLastSibling();
 

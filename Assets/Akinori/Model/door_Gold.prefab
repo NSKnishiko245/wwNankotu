@@ -4815,6 +4815,7 @@ GameObject:
   - component: {fileID: 3917358781001040088}
   - component: {fileID: 140344529472196477}
   - component: {fileID: 2744501775050275767}
+  - component: {fileID: -4724381723491641590}
   m_Layer: 0
   m_Name: door_Gold
   m_TagString: Untagged
@@ -4889,6 +4890,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-4724381723491641590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4401865815031503458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aea1ef3b5e8dab4f8112104e4c4cb62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5286528119542100011
 GameObject:
   m_ObjectHideFlags: 0

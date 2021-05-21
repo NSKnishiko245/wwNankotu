@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public float Jump;
 
     private GameObject tutorialManager;
+    private GameObject mainCam;
 
     private Rigidbody rb;
     private Vector3 pos;
@@ -57,6 +58,7 @@ public class Player : MonoBehaviour
         moveDir = MOVEDIR.NEUTRAL;
 
         tutorialManager = GameObject.Find("TutorialManager");
+        mainCam = Camera.main.gameObject;
         IsHitGoalBlock = false;
         pos = transform.position;
         rb = GetComponent<Rigidbody>();
@@ -71,6 +73,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //ステージ開始時のカメラワーク中は、操作しない
+        if (mainCam.GetComponent<StartCamera>().isMoving)
+        {
+    
+            return;
+        }
+
         //キーボード操作
         inputValue_x = Input.GetAxis("Horizontal");
 

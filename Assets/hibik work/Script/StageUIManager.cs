@@ -244,7 +244,14 @@ public class StageUIManager : MonoBehaviour
                 {
                     status = STATUS.CLEAR;
                 }
-                break;
+                if (goldMedalFlg)
+                {
+                    GameObject goal1 = GameObject.Find("2(Clone)/GoalObj").gameObject;
+                    GameObject goal2 = GameObject.Find("2(Clone)/GoalObj (1)").gameObject;
+                    goal1.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.GOLD);
+                    goal2.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.GOLD);
+                }
+                    break;
 
             //-----------------------------------
             // メニュー表示中
@@ -314,6 +321,7 @@ public class StageUIManager : MonoBehaviour
                     {
                         StageSelectManager.score[StageManager.stageNum].isGold = true;
                         this.GetComponent<ScoreAnimation>().GoldFlgOn();
+                        
                     }
 
                     statusFirstFlg = false;
@@ -497,6 +505,11 @@ public class StageUIManager : MonoBehaviour
             this.GetComponent<ScoreAnimation>().SilverFlgOn();
             Debug.Log("ノルマ" + StageSelectManager.silverConditions[1]);
             Debug.Log("折った回数" + stageManager.GetComponent<StageManager>().rotateNum);
+
+            //GameObject goal1 = GameObject.Find("2(Clone)/GoalObj").gameObject;
+            //GameObject goal2 = GameObject.Find("2(Clone)/GoalObj (1)").gameObject;
+            //goal1.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.SILVER);
+            //goal2.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.SILVER);
         }
     }
 
@@ -549,7 +562,7 @@ public class StageUIManager : MonoBehaviour
         }
         stageDisplayFlg = sts;
     }
-
+    public bool GetStageDisplayFlg() { return stageDisplayFlg;}
     public void StageImageDisplay(bool sts)
     {
         stageImage.SetActive(sts);

@@ -96,7 +96,8 @@ public class GoldGear : MonoBehaviour
             //if (m_animend)
             //{
             DestroyGear();
-           // }
+            
+            // }
         }
     }
 }

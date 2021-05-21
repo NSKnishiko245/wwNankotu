@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 public class StageManager : MonoBehaviour
 {
     public GameObject Player;
+    
     public GameObject FrontEffectCamera;
     public GameObject Grid;
 
@@ -85,7 +86,7 @@ public class StageManager : MonoBehaviour
 
     public float waitInterval = 0.5f;
 
-
+   
 
     private enum CONTROLLERSTATE
     {
@@ -385,6 +386,10 @@ public class StageManager : MonoBehaviour
         if (Player.GetComponent<Player>().IsHitGoalBlock)
         {
             IsGameClear = true;
+            GameObject goal1 = GameObject.Find("2(Clone)/GoalObj").gameObject;
+            GameObject goal2 = GameObject.Find("2(Clone)/GoalObj (1)").gameObject;
+            goal1.GetComponent<GoalScript>().SetStartFlg(true);
+            goal2.GetComponent<GoalScript>().SetStartFlg(true);
         }
 
         if (UnderBorder.GetComponent<HitCreateEffect>().isFinished)
@@ -642,6 +647,7 @@ public class StageManager : MonoBehaviour
                     if (Block_Map[y, x].transform.tag == "Player")
                     {
                         Player.transform.position = Block_Map[y, x].transform.position;
+                      //  playerPos = Player.transform.position;
                     }
                 }
             }
