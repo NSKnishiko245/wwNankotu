@@ -169,11 +169,11 @@ public class StageSelectManager : MonoBehaviour
             BookSelectChange(); // –{‚Ì‘I‘ğ‰æ–Ê‚Ö‚Ì‘JˆÚ
         }
 
-        BookClearCheck(1, 6, 0);
-        BookClearCheck(7, 12, 1);
-        BookClearCheck(13, 18, 2);
-        BookClearCheck(19, 24, 3);
-        BookClearCheck(25, 30, 4);
+        BookClearCheck(1, 5, 0);
+        BookClearCheck(7, 11, 1);
+        BookClearCheck(13, 17, 2);
+        BookClearCheck(19, 23, 3);
+        BookClearCheck(25, 29, 4);
     }
 
     //==============================================================
@@ -183,7 +183,7 @@ public class StageSelectManager : MonoBehaviour
     {
         int stageNum = endNum - startNum + 1;
         int clearCnt = 0;
-        for (int cnt = startNum; cnt >= endNum; cnt++)
+        for (int cnt = startNum; cnt <= endNum; cnt++)
         {
             if (score[cnt].isCopper)
             {
