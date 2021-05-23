@@ -34,6 +34,7 @@ public class CreateGrid : MonoBehaviour
 
     void Start()
     {
+        color.a = 0.0f;
         GetComponent<MeshFilter>().mesh = mesh = new Mesh();
         mesh = ReGrid();
         AlphaIncrease = false;

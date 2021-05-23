@@ -12,7 +12,6 @@ using UnityEngine.SceneManagement;
 public class StageManager : MonoBehaviour
 {
     public GameObject Player;
-    
     public GameObject FrontEffectCamera;
     public GameObject Grid;
 
@@ -58,7 +57,8 @@ public class StageManager : MonoBehaviour
     // ステージ番号
     public static int stageNum = 1;
     public int rotateNum;
-    private bool initFlg = true;
+    public bool initFlg = true;
+
 
     private bool isInputOff = false;
 
@@ -84,9 +84,13 @@ public class StageManager : MonoBehaviour
 
     bool is3D = true;
 
+    public bool isMove { get; private set; }
+
     public float waitInterval = 0.5f;
 
-   
+    //float firstWaitTime = 1.0f;
+    public float firstWaitTimer;
+
 
     private enum CONTROLLERSTATE
     {
@@ -132,7 +136,7 @@ public class StageManager : MonoBehaviour
         //チュートリアルマネージャー取得
         tutorialManager = GameObject.Find("TutorialManager");
         // フラグ初期化
-        IsGameClear = IsGameOver =IsRotate= false;
+        IsGameClear = IsGameOver = IsRotate = false;
 
         Tile_subList = new List<GameObject>();
         Bar_subList = new List<GameObject>();
@@ -150,10 +154,22 @@ public class StageManager : MonoBehaviour
 
     void Update()
     {
+        if (firstWaitTimer > 0)
+        {
+            FrontEffectCamera.SetActive(false);
+            Player.SetActive(false);
+            firstWaitTimer -= Time.deltaTime;
+            return;
+        }
+
+        Player.SetActive(true);
+
         if (initFlg)
         {
+            FrontEffectCamera.SetActive(true);
             Init();
             initFlg = false;
+            CreateParticle();
         }
 
 
@@ -176,9 +192,19 @@ public class StageManager : MonoBehaviour
             Grid.GetComponent<CreateGrid>().AlphaIncrease = false;
         }
 
+        if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMoveEx)
+        {
+            if (Player.transform.position.x < Bar_List[RightBarIdx].transform.position.x && Player.transform.position.x > Bar_List[LeftBarIdx].transform.position.x)
+                isMove = false;
+        }
+        else isMove = true;
+
+
         // ステージが停止している時、プレイヤーを動かせる
         if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMoveEx)
         {
+            ChangeBarAlpha();
+
             // プレイヤーの更新、プレイヤーにおける移動可能領域の設定など
             Player.GetComponent<Player>().TurnOnGravity();
             if (CanYouCopy && !rerotFlg)
@@ -430,15 +456,6 @@ public class StageManager : MonoBehaviour
         {
             Camera.main.GetComponent<MoveCamera>().isMove = false;
         }
-        
-        //for (int i = 0; i < Tile_List.Count; i++)
-        //{
-        //    if (i == LeftBarIdx || i == RightBarIdx)
-        //    {
-        //        Bar_List[i].
-        //    }
-        //}
-        
     }
 
     // バーの回転処理
@@ -647,7 +664,6 @@ public class StageManager : MonoBehaviour
                     if (Block_Map[y, x].transform.tag == "Player")
                     {
                         Player.transform.position = Block_Map[y, x].transform.position;
-                      //  playerPos = Player.transform.position;
                     }
                 }
             }
@@ -696,6 +712,11 @@ public class StageManager : MonoBehaviour
             GameObject bar = GameObject.Instantiate(Bar_List[i]);
             Bar_List[i].GetComponent<BarRotate>().CopyBarState(bar);
             bar.transform.parent = BigParent.transform;
+
+            //if (i == LeftBarIdx || i == RightBarIdx)
+            //{
+            //    Bar_List[i].GetComponent<MeshRenderer>().enabled = false;
+            //}
             Bar_subList.Add(bar);
         }
 
@@ -845,8 +866,11 @@ public class StageManager : MonoBehaviour
 
     public void DeleteCopyForMenu()
     {
-        //Tile_subList.Clear();
-        //Bar_subList.Clear();
+        if (!initFlg)
+        {
+            Tile_subList.Clear();
+            Bar_subList.Clear();
+        }
         Destroy(BigParent);
         Destroy(yugami);
 
@@ -873,9 +897,16 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        foreach (var obj in Bar_List)
+        if (!activeFlg)
         {
-            obj.GetComponent<MeshRenderer>().enabled = activeFlg;
+            foreach (var obj in Bar_List)
+            {
+                obj.GetComponent<MeshRenderer>().enabled = activeFlg;
+            }
+        }
+        else
+        {
+            ChangeBarAlpha();
         }
 
         if (is3D == false && activeFlg == true)
@@ -895,7 +926,7 @@ public class StageManager : MonoBehaviour
         {
             result = Mathf.FloorToInt(x);
         }
-       
+
         Grid.GetComponent<CreateGrid>().ReGrid(result, 0);
         Grid.transform.position = new Vector3(
             Bar_List[LeftBarIdx].transform.position.x + (Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x) / 2.0f, 0.0f, 0.0f
@@ -932,7 +963,7 @@ public class StageManager : MonoBehaviour
         Grid.GetComponent<MeshRenderer>().enabled = false;
         Grid.GetComponent<CreateGrid>().SetAlpha(0);
 
-        flg = true; 
+        flg = true;
     }
     private void SecondFunc()
     {
@@ -1016,6 +1047,50 @@ public class StageManager : MonoBehaviour
                     {
                         child.GetComponent<ClearBlock>().start();
                     }
+                }
+            }
+        }
+    }
+
+    public void FixPlayerPos()
+    {
+        if (Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
+        {
+            Player.transform.position = new Vector3(Bar_List[RightBarIdx].transform.position.x - 0.1f, Player.transform.position.y, Player.transform.position.z);
+        }
+        else if (Player.transform.position.x < Bar_List[LeftBarIdx].transform.position.x)
+        {
+            Player.transform.position = new Vector3(Bar_List[LeftBarIdx].transform.position.x + 0.1f, Player.transform.position.y, Player.transform.position.z);
+        }
+    }
+
+    private void ChangeBarAlpha()
+    {
+        for (int i = 0; i < Bar_List.Count; i++)
+        {
+            if (isLeftBar(i) || isRightBar(i))
+            {
+                Bar_List[i].GetComponent<MeshRenderer>().enabled = false;
+            }
+            else
+            {
+                Bar_List[i].GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
+    }
+
+    public void CreateParticle()
+    {
+        foreach (var obj in Tile_List)
+        {
+            foreach (Transform childTransform in obj.transform)
+            {
+                if (childTransform.tag == "Block" || childTransform.tag == "GoalBlock" || childTransform.tag == "GimicMoveBlock" || childTransform.tag == "GimicMoveBar" || childTransform.tag == "GimicBreakBlock" || childTransform.tag == "GimicClearBlock")
+                {
+                    GameObject ef = Instantiate(Effect);
+                    ef.transform.position = childTransform.position;
+                    ef.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    ef.GetComponent<ParticleSystem>().Play();
                 }
             }
         }

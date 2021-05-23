@@ -226,17 +226,21 @@ public class StageUIManager : MonoBehaviour
                 // メニューを開く
                 if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                 {
-                    status = STATUS.MENU;
-                    stageImage.SetActive(true);
-
-                    // ページを進める
-                    eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-
-                    // チュートリアル非表示
-                    if (stageNum == 1)
+                    if (!stageManager.GetComponent<StageManager>().isMove)
                     {
-                        Point.SetActive(false);
-                        tutorialUI.SetActive(false);
+
+                        status = STATUS.MENU;
+                        stageImage.SetActive(true);
+
+                        // ページを進める
+                        eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+
+                        // チュートリアル非表示
+                        if (stageNum == 1)
+                        {
+                            Point.SetActive(false);
+                            tutorialUI.SetActive(false);
+                        }
                     }
                 }
 
@@ -245,7 +249,6 @@ public class StageUIManager : MonoBehaviour
                 {
                     status = STATUS.CLEAR;
                 }
-
                 if (goldMedalFlg)
                 {
                     GameObject goal1 = GameObject.Find("2(Clone)/GoalObj").gameObject;
@@ -288,6 +291,8 @@ public class StageUIManager : MonoBehaviour
                     // ステージを表示するまでの時間をセット
                     stageDisplayCnt = stageDisplayCntInit;
 
+                    stageManager.GetComponent<StageManager>().FixPlayerPos();
+
                     // チュートリアル表示
                     if (stageNum == 1)
                     {
@@ -324,7 +329,6 @@ public class StageUIManager : MonoBehaviour
                         StageSelectManager.score[StageManager.stageNum].isGold = true;
                         this.GetComponent<ScoreAnimation>().GoldFlgOn();
                     }
-
                     // ネクストステージが選択可能か判定
                     if (StageManager.stageNum % 6 == 0) nextPossibleFlg = false;
                     if (StageManager.stageNum % 6 == 5)
@@ -367,8 +371,8 @@ public class StageUIManager : MonoBehaviour
                 {
                     // ランタンの火を消す
                     this.GetComponent<PostEffectController>().SetFireFlg(false);
-
                     if (command == COMMAND.NEXT) StageSelectManager.selectPageNum++;
+
                     statusFirstFlg = false;
                 }
 
@@ -468,7 +472,6 @@ public class StageUIManager : MonoBehaviour
                     clearNextGear2.GetComponent<GearRotation>().SetRotFlg(false);
                     clearCommandFirstFlg = false;
                 }
-
                 if (nextPossibleFlg)
                 {
                     if (Input.GetAxis("Horizontal") > 0)
@@ -519,11 +522,6 @@ public class StageUIManager : MonoBehaviour
             this.GetComponent<ScoreAnimation>().SilverFlgOn();
             Debug.Log("ノルマ" + StageSelectManager.silverConditions[1]);
             Debug.Log("折った回数" + stageManager.GetComponent<StageManager>().rotateNum);
-
-            //GameObject goal1 = GameObject.Find("2(Clone)/GoalObj").gameObject;
-            //GameObject goal2 = GameObject.Find("2(Clone)/GoalObj (1)").gameObject;
-            //goal1.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.SILVER);
-            //goal2.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.SILVER);
         }
     }
 
@@ -563,7 +561,12 @@ public class StageUIManager : MonoBehaviour
         {
             // プレイヤーとステージを表示
             player.SetActive(true);
+            //player.GetComponent<Player>().waitMoveTimer = 0.5f;
             stageManager.SetActive(true);
+            if (!stageManager.GetComponent<StageManager>().initFlg)
+            {
+                stageManager.GetComponent<StageManager>().CreateParticle();
+            }
             frontEffectCamera.SetActive(true);
         }
         else

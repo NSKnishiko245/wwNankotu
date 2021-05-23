@@ -37,6 +37,10 @@ public class Player : MonoBehaviour
     private Vector3 prev;
     public bool IsMove { get; private set; }
 
+    public float waitMoveTimer = 0.0f;
+
+
+
     public enum PLAYERHITBOX
     {
         RIGHT,
@@ -73,18 +77,19 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ステージ開始時のカメラワーク中は、操作しない
-        if (mainCam.GetComponent<StartCamera>().isMoving)
+        if (waitMoveTimer > 0.0f)
         {
-    
-            return;
+            waitMoveTimer -= Time.deltaTime;
         }
+
+        if (mainCam.GetComponent<StartCamera>().isMoving) return;
 
         //キーボード操作
         inputValue_x = Input.GetAxis("Horizontal");
 
         // 入力をなしにする場合
         if (!inputFlg || Mathf.Abs(rb.velocity.y) > 0.2f) inputValue_x = 0.0f;
+        if (waitMoveTimer > 0.0f) inputValue_x = 0.0f;
         //if (!transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit) inputValue_x = 0.0f;
 
         if (!IsHitGoalBlock)
