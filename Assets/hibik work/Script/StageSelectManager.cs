@@ -36,6 +36,8 @@ public class StageSelectManager : MonoBehaviour
     // サウンド
     [SerializeField] private AudioSource BgmSource;
     [SerializeField] private AudioSource DecSource;
+    [SerializeField] private AudioSource BuSource;
+
 
 
     private int sceneChangeCnt = 60;                 // シーン遷移のカウンタ
@@ -118,6 +120,13 @@ public class StageSelectManager : MonoBehaviour
 
             if (score[i].isCopper) copperMedal[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             else copperMedal[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+        }
+
+        for (int i = 0; i <= 6; i++)
+        {
+            score[i].isCopper = true;
+            score[i].isSilver = true;
+            score[i].isGold = true;
         }
 
         SilverConditionsSet();
@@ -226,7 +235,6 @@ public class StageSelectManager : MonoBehaviour
     {
         if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
         {
-            DecSource.Play();
 
             // 現在のページ取得(ステージ番号)
             StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum() + firstStageNum - 1;
@@ -236,8 +244,14 @@ public class StageSelectManager : MonoBehaviour
             {
                 if (stageEnterFlg)
                 {
+                    DecSource.Play();
+
                     command = COMMAND.STAGE;
                     selectPageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+                }
+                else
+                {
+                    BuSource.Play();
                 }
             }
         }
@@ -331,7 +345,7 @@ public class StageSelectManager : MonoBehaviour
             }
 
             // 条件を満たしていない時は入れない
-            if (cnt != endStageNum - 1)
+            if (cnt != bookStageMax - 1)
             {
                 stageEnterFlg = false;
                 mist.SetActive(true);
@@ -348,7 +362,7 @@ public class StageSelectManager : MonoBehaviour
             mist.SetActive(false);
         }
 
-        if(enterExtraFlg[BookSelect.bookNum] == true)
+        if (enterExtraFlg[BookSelect.bookNum] == true)
         {
             stageEnterFlg = true;
             mist.SetActive(false);

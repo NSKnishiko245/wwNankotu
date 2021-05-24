@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using DG.Tweening;
 
 public class BookSelect : MonoBehaviour
 {

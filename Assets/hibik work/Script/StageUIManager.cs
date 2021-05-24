@@ -29,13 +29,17 @@ public class StageUIManager : MonoBehaviour
     private GameObject clearSelectGear2;
     private GameObject clearNextGear;
     private GameObject clearNextGear2;
+    private GameObject clearSelect;
+    private GameObject clearNext;
+
 
     [SerializeField] private Material[] material = new Material[6];
 
     // サウンド
-    [SerializeField] private AudioSource bgmSource;
+    [SerializeField] private AudioSource[] bgmSource = new AudioSource[7];
     [SerializeField] private AudioSource resultSource;
     [SerializeField] private AudioSource selectDecSource;
+    private int bgmNum;
 
     [SerializeField] private bool editFlg = false;  // true:エディット表示
     [SerializeField] private bool debugFlg = false;  // true:デバッグテキスト表示
@@ -126,9 +130,19 @@ public class StageUIManager : MonoBehaviour
         clearNextGear2 = GameObject.Find("NextUnderGearImage");
         menuSelect = GameObject.Find("StageSelect");
         menuRetry = GameObject.Find("Retry");
+        clearSelect = GameObject.Find("C_StageSelect");
+        clearNext = GameObject.Find("NextStage");
 
         GameObject.Find("book_L2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
         GameObject.Find("book_R2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
+
+
+        // ステージ１はチュートリアルのBGM
+        if (StageManager.stageNum == 1) bgmNum = 6;
+        // それ以外はステージごとのBGM
+        else bgmNum = BookSelect.bookNum;
+
+        bgmSource[bgmNum].Play();
 
         // ステージ番号取得
         stageNum = StageManager.stageNum;
@@ -314,7 +328,7 @@ public class StageUIManager : MonoBehaviour
                     // チュートリアル非表示
                     if (stageNum == 1) tutorialUI.SetActive(false);
 
-                    bgmSource.Stop();
+                    bgmSource[bgmNum].Stop();
                     resultSource.Play();
 
                     // 銅メダル取得
@@ -330,13 +344,13 @@ public class StageUIManager : MonoBehaviour
                         this.GetComponent<ScoreAnimation>().GoldFlgOn();
                     }
                     // ネクストステージが選択可能か判定
-                    if (StageManager.stageNum % 6 == 0) nextPossibleFlg = false;
                     if (StageManager.stageNum % 6 == 5)
                     {
                         if (StageSelectManager.enterExtraFlg[BookSelect.bookNum] == true) nextPossibleFlg = true;
                         else nextPossibleFlg = false;
                     }
                     else nextPossibleFlg = true;
+                    if (StageManager.stageNum % 6 == 0) nextPossibleFlg = false;
 
                     statusFirstFlg = false;
                 }
@@ -470,6 +484,9 @@ public class StageUIManager : MonoBehaviour
                     clearSelectGear2.GetComponent<GearRotation>().SetRotFlg(true);
                     clearNextGear.GetComponent<GearRotation>().SetRotFlg(false);
                     clearNextGear2.GetComponent<GearRotation>().SetRotFlg(false);
+                    clearSelect.transform.localScale = new Vector3(1.3f, 1.3f, 1.0f);
+                    clearNext.transform.localScale = new Vector3(1.2f, 1.2f, 1.0f);
+
                     clearCommandFirstFlg = false;
                 }
                 if (nextPossibleFlg)
@@ -495,6 +512,9 @@ public class StageUIManager : MonoBehaviour
                     clearSelectGear2.GetComponent<GearRotation>().SetRotFlg(false);
                     clearNextGear.GetComponent<GearRotation>().SetRotFlg(true);
                     clearNextGear2.GetComponent<GearRotation>().SetRotFlg(true);
+                    clearNext.transform.localScale = new Vector3(1.3f, 1.3f, 1.0f);
+                    clearSelect.transform.localScale = new Vector3(1.2f, 1.2f, 1.0f);
+
                     clearCommandFirstFlg = false;
                 }
 
