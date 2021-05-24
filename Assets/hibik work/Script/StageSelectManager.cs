@@ -122,13 +122,6 @@ public class StageSelectManager : MonoBehaviour
             else copperMedal[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
         }
 
-        for (int i = 0; i <= 6; i++)
-        {
-            score[i].isCopper = true;
-            score[i].isSilver = true;
-            score[i].isGold = true;
-        }
-
         SilverConditionsSet();
 
         this.GetComponent<PostEffectController>().SetVigFlg(false);
