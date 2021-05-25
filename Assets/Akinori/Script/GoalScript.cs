@@ -23,11 +23,13 @@ public class GoalScript : MonoBehaviour
     };
 
     
-    ParticleSystem rayParticle;
+    public ParticleSystem rayParticle;
     GameObject Ldoor;
     GameObject Rdoor;
     GameObject Gear;
     int playFrame = 0;
+    int particleFrame = 0;
+    public int initParticleFrame = 0;
     TURN turn;
     E_ParticleColor color;
     [SerializeField] private ParticleSystem.MinMaxGradient goldColor;
@@ -39,31 +41,33 @@ public class GoalScript : MonoBehaviour
     void Start()
     {
         playFrame = 0;
+        particleFrame = initParticleFrame;
         turn = TURN.GEAR_TIME;
         Rdoor = transform.Find("door_R/door_R").gameObject;
         Ldoor = transform.Find("door_L/door_L").gameObject;
         Gear  = transform.Find("door_L/door_L/Gear/Gear").gameObject;
 
-
-        // goldColor = new ParticleSystem.MinMaxGradient();
-        // goldColor.mode = ParticleSystemGradientMode.TwoColors;
-        //goldColor.colorMin = Color.red;
-        //goldColor.colorMax = Color.green;
-
         //Assign the color to the particle
         ParticleSystem.MainModule main = particle.main;
         main.startColor = bronzeColor;
-        //Debug.Log(particle.name);
+
         startFlg = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.G))
+        //ê∂ê¨ä‘äu
+        particleFrame--;
+        if (particleFrame <= 0)
         {
-            startFlg = true;
+            Debug.Log(rayParticle.name + "ê∂ê¨");
+            particleFrame = initParticleFrame;
+            Vector3 pos = Gear.transform.position;
+            
+            Instantiate(rayParticle, pos, this.transform.rotation);
         }
+        
         if (startFlg)
         {
             if (playFrame < openFrame)
