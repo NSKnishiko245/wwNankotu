@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5207788835422587572}
   - component: {fileID: 4907666735121077935}
   - component: {fileID: 1759404958039918637}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: kirakiraMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1539,7 +1539,7 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 21300000, guid: 303c518380cd6884e858892e2833182c, type: 3}
+    - sprite: {fileID: 21300000, guid: 20dba57db6929904aae463bbec1f935b, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:

@@ -189,6 +189,7 @@ public class StageSelectManager : MonoBehaviour
         {
             if (score[cnt].isCopper)
             {
+                StageClearManager.m_isGetCopper[cnt] = true;
                 clearCnt++;
             }
         }

@@ -5,7 +5,8 @@ using UnityEngine;
 public class StageClearManager : MonoBehaviour
 {
     public static bool[] StageClear = new bool[6];
-
+    public static bool[] m_isGetCopper = new bool[37];
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -27,5 +28,16 @@ public class StageClearManager : MonoBehaviour
     public bool GetStageClear(int stagenum)
     {
         return StageClear[stagenum];
+    }
+
+    public void SetCopper(int stagenum, bool copper)
+    {
+
+        m_isGetCopper[stagenum] = copper;
+    }
+
+    public bool GetCopper(int stagenum)
+    {
+        return m_isGetCopper[stagenum];
     }
 }

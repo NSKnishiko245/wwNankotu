@@ -15,6 +15,7 @@ public class anim : MonoBehaviour
     void Start()
     {
         m_anim = this.gameObject.GetComponent<Animator>();
+        m_anim.SetBool("start_flg", true);
     }
 
     // Update is called once per frame
@@ -35,6 +36,7 @@ public class anim : MonoBehaviour
         if (m_playobj.GetComponent<Player>().IsMove)
         {
             m_anim.SetBool("move_flg", true);
+            m_anim.SetBool("start_flg", false);
         }
         else if(m_playobj.GetComponent<Player>().IsHitBar)
         {
