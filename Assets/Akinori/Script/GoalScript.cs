@@ -59,12 +59,11 @@ public class GoalScript : MonoBehaviour
     {
         //ê∂ê¨ä‘äu
         particleFrame--;
+        Vector3 pos = Gear.transform.position;
         if (particleFrame <= 0)
         {
             Debug.Log(rayParticle.name + "ê∂ê¨");
-            particleFrame = initParticleFrame;
-            Vector3 pos = Gear.transform.position;
-            
+            particleFrame = initParticleFrame;        
             Instantiate(rayParticle, pos, this.transform.rotation);
         }
         
