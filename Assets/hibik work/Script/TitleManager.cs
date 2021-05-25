@@ -68,7 +68,7 @@ public class TitleManager : MonoBehaviour
             // ˆê’èŽžŠÔŒo‰ß‚·‚é‚Æ‘JˆÚ‚·‚é
             if (sceneChangeCnt > sceneChangeTime)
             {
-                SceneManager.LoadScene("NewSelectScene");
+                SceneManager.LoadScene("BookSelectScene");
             }
             sceneChangeCnt++;
         }

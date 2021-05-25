@@ -58,9 +58,6 @@ public class StageSelectManager : MonoBehaviour
     private int operationCnt = 0;
 
     // メダル
-    private GameObject[] goldMedal;
-    private GameObject[] silverMedal;
-    private GameObject[] copperMedal;
     public struct Score
     {
         public bool isGold;
@@ -76,6 +73,8 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void Awake()
     {
+        this.GetComponent<CreateStageSelect>().Create();
+
         StageSelectManager.selectPageMoveFlg = true;
 
         pageInterval = pageIntervalInit;
@@ -89,14 +88,9 @@ public class StageSelectManager : MonoBehaviour
         cameraAnim = GameObject.Find("Main Camera").GetComponent<Animator>();
         mist = GameObject.Find("Mist");
         mist.SetActive(false);
-        //score = new Score[stageMax];
-        //silverConditions = new int[stageMax];
-        goldMedal = new GameObject[stageMax + 1];
-        silverMedal = new GameObject[stageMax + 1];
-        copperMedal = new GameObject[stageMax + 1];
         command = COMMAND.EMPTY;
 
-        BookSelect.bookNum = bookNum - 1;
+        //BookSelect.bookNum = bookNum - 1;
         for (int i = 0; i < bookMax; i++)
         {
             if (i == BookSelect.bookNum)
@@ -105,21 +99,6 @@ public class StageSelectManager : MonoBehaviour
                 endStageNum = firstStageNum + 5;
                 break;
             }
-        }
-
-        for (int i = firstStageNum; i <= endStageNum; i++)
-        {
-            goldMedal[i] = GameObject.Find("GoldImage" + i);
-            silverMedal[i] = GameObject.Find("SilverImage" + i);
-            copperMedal[i] = GameObject.Find("CopperImage" + i);
-            if (score[i].isGold) goldMedal[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else goldMedal[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-
-            if (score[i].isSilver) silverMedal[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else silverMedal[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
-
-            if (score[i].isCopper) copperMedal[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            else copperMedal[i].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
         }
 
         SilverConditionsSet();
@@ -315,7 +294,7 @@ public class StageSelectManager : MonoBehaviour
                 if (sceneChangeCnt == 0)
                 {
                     selectPageNum = 1;
-                    SceneManager.LoadScene("NewSelectScene");
+                    SceneManager.LoadScene("BookSelectScene");
                 }
                 else sceneChangeCnt--;
             }
@@ -368,52 +347,17 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void SilverConditionsSet()
     {
+        // テキストファイルからタイトル文を取得
+        TextAsset textAsset = Resources.Load("Text/SilverConditions", typeof(TextAsset)) as TextAsset;
+        //一行づつ代入
+        string[] SilverConditionsString = textAsset.text.Split('\n');
+
         silverConditions[0] = 0;
-        silverConditions[1] = 3;
-        silverConditions[2] = 3;
-        silverConditions[3] = 3;
-        silverConditions[4] = 3;
-        silverConditions[5] = 3;
-        silverConditions[6] = 3;
-        silverConditions[7] = 3;
-        silverConditions[8] = 3;
-        silverConditions[9] = 3;
-        silverConditions[10] = 3;
 
-        silverConditions[11] = 3;
-        silverConditions[12] = 3;
-        silverConditions[13] = 3;
-        silverConditions[14] = 3;
-        silverConditions[15] = 3;
-        silverConditions[16] = 3;
-        silverConditions[17] = 3;
-        silverConditions[18] = 3;
-        silverConditions[19] = 3;
-        silverConditions[20] = 3;
-
-        silverConditions[21] = 3;
-        silverConditions[22] = 3;
-        silverConditions[23] = 3;
-        silverConditions[24] = 3;
-        silverConditions[25] = 3;
-        silverConditions[26] = 3;
-        silverConditions[27] = 3;
-        silverConditions[28] = 3;
-        silverConditions[29] = 3;
-        silverConditions[30] = 3;
-
-        silverConditions[31] = 3;
-        silverConditions[32] = 3;
-        silverConditions[33] = 3;
-        silverConditions[34] = 3;
-        silverConditions[35] = 3;
-        silverConditions[36] = 3;
-        silverConditions[37] = 3;
-        silverConditions[38] = 3;
-        silverConditions[39] = 3;
-        silverConditions[40] = 3;
-
-        silverConditions[41] = 3;
-        silverConditions[42] = 3;
+        for (int i = 1; i < stageMax + 1; i++)
+        {
+            silverConditions[i] = int.Parse(SilverConditionsString[i]);
+            Debug.Log("silver Stage" + i + ":" + silverConditions[i]);
+        }
     }
 }

@@ -150,7 +150,7 @@ public class BookSelect : MonoBehaviour
                 {
                     if (sceneChangeCnt == 0)
                     {
-                        SceneManager.LoadScene("StageSelect" + (bookNum + 1));
+                        SceneManager.LoadScene("StageSelectScene");
                     }
                     else sceneChangeCnt--;
                 }

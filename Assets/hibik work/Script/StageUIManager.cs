@@ -36,7 +36,7 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private Material[] material = new Material[6];
 
     // サウンド
-    [SerializeField] private AudioSource[] bgmSource = new AudioSource[7];
+    [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource resultSource;
     [SerializeField] private AudioSource selectDecSource;
     private int bgmNum;
@@ -113,7 +113,7 @@ public class StageUIManager : MonoBehaviour
     {
         // ステージの画像を取得
         stageImage = GameObject.Find("StageImage");
-        Sprite sprite = Resources.Load<Sprite>("StageImage/st" + StageManager.stageNum);
+        Sprite sprite = Resources.Load<Sprite>("Sprite/Stage/st" + StageManager.stageNum);
         stageImage.GetComponent<Image>().sprite = sprite;
 
         eventSystem = GameObject.Find("EventSystem");
@@ -138,11 +138,13 @@ public class StageUIManager : MonoBehaviour
 
 
         // ステージ１はチュートリアルのBGM
-        if (StageManager.stageNum == 1) bgmNum = 6;
+        if (StageManager.stageNum == 1) bgmNum = 0;
         // それ以外はステージごとのBGM
-        else bgmNum = BookSelect.bookNum;
+        else bgmNum = BookSelect.bookNum + 1;
 
-        bgmSource[bgmNum].Play();
+        AudioClip audio = Resources.Load("Sound/bgm/mainBGM_" + bgmNum, typeof(AudioClip)) as AudioClip;
+        bgmSource.clip = audio;
+        bgmSource.Play();
 
         // ステージ番号取得
         stageNum = StageManager.stageNum;
@@ -328,7 +330,7 @@ public class StageUIManager : MonoBehaviour
                     // チュートリアル非表示
                     if (stageNum == 1) tutorialUI.SetActive(false);
 
-                    bgmSource[bgmNum].Stop();
+                    bgmSource.Stop();
                     resultSource.Play();
 
                     // 銅メダル取得
@@ -351,6 +353,9 @@ public class StageUIManager : MonoBehaviour
                     }
                     else nextPossibleFlg = true;
                     if (StageManager.stageNum % 6 == 0) nextPossibleFlg = false;
+
+                    if (nextPossibleFlg) command = COMMAND.NEXT;
+                    else command = COMMAND.STAGE_SELECT;
 
                     statusFirstFlg = false;
                 }
@@ -422,7 +427,7 @@ public class StageUIManager : MonoBehaviour
             case COMMAND.STAGE_SELECT:
                 if (menuCommandFirstFlg)
                 {
-                    changeSceneName = "StageSelect" + (BookSelect.bookNum + 1);
+                    changeSceneName = "StageSelectScene";
                     // 歯車回転
                     menuSelectGear.GetComponent<GearRotation>().SetRotFlg(true);
                     menuSelect.transform.localScale = new Vector3(2.75f, 2.75f, 1.0f);
@@ -478,7 +483,7 @@ public class StageUIManager : MonoBehaviour
             case COMMAND.STAGE_SELECT:
                 if (clearCommandFirstFlg)
                 {
-                    changeSceneName = "StageSelect" + (BookSelect.bookNum + 1);
+                    changeSceneName = "StageSelectScene";
                     // 歯車回転
                     clearSelectGear.GetComponent<GearRotation>().SetRotFlg(true);
                     clearSelectGear2.GetComponent<GearRotation>().SetRotFlg(true);

@@ -14,9 +14,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/StageMake/Game_Proto.unity
     guid: c912dedca7981114ebc861b5bd1880ff
-  - enabled: 1
-    path: Assets/hibik work/Scene/SelectScene.unity
-    guid: 2d489cd0b39c3be4ea293f9f10c56978
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/hibik work/Scene/Stage1Scene.unity
     guid: 6af18d0741ab8bb4eb89cfc911b8a3f2
@@ -53,25 +53,28 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/hibik work/Scene/StageSelect/StageSelect1.unity
-    guid: 9e3d2ef09c870544ab5f14799297bcf5
-  - enabled: 1
-    path: Assets/hibik work/Scene/StageSelect/StageSelect2.unity
-    guid: e0a6d2a910a934f4786dfc6a08d20e72
-  - enabled: 1
-    path: Assets/hibik work/Scene/StageSelect/StageSelect3.unity
-    guid: 147727fc06c982846846b4610f33aee7
-  - enabled: 1
-    path: Assets/hibik work/Scene/StageSelect/StageSelect4.unity
-    guid: f60f715d3a8c3334ba0414cd900c40ab
-  - enabled: 1
-    path: Assets/hibik work/Scene/StageSelect/StageSelect5.unity
-    guid: 760fcec5b0858544f96ae67bb453e874
-  - enabled: 1
-    path: Assets/hibik work/Scene/StageSelect/StageSelect6.unity
-    guid: 54c3b5c3789fb0049b4190e9e2ec7518
-  - enabled: 1
-    path: Assets/hibik work/Scene/StageSelect/NewSelectScene.unity
+    path: Assets/hibik work/Scene/BookSelectScene.unity
     guid: e7e1773b37a40c84fa2dc945fa71f803
+  - enabled: 1
+    path: Assets/hibik work/Scene/StageSelectScene.unity
+    guid: 3b5fe01221d1df24588e88a9d1bd7adf
   m_configObjects: {}
