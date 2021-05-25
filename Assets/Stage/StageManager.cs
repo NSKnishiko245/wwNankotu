@@ -184,7 +184,15 @@ public class StageManager : MonoBehaviour
         {
             if (HitBarIdx != RightBarIdx && HitBarIdx != LeftBarIdx && Grid.GetComponent<MeshRenderer>().enabled)
             {
-                Grid.GetComponent<CreateGrid>().AlphaIncrease = true;
+                // 回転済みのバーを検出したら元に戻す回転処理を開始
+                for (int i = 0; i < Bar_List.Count; i++)
+                {
+                    if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED) break;
+                    if (i == Bar_List.Count - 1)
+                    {
+                        Grid.GetComponent<CreateGrid>().AlphaIncrease = true;
+                    }
+                }
             }
         }
         else
@@ -427,6 +435,7 @@ public class StageManager : MonoBehaviour
         // ゲームオーバー検知
         if (UnderBorder.GetComponent<HitAction>().isHit || waitTime <= waitTimer)
         {
+            DeleteCopyForMenu();
             IsGameOver = true;
         }
 

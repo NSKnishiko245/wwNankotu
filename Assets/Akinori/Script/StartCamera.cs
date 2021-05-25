@@ -45,16 +45,20 @@ public class StartCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (!isMoving || !GameObject.Find("StageUIManager").GetComponent<StageUIManager>().GetStageDisplayFlg())
         {
             GetComponent<MoveCamera>().enabled = true;
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0") || Input.GetKeyDown("joystick button 7"))
         {
             isMoving = false;
+            mode = E_CameraMode.ZOOM_IN;
+            this.transform.DOKill();
             this.transform.position = startPos;
+            return;
         }
 
         purposePos = GameObject.FindGameObjectWithTag("Player").gameObject.transform.position;
@@ -81,6 +85,7 @@ public class StartCamera : MonoBehaviour
                 Debug.Log("OnComplete!/StartCamera.cs");
                 isMoving = false;
                 mode = E_CameraMode.ZOOM_IN;
+                this.transform.DOKill();
             });
         }
     }
