@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class tutorialManagaer : MonoBehaviour
 {
@@ -8,10 +9,15 @@ public class tutorialManagaer : MonoBehaviour
     [SerializeField] private GameObject Bar;
     [SerializeField] private StageManager stagemanager;
 
+    public Text Text;
+
     private int Animnum = 1;
     private int TutorialNum = 1;
     private int RotateNum = 1;
+    private int BordNum;
     private int Stagenum;   // ステージ番号
+
+    
 
     private GameObject Point_prefab;
     private GameObject Point;
@@ -22,16 +28,23 @@ public class tutorialManagaer : MonoBehaviour
     //カウントダウン
     [SerializeField] public float Pointcountdown = 5.0f;
     [SerializeField] public float Oricountdown = 1.0f;
+    [SerializeField] public float TextCount = 5.0f;
+    [SerializeField] public float Pushcount;
     private bool CountFlg;
-
 
     [SerializeField] private GameObject Lstick;
     [SerializeField] private GameObject Rstick;
     [SerializeField] private GameObject Controller;
+    [SerializeField] private GameObject Mobiusface;
+    [SerializeField] private GameObject MobiusBody;
+    [SerializeField] private GameObject Bord;
 
     Animator LAnim;
     Animator RAnim;
     Animator ControllerAnim;
+    Animator MobiusfaceAnim;
+    Animator MobiusBodyAnim;
+    Animator BordAnim;
 
     public bool IsPlayerMove { get; private set; }
 
@@ -48,12 +61,15 @@ public class tutorialManagaer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        BordNum = 3;
         LAnim = Lstick.GetComponent<Animator>();
         RAnim = Rstick.GetComponent<Animator>();
         ControllerAnim = Controller.GetComponent<Animator>();
+        MobiusfaceAnim = Mobiusface.GetComponent<Animator>();
+        MobiusBodyAnim = MobiusBody.GetComponent<Animator>();
+        BordAnim = Bord.GetComponent<Animator>();
 
         //stagemanager = GameObject.Find("stageManager");
-
         IsPlayerMove = true;
         IsPlayerLMove = true;
         IsRotateMove = true;
@@ -67,13 +83,14 @@ public class tutorialManagaer : MonoBehaviour
 
         if (Stagenum != 1)
         {
-            TutorialNum = 5;
+            TutorialNum = 7;
+            BordNum = 2;
+            BordAnim.SetInteger("text", BordNum);
         }
         else
         {
             TutorialNum = 1;
         }
-
         Point_prefab = Resources.Load<GameObject>("Point");
 
 
@@ -82,17 +99,14 @@ public class tutorialManagaer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //ステージ開始時のカメラワーク中は、操作しない
         if (mainCam.GetComponent<StartCamera>().isMoving)
         { 
             return;
         }
 
-
         //時間をカウントダウンする
         Controller.GetComponent<RectTransform>().SetAsLastSibling();
-
 
         // 左スティックからの入力情報を取得
         float input_x = Input.GetAxis("Horizontal");
@@ -100,116 +114,69 @@ public class tutorialManagaer : MonoBehaviour
         // 右スティックからの入力情報を取得
         float R_Stick_value = Input.GetAxis("tutorialStick");
 
-        //LAnim.SetInteger("tutorialNum", Animnum);
-        //RAnim.SetInteger("RtutorialNum", Animnum);
-
-
-        //if (input_x==0)
-        //{
-
-        //    movecountdown -= Time.deltaTime;
-        //    if (movecountdown <= 0.0f)
-        //    {
-
-        //        Debug.Log("移動UI表示");
-        //        ControllerAnim.SetBool("FukidasiFlg", true);
-        //        LAnim.SetInteger("tutorialNum", Animnum);
-        //        RAnim.SetInteger("RtutorialNum", Animnum);
-        //        movecountdown = 5.0f;
-        //    }
-        //}
-        //else if(Animnum!=5)
-        //{
-        //    movecountdown = 5.0f;
-        //    ControllerAnim.SetBool("FukidasiFlg", false);
-        //}
-        //else
-        //{
-        //    movecountdown = 5.0f;
-        //}
-
-        //if (Player.GetComponent<Player>().IsHitBar)
-        //{
-
-        //    Oricountdown -= Time.deltaTime;
-        //    if (Oricountdown <= 0)
-        //    {
-        //        Animnum = 2;
-        //        ControllerAnim.SetBool("FukidasiFlg", true);
-        //        Debug.Log("UI表示");
-        //        LAnim.SetInteger("tutorialNum", Animnum);
-        //        RAnim.SetInteger("RtutorialNum", Animnum);
-        //        Oricountdown = 1.0f;
-        //    }
-
-        //    if(0 < R_Stick_Value || 0 > R_Stick_Value)
-        //    {
-        //        Animnum = 5;
-        //        ControllerAnim.SetBool("FukidasiFlg", true);
-        //        LAnim.SetInteger("tutorialNum", Animnum);
-        //        RAnim.SetInteger("RtutorialNum", Animnum);
-        //    }
-        //}
-        //else
-        //{
-        //    Oricountdown = 1.0f;
-        //}
-
-
-        //if(Player.GetComponent<Player>().IsHitBar&& 0 < R_Stick_Value || 0 > R_Stick_Value)
-        //{
-        //    Animnum = 5;
-        //    ControllerAnim.SetBool("FukidasiFlg", true);
-        //    LAnim.SetInteger("tutorialNum",Animnum);
-        //    RAnim.SetInteger("RtutorialNum", Animnum);
-        //}
-
-        //if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
-        //{
-        //    ControllerAnim.SetBool("FukidasiFlg", false);
-        //}
-
         switch (TutorialNum)
         {
             case 1:
-                Debug.Log(Player.GetComponent<Player>().IsHitPoint);
-                IsPlayerMove = true;
                 IsRotateMove = false;
                 IsLMove = false;
                 IsRMove = false;
                 Pointcountdown -= Time.deltaTime;
-                ControllerAnim.SetBool("FukidasiFlg", true);
-                LAnim.SetBool("LStick", true);
-                RAnim.SetBool("RStickLMove", false);
-                if (Pointcountdown <= 0.0f)
+                TextCount -= Time.deltaTime;
+                BordNum = 0;
+                BordAnim.SetInteger("text", BordNum);
+                //ControllerAnim.SetBool("FukidasiFlg", true);
+                //LAnim.SetBool("LStick", true);
+                //RAnim.SetBool("RStickLMove", false);
+                if (TextCount <= 0.0f)
                 {
+                    Text.text = "まずはこの世界の進め方の説明をするビウスよ！";
+                    TextCount = 1000.0f;
+                }
+                else
+                {
+                    //IsPlayerMove = false;
+                }
+                if(Pointcountdown <= 0.0f)
+                {
+                    IsPlayerMove = true;
                     if (CountFlg)
                     {
                         CountFlg = false;
                         Point = Instantiate(Point_prefab, new Vector3(1.5f, -2.5f, 0.0f), Quaternion.identity);
-                        //ControllerAnim.SetBool("FukidasiFlg", true);
-                        //LAnim.SetBool("LStick", true);
-                        //RAnim.SetBool("RStickLMove", false);
+                        Text.text= "まずは矢印に向かって歩いてみるビウス！";
+                        MobiusBodyAnim.SetBool("Right", true);
+                        MobiusfaceAnim.SetBool("Smile", true);
+                        ControllerAnim.SetBool("FukidasiFlg", true);
+                        LAnim.SetBool("LStick", true);
+                        RAnim.SetBool("RStickLMove", false);
                     }
                 }
 
                 if (Player.GetComponent<Player>().IsHitPoint)
                 {
-
-                    TutorialNum = 2;
+                    Text.text = "高い段差に阻まれて進むことが出来ないビウス";
                     ControllerAnim.SetBool("FukidasiFlg", false);
                     LAnim.SetBool("LStick", false);
-                    CountFlg = true;
                     IsPoint = true;
+                    TutorialNum = 2;
+                    TextCount = 2.0f;
                     Destroy(Point);
                 }
                 break;
             case 2:
-                Debug.Log(Player.GetComponent<Player>().IsHitPoint);
                 IsPoint = false;
                 if (RotateNum == 1)
                 {
+                    TextCount -= Time.deltaTime;
+                    if (TextCount <= 0.0f)
+                    {
+                        //BordNum = 1;
+                        //BordAnim.SetInteger("text", BordNum);
+                        TextCount = 1000.0f;
+                        CountFlg = true;
+                    }
                     IsPlayerMove = true;
+
                     if (CountFlg)
                     {
                         CountFlg = false;
@@ -219,12 +186,19 @@ public class tutorialManagaer : MonoBehaviour
 
                     if (Player.GetComponent<Player>().IsHitBar)
                     {
+                        BordNum = 0;
+                        BordAnim.SetInteger("text", BordNum);
+                        Text.text = "フィールドを折って世界を変えるビウス！！";
                         IsPlayerMove = false;
                         IsPoint = true;
                         Destroy(Point);
                         RotateNum = 2;
+                        TextCount = 10.0f;
                     }
-
+                    else
+                    {
+                        
+                    }
                 }
                 if (RotateNum == 2)
                 {
@@ -235,10 +209,13 @@ public class tutorialManagaer : MonoBehaviour
                     RAnim.SetBool("RStickLMove", true);
                     if (stagemanager.GetComponent<StageManager>().IsRotate)
                     {
+                        Text.text = "フィールドを上手く折れたでビウス！\n裏表の無い世界に突入ビウス！";
                         Pointcountdown = 1.5f;
                         IsLMove = false;
                         RotateNum = 3;
+                        MobiusBodyAnim.SetBool("Both", true);
                         RAnim.SetBool("RStickLMove", false);
+                        ControllerAnim.SetBool("FukidasiFlg", false);
                     }
 
                 }
@@ -246,24 +223,28 @@ public class tutorialManagaer : MonoBehaviour
                 {
                     Debug.Log(RotateNum);
                     IsPlayerMove = true;
-
-
-                    Pointcountdown -= Time.deltaTime;
-                    if (Pointcountdown <= 0.0f)
+                    Pushcount -= Time.deltaTime;
+                    if (Pushcount <= 0.0f)
                     {
                         IsRotateMove = true;
                         PushFlg = true;
-                        Pointcountdown = 9999.0f;
+                        Text.text = "裏表の無い世界はいつでも解除が可能ビウス！\nスティック押し込んでみるビウス";
+                        ControllerAnim.SetBool("FukidasiFlg", true);
+                        LAnim.SetBool("LStick", false);
+                        RAnim.SetBool("RStickPush", true);
+                        Pushcount = 9999.0f;
+                       
                     }
 
-                    LAnim.SetBool("LStick", false);
-                    RAnim.SetBool("RStickPush", true);
+                    //LAnim.SetBool("LStick", false);
+                    //RAnim.SetBool("RStickPush", true);
                     if (PushFlg)
                     {
                         if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
                         {
                             PushFlg = false;
-                            Debug.Log("押しました");
+                            BordNum = 1;
+                            BordAnim.SetInteger("text", BordNum);
                             Point = Instantiate(Point_prefab, new Vector3(0.17f, -2.5f, 0.0f), Quaternion.identity);
                             ControllerAnim.SetBool("FukidasiFlg", false);
                             RAnim.SetBool("RStickPush", false);
@@ -335,6 +316,7 @@ public class tutorialManagaer : MonoBehaviour
                 {
                     if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
                     {
+                        IsPlayerMove = true;
                         PushFlg = false;
                         TutorialNum = 4;
                         CountFlg = true;
@@ -344,26 +326,41 @@ public class tutorialManagaer : MonoBehaviour
                 break;
 
             case 4:
-                IsPlayerMove = true;
+                
                 IsRotateMove = true;
                 IsLMove = true;
                 IsRMove = true;
-                //IsPoint = false;
-                //IsPlayerMove = true;
-                //if (CountFlg)
-                //{
-                //    CountFlg = false;
-                //    Point = Instantiate(Point_prefab, new Vector3(5.0f, -2.7f, 0.0f), Quaternion.identity);
-                //}
+                IsPoint = false;
+                IsPlayerMove = true;
+                if (CountFlg)
+                {
+                    CountFlg = false;
+                    Point = Instantiate(Point_prefab, new Vector3(5.5f, -2.7f, 0.0f), Quaternion.identity);
+                }
 
-                //if (Player.GetComponent<Player>().IsHitPoint)
-                //{
-                //    IsPoint = true;
-                //    Destroy(Point);
-                //}
-
+                if (Player.GetComponent<Player>().IsHitPoint)
+                {
+                    BordNum = 0;
+                    BordAnim.SetInteger("text", BordNum);
+                    Text.text = "この世界は横に上下反転世界が\n無限に続いているビウス！";
+                    IsPlayerMove = false;
+                    IsPoint = true;
+                    TutorialNum = 5;
+                    TextCount = 5.0f;
+                    Destroy(Point);
+                }
                 break;
 
+            case 5:
+                TextCount -= Time.deltaTime;
+                if (TextCount <= 0.0f)
+                {
+                    Text.text = "蜃気楼の中に実際に入って\n目の前にあるゴールに向かって進むビウス！";
+                    IsPlayerMove = true;
+                    TextCount = 1000.0f;
+                    
+                }
+                break;
             default:
 
                 break;

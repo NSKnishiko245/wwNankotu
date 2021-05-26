@@ -4551,11 +4551,17 @@ MonoBehaviour:
   Player: {fileID: 173389466}
   Bar: {fileID: 4194655685549358900, guid: 224478d88c8eb3647925ff4f47f222cc, type: 3}
   stagemanager: {fileID: 2081052301}
-  Pointcountdown: 2.5
+  Text: {fileID: 2038287224}
+  Pointcountdown: 6
   Oricountdown: 1
+  TextCount: 5
+  Pushcount: 5
   Lstick: {fileID: 2038287220}
   Rstick: {fileID: 2038287219}
   Controller: {fileID: 2038287218}
+  Mobiusface: {fileID: 2038287223}
+  MobiusBody: {fileID: 2038287222}
+  Bord: {fileID: 2038287221}
 --- !u!4 &1638704871
 Transform:
   m_ObjectHideFlags: 0
@@ -5807,6 +5813,32 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7810287352065682177, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
   m_PrefabInstance: {fileID: 2038287217}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2038287221 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1314121196, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
+  m_PrefabInstance: {fileID: 2038287217}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2038287222 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7683474491515480863, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
+  m_PrefabInstance: {fileID: 2038287217}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2038287223 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5238497335020001495, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
+  m_PrefabInstance: {fileID: 2038287217}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2038287224 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 461405585, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
+  m_PrefabInstance: {fileID: 2038287217}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2048528605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6078,6 +6110,7 @@ MonoBehaviour:
   initFlg: 1
   waitInterval: 0.2
   firstWaitTimer: 0
+  oriInterval: 1
 --- !u!4 &2081052302
 Transform:
   m_ObjectHideFlags: 0
