@@ -24,9 +24,7 @@ public class ScreenShot : MonoBehaviour
         // 初期のTextureを保持しておく（画像リセット用）
         DefaultTexture = new Texture2D(0, 0, TextureFormat.ARGB32, false);
 
-
         DefaultTexture = GetComponent<Renderer>().material.GetTexture("_BaseMap");
-        
 
         // 親子関係が形成されるとスケールが変わるので、初めに取得しておく
         DefaultScale = new Vector2(transform.parent.localScale.x, transform.parent.localScale.y);
@@ -36,10 +34,6 @@ public class ScreenShot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-
-        }
     }
 
 
@@ -73,9 +67,23 @@ public class ScreenShot : MonoBehaviour
     }
 
     // 初期テクスチャにリセット
-    public void ResetTexture()
+    public void ResetTexture(bool isReverse = false)
     {
-        DefaultTexture = Resources.Load("Prefabs/Material/tileTex") as Texture2D;
+        string texname;
+        if (isReverse)
+        {
+            texname = "Prefabs/Material/tileTex2";
+            GetComponent<Renderer>().rendererPriority = 2;
+            GetComponent<Renderer>().material.renderQueue = 2;
+        }
+        else
+        {
+            texname = "Prefabs/Material/tileTex";
+            GetComponent<Renderer>().rendererPriority = 1;
+            GetComponent<Renderer>().material.renderQueue = 1;
+        }
+
+        DefaultTexture = Resources.Load(texname) as Texture2D;
         gameObject.GetComponent<Renderer>().material.SetTexture("_BaseMap", DefaultTexture);
     }
 

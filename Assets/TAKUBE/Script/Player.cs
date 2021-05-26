@@ -92,6 +92,8 @@ public class Player : MonoBehaviour
         if (waitMoveTimer > 0.0f) inputValue_x = 0.0f;
         //if (!transform.GetChild((int)PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit) inputValue_x = 0.0f;
 
+        HitTest();
+
         if (!IsHitGoalBlock)
         {
             if (tutorialManager.GetComponent<tutorialManagaer>().IsPlayerMove)
@@ -134,7 +136,6 @@ public class Player : MonoBehaviour
         //{
         //    Jumpflg = true;
         //}
-        HitTest();
 
         //Vector3 diff = this.transform.position - prev;
         //if (diff.magnitude > 0.01f)
@@ -239,6 +240,8 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
             string tag = hit.transform.tag;
+            Debug.Log(tag);
+
             if (tag == "ClimbBlock" || tag == "GimicMoveBlock" || tag == "GimicBreakBlock" || tag == "GimicClearBlock") return false;
             //if (hit.transform.tag == "ClimbBlock") return false;
         }

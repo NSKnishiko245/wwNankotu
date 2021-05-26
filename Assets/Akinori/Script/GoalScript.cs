@@ -16,12 +16,14 @@ public class GoalScript : MonoBehaviour
     }
 
     private bool startFlg = false;
+    private bool isPlayEffect = true;
 
     enum TURN{
         GEAR_TIME,
         DOOR_TIME,
     };
 
+    List<GameObject> particleList = new List<GameObject>();
     
     public ParticleSystem rayParticle;
     GameObject Ldoor;
@@ -60,11 +62,20 @@ public class GoalScript : MonoBehaviour
         //ê∂ê¨ä‘äu
         particleFrame--;
         Vector3 pos = Gear.transform.position;
-        if (particleFrame <= 0)
+        if (particleFrame <= 0 && isPlayEffect)
         {
             Debug.Log(rayParticle.name + "ê∂ê¨");
-            particleFrame = initParticleFrame;        
-            Instantiate(rayParticle, pos, this.transform.rotation);
+            particleFrame = initParticleFrame;
+            particleList.Add(Instantiate(rayParticle, pos, this.transform.rotation).gameObject);
+        }
+
+        for (int i = particleList.Count-1; i >= 0; i--)
+        {
+            if (particleList[i].GetComponent<ParticleSystem>().isStopped)
+            {
+                Destroy(particleList[i].gameObject);
+                particleList.RemoveAt(i);
+            }
         }
         
         if (startFlg)
@@ -105,6 +116,10 @@ public class GoalScript : MonoBehaviour
     {
         return startFlg = _flg;
     }
+    public bool SetPlayEffectFlg(bool _flg)
+    {
+        return isPlayEffect = _flg;
+    }
 
     //EnumÇÃE_ParticleColorÇ©ÇÁïœçXÇ∑ÇÈêFÇà¯êîÇ…ì¸ÇÍÇÈ
     public void ChangeColor(E_ParticleColor _col)
@@ -122,6 +137,15 @@ public class GoalScript : MonoBehaviour
         else
         {
             main.startColor = bronzeColor;
+        }
+    }
+
+    public void ClearParticle()
+    {
+        for (int i = particleList.Count - 1; i >= 0; i--)
+        {
+            Destroy(particleList[i].gameObject);
+            particleList.RemoveAt(i);
         }
     }
 }

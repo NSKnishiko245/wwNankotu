@@ -257,6 +257,9 @@ public class StageUIManager : MonoBehaviour
                             Point.SetActive(false);
                             tutorialUI.SetActive(false);
                         }
+
+                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
+                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
                     }
                 }
 
@@ -267,10 +270,7 @@ public class StageUIManager : MonoBehaviour
                 }
                 if (goldMedalFlg)
                 {
-                    GameObject goal1 = GameObject.Find("2(Clone)/GoalObj").gameObject;
-                    GameObject goal2 = GameObject.Find("2(Clone)/GoalObj (1)").gameObject;
-                    goal1.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.GOLD);
-                    goal2.GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.GOLD);
+                    stageManager.GetComponent<StageManager>().SetModeGoalEffect(4);
                 }
                 break;
 
@@ -308,6 +308,7 @@ public class StageUIManager : MonoBehaviour
                     stageDisplayCnt = stageDisplayCntInit;
 
                     stageManager.GetComponent<StageManager>().FixPlayerPos();
+                    stageManager.GetComponent<StageManager>().SetModeGoalEffect(3);
 
                     // チュートリアル表示
                     if (stageNum == 1)
@@ -370,6 +371,8 @@ public class StageUIManager : MonoBehaviour
                         // コマンド決定
                         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                         {
+                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
+                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
                             status = STATUS.COMMAND_DECISION;
                             selectDecSource.Play();
                             this.GetComponent<ScoreAnimation>().EndFlgOn();

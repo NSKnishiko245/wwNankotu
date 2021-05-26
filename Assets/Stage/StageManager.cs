@@ -92,6 +92,14 @@ public class StageManager : MonoBehaviour
     public float firstWaitTimer;
 
 
+    public float oriInterval = 1.0f;
+    private float oriIntervalTimer = 0.0f;
+
+
+    private int oriBarNum = 0;
+
+
+
     private enum CONTROLLERSTATE
     {
         L_TRIGGER = -1,
@@ -172,6 +180,7 @@ public class StageManager : MonoBehaviour
             CreateParticle();
         }
 
+        oriIntervalTimer -= Time.deltaTime;
 
         // 左スティックの入力値を取得
         float L_Stick_Value = Input.GetAxis("Horizontal");
@@ -179,12 +188,17 @@ public class StageManager : MonoBehaviour
         HitBarIdx = GetHitBarIndex();       // プレイヤーと衝突中のバーを取得
         LeftBarIdx = GetLeftBarIndex();     // ステージの一番左のバーを取得
         RightBarIdx = GetRightBarIndex();   // ステージの一番右のバーを取得
+        
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            ChangeTileTexture();
+        }
 
         if (HitBarIdx != -1)
         {
-            if (HitBarIdx != RightBarIdx && HitBarIdx != LeftBarIdx && Grid.GetComponent<MeshRenderer>().enabled)
+            Grid.GetComponent<CreateGrid>().AlphaIncrease = false;
+            if ((!isLeftBar(HitBarIdx) && !isRightBar(HitBarIdx)) && Grid.GetComponent<MeshRenderer>().enabled)
             {
-                // 回転済みのバーを検出したら元に戻す回転処理を開始
                 for (int i = 0; i < Bar_List.Count; i++)
                 {
                     if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED) break;
@@ -304,31 +318,35 @@ public class StageManager : MonoBehaviour
             }
         }
         // ステージの状況を見て回転できるかどうかを判断
-        if (CanYouRotate() && !IsGameClear)
+        if (CanYouRotate() && !IsGameClear && oriIntervalTimer <= 0.0f)
         {
             if (tutorialManager.GetComponent<tutorialManagaer>().IsRMove)
             {
                 // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
                 if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.J))
                 {
+                    SetModeGoalEffect(0);
                     RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_LEFT);
                     RotateState = ROTATESTATE.L_ROTATE;
                     ScreenShot();
                     rotateNum++;
                     Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.RIGHT;
                     IsRotate = true;
+                    oriBarNum = HitBarIdx;
                 }
             }
             if (tutorialManager.GetComponent<tutorialManagaer>().IsLMove)
             {
                 if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.L))
                 {
+                    SetModeGoalEffect(0);
                     RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_RIGHT);
                     RotateState = ROTATESTATE.R_ROTATE;
                     ScreenShot();
                     rotateNum++;
                     Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.LEFT;
                     IsRotate = true;
+                    oriBarNum = HitBarIdx;
                 }
             }
         }
@@ -372,7 +390,7 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        if (tutorialManager.GetComponent<tutorialManagaer>().IsRotateMove)
+        if (tutorialManager.GetComponent<tutorialManagaer>().IsRotateMove && oriIntervalTimer <= 0.0f)
         {
             // 回転済みのステージを戻す処理
             if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
@@ -386,6 +404,7 @@ public class StageManager : MonoBehaviour
                         if (Bar_List[i].GetComponent<BarRotate>().RotateState == BarRotate.ROTSTATEINNERDATA.ROTATED)
                         {
                             //rotateNum++;
+                            SetModeGoalEffect(0);
                             FirstFunc();
                             Player.GetComponent<Player>().TurnOffMove();
                             Player.GetComponent<Player>().FixPos();
@@ -400,6 +419,7 @@ public class StageManager : MonoBehaviour
         {
             if (isCopy)
             {
+                oriIntervalTimer = oriInterval * 2.0f;
                 DecidedStage(WARPSTATE.TO_RIGHT);
             }
         }
@@ -407,6 +427,7 @@ public class StageManager : MonoBehaviour
         {
             if (isCopy)
             {
+                oriIntervalTimer = oriInterval * 3.0f;
                 DecidedStage(WARPSTATE.TO_LEFT);
             }
         }
@@ -420,10 +441,11 @@ public class StageManager : MonoBehaviour
         if (Player.GetComponent<Player>().IsHitGoalBlock)
         {
             IsGameClear = true;
-            GameObject goal1 = GameObject.Find("2(Clone)/GoalObj").gameObject;
-            GameObject goal2 = GameObject.Find("2(Clone)/GoalObj (1)").gameObject;
-            goal1.GetComponent<GoalScript>().SetStartFlg(true);
-            goal2.GetComponent<GoalScript>().SetStartFlg(true);
+            //GameObject goal1 = GameObject.Find("2(Clone)/GoalObj1").gameObject;
+            //GameObject goal2 = GameObject.Find("2(Clone)/GoalObj2").gameObject;
+            //goal1.GetComponent<GoalScript>().SetStartFlg(true);
+            //goal2.GetComponent<GoalScript>().SetStartFlg(true);
+            SetModeGoalEffect(1);
         }
 
         if (UnderBorder.GetComponent<HitCreateEffect>().isFinished)
@@ -437,6 +459,8 @@ public class StageManager : MonoBehaviour
         {
             DeleteCopyForMenu();
             IsGameOver = true;
+            SetModeGoalEffect(0);
+            SetModeGoalEffect(2);
         }
 
 
@@ -449,10 +473,11 @@ public class StageManager : MonoBehaviour
         {
             if (resetFlg)
             {
-                for (int k = 0; k < Tile_List.Count; k++)
-                {
-                    Tile_List[k].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
-                }
+                //for (int k = 0; k < Tile_List.Count; k++)
+                //{
+                //    Tile_List[k].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+                //}
+                ChangeTileTexture();
                 resetFlg = false;
             }
             ParentReset();
@@ -502,6 +527,7 @@ public class StageManager : MonoBehaviour
         }
         // 回転処理
         Bar_List[bar_idx].GetComponent<BarRotate>().Rotation(rotstate);
+        //oriIntervalTimer = oriInterval;
     }
 
     // 回転可能かどうかをチェック
@@ -709,6 +735,12 @@ public class StageManager : MonoBehaviour
                     {
                         child.GetComponent<MoveBlock>().TurnOffGravity();
                     }
+                    // タイル複製
+                    if (child.tag == "GoalBlock")
+                    {
+                        child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetPlayEffectFlg(false);
+                        child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetPlayEffectFlg(false);
+                    }
                 }
             }
 
@@ -805,6 +837,9 @@ public class StageManager : MonoBehaviour
     }
     private void DecidedStage(WARPSTATE state)
     {
+        SetModeGoalEffect(0);
+        SetModeGoalEffect(2);
+
         BigParent.GetComponent<InvisibleBlock>().SetAlpha(1.0f);
 
         for (int i = 0; i < Tile_List.Count; i++) Tile_List[i].transform.parent = BigParent.transform;
@@ -828,6 +863,11 @@ public class StageManager : MonoBehaviour
                 if (child.tag == "GimicMoveBlock")
                 {
                     child.GetComponent<MoveBlock>().TurnOnGravity();
+                }
+                if (child.tag == "GoalBlock")
+                {
+                    child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetPlayEffectFlg(true);
+                    child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetPlayEffectFlg(true);
                 }
             }
         }
@@ -921,6 +961,10 @@ public class StageManager : MonoBehaviour
         if (is3D == false && activeFlg == true)
         {
             Grid.GetComponent<MeshRenderer>().enabled = true;
+        }
+        if (is3D != activeFlg)
+        {
+            oriIntervalTimer = oriInterval;
         }
         is3D = activeFlg;
 
@@ -1061,6 +1105,44 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    // 0 --> 消す , 1 --> クリア時 , 2 --> 停止 , 3 --> 再生
+    public void SetModeGoalEffect(int modeCnt)
+    {
+        // タイル複製
+        for (int i = 0; i < Tile_List.Count; i++)
+        {
+            foreach (Transform child in Tile_List[i].GetComponentsInChildren<Transform>())
+            {
+                if (child.tag == "GoalBlock")
+                {
+                    switch (modeCnt) {
+                        case 0:
+                            child.transform.Find("GoalObj1").GetComponent<GoalScript>().ClearParticle();
+                            child.transform.Find("GoalObj2").GetComponent<GoalScript>().ClearParticle();
+                            break;
+                        case 1:
+                            child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetStartFlg(true);
+                            child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetStartFlg(true);
+                            break;
+                        case 2:
+                            child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetPlayEffectFlg(false);
+                            child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetPlayEffectFlg(false);
+                            break;
+                        case 3:
+                            child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetPlayEffectFlg(true);
+                            child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetPlayEffectFlg(true);
+                            break;
+                        case 4:
+                            child.transform.Find("GoalObj1").GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.GOLD); ;
+                            child.transform.Find("GoalObj2").GetComponent<GoalScript>().ChangeColor(GoalScript.E_ParticleColor.GOLD);;
+                            break;
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
     public void FixPlayerPos()
     {
         if (Player.transform.position.x > Bar_List[RightBarIdx].transform.position.x)
@@ -1079,7 +1161,14 @@ public class StageManager : MonoBehaviour
         {
             if (isLeftBar(i) || isRightBar(i))
             {
-                Bar_List[i].GetComponent<MeshRenderer>().enabled = false;
+                if (i == oriBarNum && RotateState != ROTATESTATE.NEUTRAL)
+                {
+                    Bar_List[i].GetComponent<MeshRenderer>().enabled = true;
+                }
+                else
+                {
+                    Bar_List[i].GetComponent<MeshRenderer>().enabled = false;
+                }
             }
             else
             {
@@ -1101,6 +1190,27 @@ public class StageManager : MonoBehaviour
                     ef.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                     ef.GetComponent<ParticleSystem>().Play();
                 }
+            }
+        }
+    }
+
+    private void ChangeTileTexture()
+    {
+        for (int i = 0; i < Tile_List.Count; i++)
+        {
+            switch (RotateState)
+            {
+                case ROTATESTATE.L_ROTATE:
+                    if (oriBarNum > i) Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture(true);
+                    else Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+                    break;
+                case ROTATESTATE.R_ROTATE:
+                    if (oriBarNum <= i) Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture(true);
+                    else Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+                    break;
+                case ROTATESTATE.NEUTRAL:
+                    Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+                    break;
             }
         }
     }

@@ -30,8 +30,9 @@ public class PlayerHitTest : MonoBehaviour
         //    HitBlockHeight = other.transform.lossyScale.y;
         //    isHit = true;
         //}
+
         string tag = other.transform.tag;
-        if (tag == "ClimbBlock"||tag=="GimicClearBlock"||tag == "Block")
+        if (tag == "ClimbBlock"||tag=="GimicClearBlock"||tag == "Block"||tag=="GimicMoveBlock")
         {
             Vector3 ray_pos = other.transform.position + Vector3.down * 0.1f + Vector3.back * 0.38f;
             Ray ray = new Ray(ray_pos, Vector3.up);
