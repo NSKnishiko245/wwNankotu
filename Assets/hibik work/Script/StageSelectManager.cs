@@ -357,7 +357,6 @@ public class StageSelectManager : MonoBehaviour
         for (int i = 1; i < stageMax + 1; i++)
         {
             silverConditions[i] = int.Parse(SilverConditionsString[i]);
-            Debug.Log("silver Stage" + i + ":" + silverConditions[i]);
         }
     }
 }

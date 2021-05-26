@@ -16,6 +16,7 @@ public class TitleManager : MonoBehaviour
     // サウンド
     [SerializeField] private AudioSource titleBgmSource;
     [SerializeField] private AudioSource titleStartSource;
+    [SerializeField] private AudioSource commandSource;
 
     [SerializeField] private float sceneChangeTime; // シーン遷移までの時間
     private int sceneChangeCnt = 0;                // シーン遷移のカウンタ
@@ -25,6 +26,7 @@ public class TitleManager : MonoBehaviour
     [SerializeField] private int canvasAnimStartCnt;
     [SerializeField] private int cameraAnimStartCnt;
 
+    private bool commandFlg = false;
 
     private void Awake()
     {
@@ -39,6 +41,23 @@ public class TitleManager : MonoBehaviour
         {
             sceneChangeFlg = true;
             pressAAnim.SetFloat("speed", 5.0f);
+        }
+
+        // エクストラステージ解放コマンド
+        if (!commandFlg)
+        {
+            if (Input.GetKeyDown(KeyCode.C) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0))
+            {
+                Debug.Log("エクストラステージ解放コマンド");
+                commandSource.Play();
+
+                for (int i = 0; i < 6; i++)
+                {
+                    StageSelectManager.enterExtraFlg[i] = true;
+                }
+
+                commandFlg = true;
+            }
         }
 
         // シーン遷移開始

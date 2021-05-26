@@ -48,7 +48,6 @@ public class CreateStageSelect : MonoBehaviour
 
             // ステージ番号
             int stageNum = BookSelect.bookNum * bookStageMax + i + 1;
-            Debug.Log(stageNum);
 
             //-----------------------------------
             // タイトルテキストの設定

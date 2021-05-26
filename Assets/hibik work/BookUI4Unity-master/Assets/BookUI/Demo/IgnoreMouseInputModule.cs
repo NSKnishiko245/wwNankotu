@@ -344,7 +344,6 @@ public class IgnoreMouseInputModule : BaseInputModule
                         bookLAnim = bookL.GetComponent<Animator>();
                         bookLAnim.SetBool("isAnim", false);
                     }
-                        Debug.Log(bookCloseCnt);
 
                     if (bookCloseCnt == 0) bookCloseFlg = true;
                     else bookCloseCnt--;
