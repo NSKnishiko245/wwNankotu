@@ -349,7 +349,8 @@ public class StageUIManager : MonoBehaviour
                     // チュートリアル非表示
                     if (stageNum == 1) tutorialUI.SetActive(false);
 
-                    bgmSource.Stop();
+                    AudioSource bgm = GameObject.Find("StageBGM").GetComponent<AudioSource>();
+                    bgm.Stop();
                     resultSource.Play();
 
                     // 銅メダル取得
