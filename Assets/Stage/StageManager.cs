@@ -451,7 +451,7 @@ public class StageManager : MonoBehaviour
             //GameObject goal2 = GameObject.Find("2(Clone)/GoalObj2").gameObject;
             //goal1.GetComponent<GoalScript>().SetStartFlg(true);
             //goal2.GetComponent<GoalScript>().SetStartFlg(true);
-            SetModeGoalEffect(3);
+            //SetModeGoalEffect(3);
             SetModeGoalEffect(1);
         }
         // ゲームオーバー検知
