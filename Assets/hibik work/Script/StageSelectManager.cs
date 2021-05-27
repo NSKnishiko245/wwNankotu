@@ -155,6 +155,7 @@ public class StageSelectManager : MonoBehaviour
         BookClearCheck(13, 17, 2);
         BookClearCheck(19, 23, 3);
         BookClearCheck(25, 29, 4);
+        BookClearCheck(31, 35, 5);
     }
 
     //==============================================================

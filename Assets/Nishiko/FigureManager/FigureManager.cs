@@ -20,7 +20,7 @@ public class FigureManager : MonoBehaviour
 
    
 
-    private bool[] m_isStageClear = new bool[5]; 
+    private bool[] m_isStageClear = new bool[6]; 
 
     private bool[] m_isSet = new bool[5];   //パーツが元の位置にいるか？ 
     private int[] m_WaitTime = new int[5]; //待ち時間
@@ -37,7 +37,13 @@ public class FigureManager : MonoBehaviour
     //
     public int Speed = 1;
 
+    [Header("移動時のパーティクル")]
     public ParticleSystem m_objKirakiraMove;
+
+    [Header("完成した時に出すパーティクル")]
+    public ParticleSystem m_PerfectParticle;
+    private int m_cnt = 0;
+
 
     //銅を取ったらパーツまで運ぶ(最大5個まで運ぶ)
     //全ステージ分銅
@@ -97,6 +103,15 @@ public class FigureManager : MonoBehaviour
         //銅を更新
         CopperMove();
 
+        //難易度６をクリアしたらキラキラパーティクル
+        if (m_isStageClear[5])
+        {
+            if (m_cnt%10==0)
+            {
+                Instantiate(m_PerfectParticle, this.transform.position, Quaternion.identity);//きらきらエフェクト
+            }
+            m_cnt++;
+        }
 
         if (SceneManager.GetActiveScene().name == "Stage1Scene")
         {
@@ -121,8 +136,7 @@ public class FigureManager : MonoBehaviour
         }
        
 
-        if (Input.GetKeyDown(KeyCode.F1)) m_isStageClear[0] = true;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             if (StageClearManager.StageClear[i])
             {
@@ -131,12 +145,15 @@ public class FigureManager : MonoBehaviour
         }
 
 
+        if (Input.GetKeyDown(KeyCode.F1)) m_isStageClear[0] = true;
         if (Input.GetKeyDown(KeyCode.F2)) m_isStageClear[1] = true;
         if (Input.GetKeyDown(KeyCode.F3)) m_isStageClear[2] = true;
         if (Input.GetKeyDown(KeyCode.F4)) m_isStageClear[3] = true;
+        if (Input.GetKeyDown(KeyCode.F5)) m_isStageClear[4] = true;
+        if (Input.GetKeyDown(KeyCode.F6)) m_isStageClear[5] = true;
 
         //本ごとに全ての銅メダルを集めたか？
-        for (int i = 0; i < m_isStageClear.Length; i++)
+        for (int i = 0; i < m_isStageClear.Length-1; i++)
         {
             if (m_isStageClear[i])//銅を全て集めたら
             {
@@ -148,7 +165,7 @@ public class FigureManager : MonoBehaviour
                 if (m_isSet[i])
                 {
                     //Instantiate(m_objKirakiraMove, m_objModelparts[i].transform.position, Quaternion.identity);//きらきらエフェクト
-                    if (m_WaitTime[i] >= 210)
+                    if (m_WaitTime[i] >= 240)
                     {
                         m_isMove[i] = true;
                     }
@@ -240,11 +257,11 @@ public class FigureManager : MonoBehaviour
                     }
                     else if (i >= 31 && i < 36)//ステージ１～５
                     {
-                        //m_CopperTarGetPos[i] = m_objModelparts[].transform.position;
+                        m_CopperTarGetPos[i] = this.transform.position;
                     }
                     //後で追加
 
-                    if (m_CopperWait[i] >= 120)
+                    if (m_CopperWait[i] >= (60 + ((i % 6) * 20)))
                     {
                         m_isCopperMove[i] = true;//移動中にする
                     }

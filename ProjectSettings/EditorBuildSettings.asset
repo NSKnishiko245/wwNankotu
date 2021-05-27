@@ -14,9 +14,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/StageMake/Game_Proto.unity
     guid: c912dedca7981114ebc861b5bd1880ff
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/hibik work/Scene/BookSelectScene.unity
+    guid: e7e1773b37a40c84fa2dc945fa71f803
+  - enabled: 1
+    path: Assets/hibik work/Scene/StageSelectScene.unity
+    guid: 3b5fe01221d1df24588e88a9d1bd7adf
   - enabled: 1
     path: Assets/hibik work/Scene/Stage1Scene.unity
     guid: 6af18d0741ab8bb4eb89cfc911b8a3f2
@@ -71,10 +74,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/hibik work/Scene/BookSelectScene.unity
-    guid: e7e1773b37a40c84fa2dc945fa71f803
-  - enabled: 1
-    path: Assets/hibik work/Scene/StageSelectScene.unity
-    guid: 3b5fe01221d1df24588e88a9d1bd7adf
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

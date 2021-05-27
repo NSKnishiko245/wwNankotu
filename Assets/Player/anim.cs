@@ -11,6 +11,10 @@ public class anim : MonoBehaviour
     //アニメーションで使うSE
     public AudioClip m_moveAudio;
 
+    //アニメーションで砂煙
+    public ParticleSystem m_footsmoke;
+    [Header("足煙の発生位置")]
+    public GameObject m_footpoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +59,11 @@ public class anim : MonoBehaviour
 
     public void PlayMoveSound()
     {
+        Instantiate(m_footsmoke, m_footpoint.transform.position, Quaternion.identity);
+       
         AudioSource.PlayClipAtPoint(m_moveAudio, this.transform.position);//SE再生
+        
     }
+
+    
 }
