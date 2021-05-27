@@ -147,7 +147,7 @@ public class CreateGrid : MonoBehaviour
             if (size_x < 0) { size_x = 1; }
             ReGrid();
         }
-        Debug.Log(AlphaIncrease);
+
         if (AlphaIncrease)
         {
             color.a += alphaDownValue;

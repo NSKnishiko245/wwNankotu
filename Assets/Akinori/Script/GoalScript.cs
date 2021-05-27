@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class GoalScript : MonoBehaviour
 {
 
@@ -64,7 +63,7 @@ public class GoalScript : MonoBehaviour
         Vector3 pos = Gear.transform.position;
         if (particleFrame <= 0 && isPlayEffect)
         {
-            Debug.Log(rayParticle.name + "¶¬");
+            Debug.Log("on");
             particleFrame = initParticleFrame;
             particleList.Add(Instantiate(rayParticle, pos, this.transform.rotation).gameObject);
         }

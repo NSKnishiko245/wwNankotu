@@ -282,6 +282,8 @@ public class StageManager : MonoBehaviour
             {
                 FrontEffectCamera.SetActive(true);
             }
+
+            //SetModeGoalEffect(3);
         }
         else
         {
@@ -320,12 +322,14 @@ public class StageManager : MonoBehaviour
         // ステージの状況を見て回転できるかどうかを判断
         if (CanYouRotate() && !IsGameClear && oriIntervalTimer <= 0.0f)
         {
+
             if (tutorialManager.GetComponent<tutorialManagaer>().IsRMove)
             {
                 // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
                 if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.J))
                 {
                     SetModeGoalEffect(0);
+                    SetModeGoalEffect(2);
                     RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_LEFT);
                     RotateState = ROTATESTATE.L_ROTATE;
                     ScreenShot();
@@ -340,6 +344,7 @@ public class StageManager : MonoBehaviour
                 if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.L))
                 {
                     SetModeGoalEffect(0);
+                    SetModeGoalEffect(2);
                     RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_RIGHT);
                     RotateState = ROTATESTATE.R_ROTATE;
                     ScreenShot();
@@ -405,6 +410,7 @@ public class StageManager : MonoBehaviour
                         {
                             //rotateNum++;
                             SetModeGoalEffect(0);
+                            SetModeGoalEffect(2);
                             FirstFunc();
                             Player.GetComponent<Player>().TurnOffMove();
                             Player.GetComponent<Player>().FixPos();
@@ -445,7 +451,20 @@ public class StageManager : MonoBehaviour
             //GameObject goal2 = GameObject.Find("2(Clone)/GoalObj2").gameObject;
             //goal1.GetComponent<GoalScript>().SetStartFlg(true);
             //goal2.GetComponent<GoalScript>().SetStartFlg(true);
+            SetModeGoalEffect(3);
             SetModeGoalEffect(1);
+        }
+        // ゲームオーバー検知
+        else if (UnderBorder.GetComponent<HitAction>().isHit || waitTime <= waitTimer)
+        {
+            DeleteCopyForMenu();
+            IsGameOver = true;
+            SetModeGoalEffect(0);
+            SetModeGoalEffect(2);
+        }
+        else if (isStopStage() && !Camera.main.GetComponent<MoveCamera>().isMoveEx && !rerotFlg)
+        {
+            SetModeGoalEffect(3);
         }
 
         if (UnderBorder.GetComponent<HitCreateEffect>().isFinished)
@@ -453,16 +472,6 @@ public class StageManager : MonoBehaviour
             waitTimer += Time.deltaTime;
             Player.transform.Find("walk_UV").gameObject.SetActive(false);
         }
-
-        // ゲームオーバー検知
-        if (UnderBorder.GetComponent<HitAction>().isHit || waitTime <= waitTimer)
-        {
-            DeleteCopyForMenu();
-            IsGameOver = true;
-            SetModeGoalEffect(0);
-            SetModeGoalEffect(2);
-        }
-
 
         if (!isStopStage())
         {
