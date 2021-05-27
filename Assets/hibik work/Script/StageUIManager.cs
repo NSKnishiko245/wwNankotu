@@ -36,7 +36,7 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private Material[] material = new Material[6];
 
     // サウンド
-    [SerializeField] private AudioSource bgmSource;
+    private AudioSource bgmSource;
     [SerializeField] private AudioSource resultSource;
     [SerializeField] private AudioSource selectDecSource;
     private int bgmNum;
@@ -142,9 +142,16 @@ public class StageUIManager : MonoBehaviour
         // それ以外はステージごとのBGM
         else bgmNum = BookSelect.bookNum + 1;
 
-        AudioClip audio = Resources.Load("Sound/bgm/mainBGM_" + bgmNum, typeof(AudioClip)) as AudioClip;
-        bgmSource.clip = audio;
-        bgmSource.Play();
+        // ネクスト以外を選択していたらBGMをセットしなおす
+        if (StageBgm.bgmFlg)
+        {
+            bgmSource = GameObject.Find("StageBGM").GetComponent<AudioSource>();
+            AudioClip audio = Resources.Load("Sound/bgm/mainBGM_" + bgmNum, typeof(AudioClip)) as AudioClip;
+            bgmSource.clip = audio;
+            bgmSource.time = 0.0f;
+            bgmSource.Play();
+            StageBgm.bgmFlg = false;
+        }
 
         // ステージ番号取得
         stageNum = StageManager.stageNum;
@@ -233,6 +240,7 @@ public class StageUIManager : MonoBehaviour
                         stageManager.SetActive(false);
                         changeSceneName = "Stage1Scene";
                         status = STATUS.COMMAND_DECISION;
+                        command = COMMAND.RETRY;
                         sceneChangeCnt = 120;
                         endBookCnt = 0;
                     }
@@ -396,6 +404,9 @@ public class StageUIManager : MonoBehaviour
                     if (command == COMMAND.NEXT) StageSelectManager.selectPageNum++;
 
                     statusFirstFlg = false;
+
+                    // ネクスト以外を選択していたらBGMをセットしなおす
+                    if (command != COMMAND.RETRY) StageBgm.bgmFlg = true;
                 }
 
                 // 本のモデルを閉じる

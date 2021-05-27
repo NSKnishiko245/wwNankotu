@@ -23,6 +23,7 @@ TagManager:
   - GimicBarCol
   - MoveCenter
   - SelectBgm
+  - StageBgm
   layers:
   - Default
   - TransparentFX
