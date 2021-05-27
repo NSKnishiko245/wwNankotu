@@ -246,9 +246,9 @@ public class StageUIManager : MonoBehaviour
                     }
                     else gameOverCnt--;
                 }
-
+                if(stageNum == 1) { }
                 // ƒƒjƒ…[‚ğŠJ‚­
-                if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
+                else if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                 {
                     if (!stageManager.GetComponent<StageManager>().isMove)
                     {

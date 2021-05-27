@@ -278,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: -0.4
   rotFlg: 1
+  target_Rotate: 0
 --- !u!114 &49541674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +317,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 49541671}
   m_CullTransparentMesh: 1
+--- !u!1 &94189054 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8425868051405931457, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
+  m_PrefabInstance: {fileID: 2038287217}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &94189058
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 94189054}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2770ea3fb37c50d4cb4081f4e78c2b27, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &125907279
 GameObject:
   m_ObjectHideFlags: 0
@@ -2202,6 +2227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: -0.4
   rotFlg: 1
+  target_Rotate: 0
 --- !u!114 &659287058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2366,6 +2392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 0.4
   rotFlg: 1
+  target_Rotate: 0
 --- !u!114 &760638607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4669,6 +4696,7 @@ MonoBehaviour:
   Mobiusface: {fileID: 2038287223}
   MobiusBody: {fileID: 2038287222}
   Bord: {fileID: 2038287221}
+  Black: {fileID: 94189054}
 --- !u!4 &1638704871
 Transform:
   m_ObjectHideFlags: 0
@@ -5001,6 +5029,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 0.4
   rotFlg: 1
+  target_Rotate: 0
 --- !u!114 &1764975051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5711,6 +5740,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 173389473}
     m_Modifications:
+    - target: {fileID: 1314121197, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 224
+      objectReference: {fileID: 0}
     - target: {fileID: 7810287351057428578, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -5734,6 +5767,10 @@ PrefabInstance:
     - target: {fileID: 7810287351094303292, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
       propertyPath: m_RenderMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810287351094303292, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
+      propertyPath: m_PlaneDistance
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7810287351094303293, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
       propertyPath: m_Pivot.x
@@ -5873,7 +5910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7810287351447957913, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -429
+      value: 558
       objectReference: {fileID: 0}
     - target: {fileID: 7810287351447957913, guid: 4f1f955614639404f8c7f1d0cc17e812, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6997,6 +7034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 0.2
   rotFlg: 0
+  target_Rotate: 0
 --- !u!1001 &2645904951950916186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7720,6 +7758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 0.2
   rotFlg: 0
+  target_Rotate: 0
 --- !u!4 &8280084424345570700
 Transform:
   m_ObjectHideFlags: 0

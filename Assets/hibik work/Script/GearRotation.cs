@@ -7,14 +7,33 @@ public class GearRotation : MonoBehaviour
     [SerializeField, Range(-5, 5)]
     private float rotSpeed = -0.2f;  // ‰ñ“]‘¬“x
 
+   
     [SerializeField] private bool rotFlg = true; // true:‰ñ“]‚·‚é
 
+   
+
+    public float target_Rotate;
     private void Update()
     {
+       
         if (rotFlg)
         {
             this.transform.Rotate(new Vector3(0.0f, 0.0f, rotSpeed));
         }
+
+        //if(tutorialrotFlg)
+        //{
+        //    if (Quaternion.Angle(nowrot, target) <= 1)
+        //    {
+        //        transform.rotation = target;
+        //    }
+        //    else
+        //    {
+        //        transform.Rotate(new Vector3(0, 0, -1f));
+        //    }
+        //    //this.transform.Rotate(new Vector3(0.0f, 0.0f, tutorialrotSpeed));
+        //}
+
     }
 
     // ‰ñ“]ƒtƒ‰ƒO‚ðƒZƒbƒg
@@ -22,4 +41,9 @@ public class GearRotation : MonoBehaviour
     {
         rotFlg = sts;
     }
+
+    //public void RotFlg(bool Flg)
+    //{
+    //    tutorialrotFlg = Flg;
+    //}
 }

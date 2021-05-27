@@ -24,7 +24,7 @@ public class tutorialManagaer : MonoBehaviour
     private GameObject mainCam;
 
     private bool PushFlg;
-
+    private bool textFlg;
     //カウントダウン
     [SerializeField] public float Pointcountdown = 5.0f;
     [SerializeField] public float Oricountdown = 1.0f;
@@ -38,6 +38,7 @@ public class tutorialManagaer : MonoBehaviour
     [SerializeField] private GameObject Mobiusface;
     [SerializeField] private GameObject MobiusBody;
     [SerializeField] private GameObject Bord;
+    [SerializeField] private GameObject Black;
 
     Animator LAnim;
     Animator RAnim;
@@ -45,6 +46,7 @@ public class tutorialManagaer : MonoBehaviour
     Animator MobiusfaceAnim;
     Animator MobiusBodyAnim;
     Animator BordAnim;
+    Animator BlackAnim;
 
     public bool IsPlayerMove { get; private set; }
 
@@ -61,13 +63,14 @@ public class tutorialManagaer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BordNum = 3;
+        BordNum = 5;
         LAnim = Lstick.GetComponent<Animator>();
         RAnim = Rstick.GetComponent<Animator>();
         ControllerAnim = Controller.GetComponent<Animator>();
         MobiusfaceAnim = Mobiusface.GetComponent<Animator>();
         MobiusBodyAnim = MobiusBody.GetComponent<Animator>();
         BordAnim = Bord.GetComponent<Animator>();
+        BlackAnim = Black.GetComponent<Animator>();
 
         //stagemanager = GameObject.Find("stageManager");
         IsPlayerMove = true;
@@ -78,6 +81,7 @@ public class tutorialManagaer : MonoBehaviour
         IsPoint = false;
         CountFlg = true;
         PushFlg = false;
+        textFlg = false;
         mainCam = Camera.main.gameObject;
         Stagenum = StageManager.stageNum;
 
@@ -101,7 +105,8 @@ public class tutorialManagaer : MonoBehaviour
     {
         //ステージ開始時のカメラワーク中は、操作しない
         if (mainCam.GetComponent<StartCamera>().isMoving)
-        { 
+        {
+            textFlg = true;
             return;
         }
 
@@ -122,11 +127,13 @@ public class tutorialManagaer : MonoBehaviour
                 IsRMove = false;
                 Pointcountdown -= Time.deltaTime;
                 TextCount -= Time.deltaTime;
-                BordNum = 0;
-                BordAnim.SetInteger("text", BordNum);
-                //ControllerAnim.SetBool("FukidasiFlg", true);
-                //LAnim.SetBool("LStick", true);
-                //RAnim.SetBool("RStickLMove", false);
+                if (textFlg)
+                {
+                    BlackAnim.SetBool("Black", true);
+                    BordNum = 3;
+                    BordAnim.SetInteger("text", BordNum);
+                   
+                }
                 if (TextCount <= 0.0f)
                 {
                     Text.text = "まずはこの世界の進め方の説明をするビウスよ！";
@@ -134,7 +141,7 @@ public class tutorialManagaer : MonoBehaviour
                 }
                 else
                 {
-                    //IsPlayerMove = false;
+                    IsPlayerMove = false;
                 }
                 if(Pointcountdown <= 0.0f)
                 {
@@ -202,19 +209,19 @@ public class tutorialManagaer : MonoBehaviour
                 }
                 if (RotateNum == 2)
                 {
-                    IsLMove = true;
-                    IsRMove = false;
+                    IsLMove = false;
+                    IsRMove = true;
                     ControllerAnim.SetBool("FukidasiFlg", true);
                     LAnim.SetBool("LStick", false);
-                    RAnim.SetBool("RStickLMove", true);
+                    RAnim.SetBool("RStickRMove", true);
                     if (stagemanager.GetComponent<StageManager>().IsRotate)
                     {
                         Text.text = "フィールドを上手く折れたでビウス！\n裏表の無い世界に突入ビウス！";
                         Pointcountdown = 1.5f;
-                        IsLMove = false;
+                        IsRMove = false;
                         RotateNum = 3;
                         MobiusBodyAnim.SetBool("Both", true);
-                        RAnim.SetBool("RStickLMove", false);
+                        RAnim.SetBool("RStickRMove", false);
                         ControllerAnim.SetBool("FukidasiFlg", false);
                     }
 
@@ -228,57 +235,58 @@ public class tutorialManagaer : MonoBehaviour
                     {
                         IsRotateMove = true;
                         PushFlg = true;
-                        Text.text = "裏表の無い世界はいつでも解除が可能ビウス！\nスティック押し込んでみるビウス";
-                        ControllerAnim.SetBool("FukidasiFlg", true);
-                        LAnim.SetBool("LStick", false);
-                        RAnim.SetBool("RStickPush", true);
+                        //ControllerAnim.SetBool("FukidasiFlg", true);
+                        //LAnim.SetBool("LStick", false);
+                        //RAnim.SetBool("RStickPush", true);
+                        CountFlg = true;
+                        TutorialNum = 3;
                         Pushcount = 9999.0f;
                        
                     }
 
                     //LAnim.SetBool("LStick", false);
                     //RAnim.SetBool("RStickPush", true);
-                    if (PushFlg)
-                    {
-                        if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
-                        {
-                            PushFlg = false;
-                            BordNum = 1;
-                            BordAnim.SetInteger("text", BordNum);
-                            Point = Instantiate(Point_prefab, new Vector3(0.17f, -2.5f, 0.0f), Quaternion.identity);
-                            ControllerAnim.SetBool("FukidasiFlg", false);
-                            RAnim.SetBool("RStickPush", false);
-                        }
-                    }
+                //    if (PushFlg)
+                //    {
+                //        if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
+                //        {
+                //            PushFlg = false;
+                //            BordNum = 1;
+                //            BordAnim.SetInteger("text", BordNum);
+                //            Point = Instantiate(Point_prefab, new Vector3(0.17f, -2.5f, 0.0f), Quaternion.identity);
+                //            ControllerAnim.SetBool("FukidasiFlg", false);
+                //            RAnim.SetBool("RStickPush", false);
+                //        }
+                //    }
 
-                    if (Player.GetComponent<Player>().IsHitPoint)
-                    {
-                        IsPlayerMove = false;
-                        IsPoint = true;
-                        Destroy(Point);
-                        RotateNum = 4;
-                    }
-                }
+                //    if (Player.GetComponent<Player>().IsHitPoint)
+                //    {
+                //        IsPlayerMove = false;
+                //        IsPoint = true;
+                //        Destroy(Point);
+                //        RotateNum = 4;
+                //    }
+                //}
 
-                if (RotateNum == 4)
-                {
-                    Debug.Log(RotateNum);
+                //if (RotateNum == 4)
+                //{
+                //    Debug.Log(RotateNum);
 
-                    IsPlayerMove = false;
-                    IsRMove = true;
-                    ControllerAnim.SetBool("FukidasiFlg", true);
-                    LAnim.SetBool("LStick", false);
-                    RAnim.SetBool("RStickPush", false);
-                    RAnim.SetBool("RStickRMove", true);
-                    if (stagemanager.GetComponent<StageManager>().IsRotate)
-                    {
-                        IsRotateMove = false;
-                        CountFlg = true;
-                        TutorialNum = 3;
-                        ControllerAnim.SetBool("FukidasiFlg", false);
-                        LAnim.SetBool("LStick", false);
-                        RAnim.SetBool("RStickRMove", false);
-                    }
+                //    IsPlayerMove = false;
+                //    IsRMove = true;
+                //    ControllerAnim.SetBool("FukidasiFlg", true);
+                //    LAnim.SetBool("LStick", false);
+                //    RAnim.SetBool("RStickPush", false);
+                //    RAnim.SetBool("RStickRMove", true);
+                //    if (stagemanager.GetComponent<StageManager>().IsRotate)
+                //    {
+                //        IsRotateMove = false;
+                //        CountFlg = true;
+                //        TutorialNum = 3;
+                //        ControllerAnim.SetBool("FukidasiFlg", false);
+                //        LAnim.SetBool("LStick", false);
+                //        RAnim.SetBool("RStickRMove", false);
+                //    }
 
                 }
                 break;
@@ -286,8 +294,8 @@ public class tutorialManagaer : MonoBehaviour
                 Debug.Log(Player.GetComponent<Player>().IsHitPoint);
                 IsPoint = false;
                 IsPlayerMove = true;
-                LAnim.SetBool("LStick", false);
-                RAnim.SetBool("RStickPush", true);
+                //LAnim.SetBool("LStick", false);
+                //RAnim.SetBool("RStickPush", true);
 
                 if (CountFlg)
                 {
@@ -302,10 +310,13 @@ public class tutorialManagaer : MonoBehaviour
                 {
                     if (Player.GetComponent<Player>().IsHitPoint)
                     {
+                        Text.text = "裏表の無い世界はいつでも解除が可能ビウス！\nスティック押し込んでみるビウス";
                         IsRotateMove = true;
                         IsPoint = true;
                         IsPlayerMove = false;
                         PushFlg = true;
+                        BordNum = 0;
+                        BordAnim.SetInteger("text", BordNum);
                         ControllerAnim.SetBool("FukidasiFlg", true);
                         RAnim.SetBool("RStickPush", true);
                         Destroy(Point);
