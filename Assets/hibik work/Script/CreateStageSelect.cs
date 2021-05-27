@@ -91,7 +91,7 @@ public class CreateStageSelect : MonoBehaviour
             // ステージ画像の設定
             //-----------------------------------
             Image stageImage = bookStageR.transform.Find("StageImage").GetComponent<Image>();
-            Sprite sprite = Resources.Load<Sprite>("Sprite/Stage/st" + stageNum);
+            Sprite sprite = Resources.Load<Sprite>("Sprite/Stage/" + stageNum);
             stageImage.sprite = sprite;
 
             //-----------------------------------

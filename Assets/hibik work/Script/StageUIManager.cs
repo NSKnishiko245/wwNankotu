@@ -23,6 +23,8 @@ public class StageUIManager : MonoBehaviour
     private GameObject menuRetryGear;
     private GameObject menuSelect;
     private GameObject menuRetry;
+    private Image hintImage;
+    public static int missCnt = 0;  // 失敗した回数
 
     // クリアのUI
     private GameObject clearSelectGear;
@@ -113,7 +115,7 @@ public class StageUIManager : MonoBehaviour
     {
         // ステージの画像を取得
         stageImage = GameObject.Find("StageImage");
-        Sprite sprite = Resources.Load<Sprite>("Sprite/Stage/st" + StageManager.stageNum);
+        Sprite sprite = Resources.Load<Sprite>("Sprite/Stage/" + StageManager.stageNum);
         stageImage.GetComponent<Image>().sprite = sprite;
 
         eventSystem = GameObject.Find("EventSystem");
@@ -132,6 +134,7 @@ public class StageUIManager : MonoBehaviour
         menuRetry = GameObject.Find("Retry");
         clearSelect = GameObject.Find("C_StageSelect");
         clearNext = GameObject.Find("NextStage");
+        hintImage = GameObject.Find("HintImage").GetComponent<Image>();
 
         GameObject.Find("book_L2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
         GameObject.Find("book_R2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
@@ -155,6 +158,9 @@ public class StageUIManager : MonoBehaviour
 
         // ステージ番号取得
         stageNum = StageManager.stageNum;
+
+        // ヒント画像をセット
+        hintImage.sprite = Resources.Load("Sprite/Hint/" + stageNum, typeof(Sprite)) as Sprite;
 
         if (stageNum != 1) tutorialUI.SetActive(false);
 
@@ -246,7 +252,7 @@ public class StageUIManager : MonoBehaviour
                     }
                     else gameOverCnt--;
                 }
-                if(stageNum == 1) { }
+                if (stageNum == 1) { }
                 // メニューを開く
                 else if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                 {
@@ -290,6 +296,10 @@ public class StageUIManager : MonoBehaviour
                 {
                     StageDisplay(false);
                     statusFirstFlg = false;
+
+                    // 三回リトライしたらヒント画像を表示する
+                    if (missCnt >= 3) hintImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    else hintImage.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 }
 
                 // メニューコマンド更新処理
@@ -405,8 +415,14 @@ public class StageUIManager : MonoBehaviour
 
                     statusFirstFlg = false;
 
-                    // ネクスト以外を選択していたらBGMをセットしなおす
-                    if (command != COMMAND.RETRY) StageBgm.bgmFlg = true;
+                    // ネクスト以外を選択していたらBGMをセットしなおして、失敗回数を初期化する
+                    if (command != COMMAND.RETRY)
+                    {
+                        StageBgm.bgmFlg = true;
+                        missCnt = 0;
+                    }
+                    // ネクストを選択していたら失敗回数を加算
+                    else missCnt++;
                 }
 
                 // 本のモデルを閉じる
