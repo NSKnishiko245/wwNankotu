@@ -240,7 +240,6 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 1.0f))
         {
             string tag = hit.transform.tag;
-            Debug.Log(tag);
 
             if (tag == "ClimbBlock" || tag == "GimicMoveBlock" || tag == "GimicBreakBlock" || tag == "GimicClearBlock") return false;
             //if (hit.transform.tag == "ClimbBlock") return false;
@@ -285,5 +284,19 @@ public class Player : MonoBehaviour
         {
             IsHitPoint = false;
         }
+    }
+
+    public void PlayerFixEx()
+    {
+        float dist = Mathf.Abs(this.transform.position.x);
+        float value = Mathf.Abs(this.transform.position.x) % 0.5f;
+        float temp = 0.0f;
+        if (value >= 0.25) temp = 0.5f - value;
+        else temp = -value;
+        dist += temp;
+
+        if (this.transform.position.x < 0) dist *= -1.0f;
+
+        this.transform.DOMoveX(dist, 1.0f);
     }
 }
