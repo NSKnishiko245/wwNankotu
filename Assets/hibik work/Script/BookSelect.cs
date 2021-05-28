@@ -11,7 +11,7 @@ public class BookSelect : MonoBehaviour
     private GameObject[] bookBack;
     private Animator cameraAnim;
 
-    private int bookMax = 6;    // 本の最大数
+    private int bookMax = 7;    // 本の最大数
     private int stageMax = 43;  // ステージの最大数
 
     public static int bookNum = 0;    // 本の番号
@@ -150,87 +150,14 @@ public class BookSelect : MonoBehaviour
                 {
                     if (sceneChangeCnt == 0)
                     {
-                        SceneManager.LoadScene("StageSelectScene");
+                        if (bookNum == 6) SceneManager.LoadScene("BonusScene");
+                        else SceneManager.LoadScene("StageSelectScene");
                     }
                     else sceneChangeCnt--;
                 }
-
                 break;
-
-            //-----------------------------------
-            // ステージ選択中
-            //-----------------------------------
-            case STATUS.STAGE_SELECT:
-                if (operationCnt == 1) eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-
-                if (operationCnt == 0)
-                {
-                    if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
-                    {
-                        PageOperation();
-                    }
-                }
-                else operationCnt--;
-
-                SceneChange();      // シーン遷移
-
-                break;
-
             default:
                 break;
-        }
-
-
-
-    }
-
-    // ページをめくる
-    private void PageOperation()
-    {
-        if (pageInterval == 0)
-        {
-            // 次のページへ進む
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
-            {
-                eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-                pageInterval = pageIntervalInit;
-            }
-            // 前のページに戻る
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
-            {
-                eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
-                pageInterval = pageIntervalInit;
-            }
-        }
-        else pageInterval--;
-    }
-
-    // シーン遷移
-    private void SceneChange()
-    {
-        if (!sceneChangeFlg && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
-        {
-            DecSource.Play();
-
-            // 現在のページ取得(ステージ番号)
-            StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
-
-            // シーン遷移開始
-            if (StageManager.stageNum > 0)
-            {
-                // 本を閉じる
-                eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-                // 部屋を暗くする
-                this.GetComponent<PostEffectController>().SetVigFlg(true);
-
-                sceneChangeFlg = true;
-            }
-        }
-
-        if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetBookCloseFlg())
-        {
-            // 遷移
-            SceneManager.LoadScene("Stage1Scene");
         }
     }
 }

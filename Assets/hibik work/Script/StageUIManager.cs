@@ -113,10 +113,22 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     private void Awake()
     {
+        // ステージ番号取得
+        stageNum = StageManager.stageNum;
+
         // ステージの画像を取得
         stageImage = GameObject.Find("StageImage");
         Sprite sprite = Resources.Load<Sprite>("Sprite/Stage/" + StageManager.stageNum);
         stageImage.GetComponent<Image>().sprite = sprite;
+
+        // ステージ番号のUIの設定
+        Image tensPlaceImage = GameObject.Find("TensPlaceImage").GetComponent<Image>();
+        sprite = Resources.Load<Sprite>("Sprite/Number/" + (stageNum / 10));
+        tensPlaceImage.sprite = sprite;
+
+        Image onesPlaceImage = GameObject.Find("OnesPlaceImage").GetComponent<Image>();
+        sprite = Resources.Load<Sprite>("Sprite/Number/" + (stageNum % 10));
+        onesPlaceImage.sprite = sprite;
 
         eventSystem = GameObject.Find("EventSystem");
         stageManager = GameObject.Find("stageManager");
@@ -140,6 +152,7 @@ public class StageUIManager : MonoBehaviour
         GameObject.Find("book_R2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
 
 
+
         // ステージ１はチュートリアルのBGM
         if (StageManager.stageNum == 1) bgmNum = 0;
         // それ以外はステージごとのBGM
@@ -156,8 +169,7 @@ public class StageUIManager : MonoBehaviour
             //StageBgm.bgmFlg = false;
         }
 
-        // ステージ番号取得
-        stageNum = StageManager.stageNum;
+
 
         // ヒント画像をセット
         hintImage.sprite = Resources.Load("Sprite/Hint/" + stageNum, typeof(Sprite)) as Sprite;
