@@ -184,34 +184,27 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void PageOperation()
     {
+        int stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum() + firstStageNum - 1;
+
+        GameObject[] stageImage = GameObject.FindGameObjectsWithTag("Samne");
+        for (int i = 0; i < 6; ++i)
+        {
+            stageImage[i].GetComponent<SamnaleMovie>().num = stageNum;
+        }
+
         if (pageInterval == 0)
         {
-            GameObject bookStageR = GameObject.Find("BookStageR (" + eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum() + ")");
-            GameObject[] stageImage = GameObject.FindGameObjectsWithTag("Samne");
             // 次のページへ進む
             if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
             {
                 eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
                 pageInterval = pageIntervalInit;
-
-                for (int i = 0; i < 6; ++i)
-                {
-                    //※本最後のページ（６ページ）の時にスティックを右に倒すとサムネだけが進んでいくからその本内のマックスページに行くとプラスさせない処理が必要
-                    stageImage[i].GetComponent<SamnaleMovie>().num++;
-                }
-                
             }
             // 前のページに戻る
             if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
             {
                 eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
                 pageInterval = pageIntervalInit;
-                //stageImage.GetComponent<SamnaleMovie>().num--;
-                for (int i = 0; i < 6; ++i)
-                {
-                    //※逆もしかり
-                    stageImage[i].GetComponent<SamnaleMovie>().num--;
-                }
             }
         }
         else pageInterval--;

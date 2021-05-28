@@ -93,15 +93,15 @@ public class CreateStageSelect : MonoBehaviour
             //-----------------------------------
            // Image stageImage = bookStageR.transform.Find("StageImage").GetComponent<Image>();
             Sprite sprite = Resources.Load<Sprite>("Sprite/Stage/" + stageNum);
-            VideoClip clip = Resources.Load<VideoClip>("StageSamnale/" + stageNum);
-            RawImage stageImage = bookStageR.transform.Find("SamnaleMovie").GetComponent<RawImage>();
+            //VideoClip clip = Resources.Load<VideoClip>("StageSamnale/" + stageNum);
+            //RawImage stageImage = bookStageR.transform.Find("SamnaleMovie").GetComponent<RawImage>();
 
            // stageImage.sprite = sprite;
             //stageImage.GetComponent<VideoPlayer>().targetTexture = Resources.Load<RenderTexture>("StageSamnale/Samtex");
             //stageImage.GetComponent<RawImage>().texture= Resources.Load<RenderTexture>("StageSamnale/Samtex"); ;
            
-            stageImage.GetComponent<VideoPlayer>().clip = clip;
-            stageImage.GetComponent<SamnaleMovie>().initNum = stageNum;
+            //stageImage.GetComponent<VideoPlayer>().clip = clip;
+            //stageImage.GetComponent<SamnaleMovie>().initNum = stageNum;
             //Debug.Log(stageImage.GetComponent<VideoPlayer>().clip.name);
             //-----------------------------------
             // ステージ番号のUIの設定
