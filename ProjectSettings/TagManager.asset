@@ -24,6 +24,7 @@ TagManager:
   - MoveCenter
   - SelectBgm
   - StageBgm
+  - Samne
   layers:
   - Default
   - TransparentFX

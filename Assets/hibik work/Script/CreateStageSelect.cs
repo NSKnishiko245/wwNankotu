@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.Video;
 public class CreateStageSelect : MonoBehaviour
 {
     static private int stageMax = 36;      // ステージの最大数
     static private int bookStageMax = 6;   // １冊あたりのステージの数
 
+   // public VideoClip stage1, stage2, stage3, stage4, stage5, stage6;
 
     //==============================================================
     // ステージセレクト作成
@@ -90,10 +91,18 @@ public class CreateStageSelect : MonoBehaviour
             //-----------------------------------
             // ステージ画像の設定
             //-----------------------------------
-            Image stageImage = bookStageR.transform.Find("StageImage").GetComponent<Image>();
+           // Image stageImage = bookStageR.transform.Find("StageImage").GetComponent<Image>();
             Sprite sprite = Resources.Load<Sprite>("Sprite/Stage/" + stageNum);
-            stageImage.sprite = sprite;
+            VideoClip clip = Resources.Load<VideoClip>("StageSamnale/" + stageNum);
+            RawImage stageImage = bookStageR.transform.Find("SamnaleMovie").GetComponent<RawImage>();
 
+           // stageImage.sprite = sprite;
+            //stageImage.GetComponent<VideoPlayer>().targetTexture = Resources.Load<RenderTexture>("StageSamnale/Samtex");
+            //stageImage.GetComponent<RawImage>().texture= Resources.Load<RenderTexture>("StageSamnale/Samtex"); ;
+           
+            stageImage.GetComponent<VideoPlayer>().clip = clip;
+            stageImage.GetComponent<SamnaleMovie>().initNum = stageNum;
+            //Debug.Log(stageImage.GetComponent<VideoPlayer>().clip.name);
             //-----------------------------------
             // ステージ番号のUIの設定
             //-----------------------------------

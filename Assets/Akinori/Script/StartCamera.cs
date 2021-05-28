@@ -26,6 +26,8 @@ public class StartCamera : MonoBehaviour
     public float startDelay;
     public float zoomWait;
 
+    public bool notMove = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,12 +41,22 @@ public class StartCamera : MonoBehaviour
 
         Debug.Log(startPos);
 
+        //if (GameObject.Find("StageUIManager").GetComponent<StageUIManager>().retryFlg)
+        //{
+        //    Debug.Log(GameObject.Find("StageUIManager").GetComponent<StageUIManager>().retryFlg);
+        //    //return;
+        //    isMoving = false;
+        //}
         //transform.DetachChildren();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (notMove)
+        {
+            return;
+        }
 
         if (!isMoving || !GameObject.Find("StageUIManager").GetComponent<StageUIManager>().GetStageDisplayFlg())
         {
@@ -60,14 +72,14 @@ public class StartCamera : MonoBehaviour
             this.transform.position = startPos;
             return;
         }
-
+        
         purposePos = GameObject.FindGameObjectWithTag("Player").gameObject.transform.position;
         purposePos.z = -3;
 
         purposePos.x *= 1;
 
         GetComponent<MoveCamera>().enabled = false;
-        Debug.Log(mode);
+
         if (mode == E_CameraMode.ZOOM_IN)
         {
             Debug.Log(purposePos);

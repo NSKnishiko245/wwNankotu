@@ -2368,6 +2368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: -0.2
   rotFlg: 1
+  target_Rotate: 0
 --- !u!1 &1164440353
 GameObject:
   m_ObjectHideFlags: 0
