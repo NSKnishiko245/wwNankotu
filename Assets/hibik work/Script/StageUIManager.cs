@@ -153,7 +153,7 @@ public class StageUIManager : MonoBehaviour
             bgmSource.clip = audio;
             bgmSource.time = 0.0f;
             bgmSource.Play();
-            StageBgm.bgmFlg = false;
+            //StageBgm.bgmFlg = false;
         }
 
         // ステージ番号取得
@@ -202,6 +202,7 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     private void Update()
     {
+
         STATUS tempStatus = status;
 
         switch (status)
@@ -231,6 +232,7 @@ public class StageUIManager : MonoBehaviour
                 // カウントが０になるとプレイヤーとステージを表示する
                 if (stageDisplayCnt == 0)
                 {
+                    if (StageBgm.bgmFlg) StageBgm.bgmFlg = false;
                     StageDisplay(true);
                     stageImage.SetActive(false);
                     if (stageNum == 1) tutorialUI.SetActive(true);

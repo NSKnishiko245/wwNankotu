@@ -21,7 +21,7 @@ public class StartCamera : MonoBehaviour
 
 
     //    private GameObject player;
-    public bool isMoving { get; private set; } = true;
+    public bool isMoving { get; private set; }
 
     public float startDelay;
     public float zoomWait;
@@ -35,7 +35,10 @@ public class StartCamera : MonoBehaviour
 
         startPos = transform.position;
 
-        isMoving = true;
+        Debug.Log(StageBgm.bgmFlg);
+        if (StageBgm.bgmFlg) isMoving = true;
+        else isMoving = false;
+
         mode = E_CameraMode.ZOOM_IN;
         Debug.Log("StartCamera::Start()");
 
