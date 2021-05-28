@@ -96,9 +96,9 @@ public class ClearBlock : MonoBehaviour
                 m_objNotblock.SetActive(false);
             }
 
-            if (Mathf.Abs(transform.position.x - player.transform.position.x) < 0.25f)
+            if (Mathf.Abs(transform.position.x - player.transform.position.x) < 0.35f)
             {
-                if (Mathf.Abs(transform.position.y - player.transform.position.y) < 0.25f)
+                if (Mathf.Abs(transform.position.y - player.transform.position.y) < 0.35f)
                 {
                     underline.GetComponent<HitCreateEffect>().Bakuhatu(player);
                 }

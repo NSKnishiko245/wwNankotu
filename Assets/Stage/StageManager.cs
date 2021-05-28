@@ -469,6 +469,7 @@ public class StageManager : MonoBehaviour
 
         if (UnderBorder.GetComponent<HitCreateEffect>().isFinished)
         {
+            Player.GetComponent<Player>().TurnOnMove();
             waitTimer += Time.deltaTime;
             Player.transform.Find("walk_UV").gameObject.SetActive(false);
         }
