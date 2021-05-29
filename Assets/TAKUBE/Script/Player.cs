@@ -257,8 +257,13 @@ public class Player : MonoBehaviour
     {
         if (other.transform.tag == "GoalBlock")
         {
-            IsHitGoalBlock = true;
-            IsMove = false;
+            if (Mathf.Abs(rb.velocity.y) < 0.2f)
+            {
+
+
+                IsHitGoalBlock = true;
+                IsMove = false;
+            }
         }
 
         if (other.transform.tag == "Bar")
@@ -272,7 +277,19 @@ public class Player : MonoBehaviour
         }
 
     }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.transform.tag == "GoalBlock")
+        {
+            if (Mathf.Abs(rb.velocity.y) < 0.2f)
+            {
 
+
+                IsHitGoalBlock = true;
+                IsMove = false;
+            }
+        }
+    }
     private void OnTriggerExit(Collider other)
     {
         if (other.transform.tag == "Bar")
