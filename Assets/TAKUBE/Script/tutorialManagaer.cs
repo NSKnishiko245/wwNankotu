@@ -219,7 +219,7 @@ public class tutorialManagaer : MonoBehaviour
                         Text.text = "フィールドを上手く折れたでビウス！\n裏表の無い世界に突入ビウス！";
                         Pointcountdown = 1.5f;
                         IsRMove = false;
-                        RotateNum = 3;
+                        TutorialNum = 3;
                         MobiusBodyAnim.SetBool("Both", true);
                         RAnim.SetBool("RStickRMove", false);
                         ControllerAnim.SetBool("FukidasiFlg", false);
@@ -230,10 +230,10 @@ public class tutorialManagaer : MonoBehaviour
                 {
                     Debug.Log(RotateNum);
                     IsPlayerMove = true;
+                    IsRotateMove = false;
                     Pushcount -= Time.deltaTime;
                     if (Pushcount <= 0.0f)
                     {
-                        IsRotateMove = true;
                         PushFlg = true;
                         //ControllerAnim.SetBool("FukidasiFlg", true);
                         //LAnim.SetBool("LStick", false);
@@ -291,11 +291,24 @@ public class tutorialManagaer : MonoBehaviour
                 }
                 break;
             case 3:
-                Debug.Log(Player.GetComponent<Player>().IsHitPoint);
+                Debug.Log(IsRotateMove);
                 IsPoint = false;
                 IsPlayerMove = true;
+                
                 //LAnim.SetBool("LStick", false);
                 //RAnim.SetBool("RStickPush", true);
+
+                Pushcount -= Time.deltaTime;
+                if (Pushcount <= 0.0f)
+                {
+                    
+                    //ControllerAnim.SetBool("FukidasiFlg", true);
+                    //LAnim.SetBool("LStick", false);
+                    //RAnim.SetBool("RStickPush", true);
+                    CountFlg = true;
+                    Pushcount = 9999.0f;
+
+                }
 
                 if (CountFlg)
                 {
