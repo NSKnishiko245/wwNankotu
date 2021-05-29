@@ -81,6 +81,6 @@ EditorBuildSettings:
     path: Assets/hibik work/Scene/BonusScene.unity
     guid: 3630567a8bc2e3544bef2441fe61ee4f
   - enabled: 1
-    path: Assets/Gimic/EndRoll.unity
+    path: Assets/hibik work/Scene/EndRoll.unity
     guid: 78ef9a8aa148dec43ac981a8e12fa047
   m_configObjects: {}

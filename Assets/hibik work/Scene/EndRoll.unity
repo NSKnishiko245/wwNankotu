@@ -1282,14 +1282,14 @@ RectTransform:
   m_GameObject: {fileID: 624227154}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3168, y: 1.3168, z: 1.3168}
   m_Children: []
   m_Father: {fileID: 2144600725}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3230}
+  m_AnchoredPosition: {x: 0, y: -4464}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &624227156
@@ -1328,7 +1328,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 77bfde19b4a184f499c7002e0bfd62c8, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1865,7 +1865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3847}
+  m_AnchoredPosition: {x: 0, y: -5353}
   m_SizeDelta: {x: 600, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &942726974
@@ -2375,15 +2375,15 @@ RectTransform:
   m_GameObject: {fileID: 1194656970}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3168, y: 1.3168, z: 1.3168}
   m_Children: []
   m_Father: {fileID: 2144600725}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100.6, y: -3257}
-  m_SizeDelta: {x: 200, y: 200}
+  m_AnchoredPosition: {x: -173.81, y: -4465.3}
+  m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1194656972
 MonoBehaviour:
@@ -4897,7 +4897,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 534ffc2ab953898449f1d8de8b955cb4, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
@@ -4909,9 +4909,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\n<size=150>\u30D7\u30ED\u30B0\u30E9\u30DE\u30FC</size>\n\n\r\u9326\u7E54\u4F51\u4E00\n\n\u4E2D\u6751\u97FF\n\n\u5965\u6FA4\u793C\u5F25\n\n\u5CA1\u7530\u6643\u5178\n\n\u5B85\u90E8\u502B\u5B8F\n\n<size=150>\u30D7\u30E9\u30F3\u30CA\u30FC</size>\n\n\u5CA1\u7530\u7AE3\u53F8\n\n\u85E4\u672C\u6607\u592A\n\n\u5317\u6751\u660C\u5D69\n\n
-    <size=150>\u30C7\u30B6\u30A4\u30CA\u30FC</size>\n\n\u8DB3\u7ACB\u6D77\u4EBA\n\n\u4E0A\u897F\u7BE4\n\n<size=140>Thank
-    You For Playing!</size>\n\n\n\n\n\n\n\n\n\n\n\n"
+  m_Text: "<size=150>\u30D7\u30ED\u30B0\u30E9\u30DE\u30FC</size>\r\n\r\n<size=80>\u30E1\u30A4\u30F3\u30D7\u30ED\u30B0\u30E9\u30DE\u30FC</size>\r\n\u5965\u6FA4\u793C\u5F25\r\n\r\n<size=80>\u30AE\u30DF\u30C3\u30AF\u30FB\u30A8\u30D5\u30A7\u30AF\u30C8</size>\r\n\u9326\u7E54\u4F51\u4E00\r\n\r\n<size=80>\u6F14\u51FA\u30FB\u30A8\u30D5\u30A7\u30AF\u30C8</size>\r\n\u5CA1\u7530\u6643\u5178\r\n\r\n<size=80>UI\u30FB\u30B7\u30FC\u30F3\u7BA1\u7406</size>\r\n\u4E2D\u6751\u97FF\n\r\n<size=80>\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB</size>\r\n\u5B85\u90E8\u502B\u5B8F\r\n\r\n<size=150>\u30D7\u30E9\u30F3\u30CA\u30FC</size>\r\n\r\n<size=80>\u4F01\u753B\u30FB\u30EC\u30D9\u30EB\u30C7\u30B6\u30A4\u30F3</size>\r\n\u5CA1\u7530\u7AE3\u53F8\r\n\r\n<size=80>\u4F01\u753B\u30FB\u30EC\u30D9\u30EB\u30C7\u30B6\u30A4\u30F3\u30FBUI</size>\r\n\u85E4\u672C\u6607\u592A\r\n\r\n<size=80>\u4F01\u753B\u30FB\u6F14\u51FA</size>\r\n\u5317\u6751\u660C\u5D69\r\n\r\n<size=150>\u30C7\u30B6\u30A4\u30CA\u30FC</size>\r\n\r\n<size=80>\u80CC\u666F\u30E2\u30C7\u30EB\u30FBUI</size>\r\n\u8DB3\u7ACB\u6D77\u4EBA\r\n\r\n<size=80>\u30AD\u30E3\u30E9\u30E2\u30C7\u30EB</size>\r\n\u4E0A\u897F\u7BE4\r\n\r\n\r\n\r\n<size=150>\u30EA\u30FC\u30C0\u30FC</size>\r\n\u9326\u7E54\u4F51\u4E00\r\n\r\n<size=150>\u30B5\u30D6\u30EA\u30FC\u30C0\u30FC</size>\r\n\u5317\u6751\u660C\u5D69\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n<size=120>Thank
+    You For Playing!</size>"
 --- !u!222 &2144600727
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4933,4 +4932,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textScrollSpeed: 2
-  limitPosition: 60
+  limitPosition: 85

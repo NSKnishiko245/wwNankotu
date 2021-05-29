@@ -1325,6 +1325,46 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 504900181}
   m_Mesh: {fileID: -5560950736478486594, guid: 76f5b0f4ae2dfbc4baed13aa1b11a57e, type: 3}
+--- !u!1 &523369475 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1210052349258561770, guid: 89a672bfed039ab4195643dfa45e01da, type: 3}
+  m_PrefabInstance: {fileID: 1840854476}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &523369476
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523369475}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a6df2a6ef745cbe4abaf4ccd4fd41980, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &523369479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523369475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b1fdc2c8b4795418931aa92a359b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  postProcess: {fileID: 523369475}
+  fire: {fileID: 892903511}
+  intensityMax: 0.25
+  intensityVal: 0.002
 --- !u!1 &536439075
 GameObject:
   m_ObjectHideFlags: 0
@@ -1902,7 +1942,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1756302448815664016, guid: 7ce072599ca151a46bc8fef734ae59ab, type: 3}
       propertyPath: m_Intensity
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2293768966461270932, guid: 7ce072599ca151a46bc8fef734ae59ab, type: 3}
       propertyPath: m_RootOrder
@@ -4123,7 +4163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1807395569
 Animator:
   serializedVersion: 3

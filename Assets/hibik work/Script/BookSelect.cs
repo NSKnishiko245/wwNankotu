@@ -11,10 +11,11 @@ public class BookSelect : MonoBehaviour
     private GameObject[] bookBack;
     private Animator cameraAnim;
 
-    private int bookMax = 7;    // 本の最大数
+    private int bookMax = 6;    // 本の最大数
     private int stageMax = 43;  // ステージの最大数
 
     public static int bookNum = 0;    // 本の番号
+    public static bool bonusFlg = false;
     private int bookSelectCntInit = 15;
     private int bookSelectCnt = 0;
     private bool bookSelectFlg = false;
@@ -56,6 +57,9 @@ public class BookSelect : MonoBehaviour
 
         eventSystem = GameObject.Find("EventSystem");
         cameraAnim = GameObject.Find("Main Camera").GetComponent<Animator>();
+
+        if (bonusFlg) bookMax = 7;
+        else GameObject.Find("BookModel7").SetActive(false);
 
         bookAnim = new Animator[bookMax];
         bookLAnim = new Animator[bookMax];

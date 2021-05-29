@@ -27,14 +27,14 @@ public class SelectBgm : MonoBehaviour
 
     private void Update()
     {
-        // ステージシーンでは一時停止
-        if (SceneManager.GetActiveScene().name == "Stage1Scene")
+        if (SceneManager.GetActiveScene().name == "StageSelectScene" ||
+            SceneManager.GetActiveScene().name == "BookSelectScene")
         {
-            this.GetComponent<AudioSource>().Pause();
+            this.gameObject.GetComponent<AudioSource>().UnPause();
         }
         else
         {
-            this.gameObject.GetComponent<AudioSource>().UnPause();
+            this.GetComponent<AudioSource>().Pause();
         }
     }
 

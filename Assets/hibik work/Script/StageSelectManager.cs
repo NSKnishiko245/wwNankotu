@@ -19,9 +19,10 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] GameObject mist;
     private int bookMax = 6;    // 本の最大数
     private int bookStageMax = 6;  // 一冊あたりのステージの最大数
-    private int stageMax = 42;
+    public static int stageMax = 36;
     private int firstStageNum;
     private int endStageNum;
+    int medalCompleteNum = 0;
 
 
     private int bookSelectCntInit = 30;
@@ -64,8 +65,8 @@ public class StageSelectManager : MonoBehaviour
         public bool isSilver;
         public bool isCopper;
     }
-    public static Score[] score = new Score[43];
-    public static int[] silverConditions = new int[43];
+    public static Score[] score = new Score[37];
+    public static int[] silverConditions = new int[37];
     public static bool[] enterExtraFlg = new bool[6];
 
     //==============================================================
@@ -89,6 +90,20 @@ public class StageSelectManager : MonoBehaviour
         mist = GameObject.Find("Mist");
         mist.SetActive(false);
         command = COMMAND.EMPTY;
+
+        for (int i = 1; i < stageMax + 1; i++)
+        {
+            if (score[i].isCopper == true && score[i].isSilver == true && score[i].isGold == true)
+            {
+                medalCompleteNum++;
+            }
+            else break;
+        }
+
+        if (medalCompleteNum >= stageMax)
+        {
+            BookSelect.bonusFlg = true;
+        }
 
         //BookSelect.bookNum = bookNum - 1;
         for (int i = 0; i < bookMax; i++)

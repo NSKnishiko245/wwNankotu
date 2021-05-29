@@ -25,10 +25,16 @@ public class PostEffectController : MonoBehaviour
         volume.profile.TryGet<Vignette>(out vignette);
         fireAnim = fire.GetComponent<Animator>();
 
+        if (SceneManager.GetActiveScene().name == "TitleScene")
+        {
+            intensity = vignette.intensity.value;
+            vigFlg = true;
+        }
+
         if (SceneManager.GetActiveScene().name == "Stage1Scene")
         {
-            vigFlg = true;
             intensity = intensityMax;
+            vigFlg = true;
 
             fireAnim.SetBool("isAnim", true);
         }

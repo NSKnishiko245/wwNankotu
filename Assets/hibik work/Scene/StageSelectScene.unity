@@ -1081,6 +1081,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1928350337}
     m_Modifications:
+    - target: {fileID: 407319622492651030, guid: b64cece6ef096ab418d5cbcbe1b753e6, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5191349
+      objectReference: {fileID: 0}
+    - target: {fileID: 407319622492651030, guid: b64cece6ef096ab418d5cbcbe1b753e6, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7939643
+      objectReference: {fileID: 0}
+    - target: {fileID: 407319622492651030, guid: b64cece6ef096ab418d5cbcbe1b753e6, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8962264
+      objectReference: {fileID: 0}
     - target: {fileID: 407319622492651032, guid: b64cece6ef096ab418d5cbcbe1b753e6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6720,6 +6732,18 @@ PrefabInstance:
     - target: {fileID: 8240377714051215683, guid: 9c96205a1626de74b8a5351b0559d586, type: 3}
       propertyPath: m_Name
       value: BookStageR (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240377714051215686, guid: 9c96205a1626de74b8a5351b0559d586, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5191349
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240377714051215686, guid: 9c96205a1626de74b8a5351b0559d586, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7939643
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240377714051215686, guid: 9c96205a1626de74b8a5351b0559d586, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8962264
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c96205a1626de74b8a5351b0559d586, type: 3}

@@ -76,6 +76,18 @@ public class BonusManager : MonoBehaviour
             if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
             {
                 PageOperation(); // ページをめくる操作
+
+
+                // 現在のページ取得(ステージ番号)
+                int pageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+                if (pageNum == 3)
+                {
+                    if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+                    {
+                        // 遷移
+                        SceneManager.LoadScene("EndRoll");
+                    }
+                }
             }
         }
         else operationCnt--;

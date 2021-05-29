@@ -74,6 +74,8 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private int gameOverCntInit;
     private int gameOverCnt;
 
+    public static int menuOperationCnt = 240;
+
     private int startPageCnt = 45;  // 開始時のページがめくれるまでの時間
     private int endBookCnt;    // 終了時の本が閉じるまでの時間
 
@@ -266,30 +268,33 @@ public class StageUIManager : MonoBehaviour
                     }
                     else gameOverCnt--;
                 }
-                if (stageNum == 1) { }
                 // メニューを開く
-                else if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
+                if (menuOperationCnt == 0)
                 {
-                    if (!stageManager.GetComponent<StageManager>().isMove)
+                    if (stageNum == 1) { }
+                    else if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                     {
-
-                        status = STATUS.MENU;
-                        stageImage.SetActive(true);
-
-                        // ページを進める
-                        eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-
-                        // チュートリアル非表示
-                        if (stageNum == 1)
+                        if (!stageManager.GetComponent<StageManager>().isMove)
                         {
-                            Point.SetActive(false);
-                            tutorialUI.SetActive(false);
-                        }
+                            status = STATUS.MENU;
+                            stageImage.SetActive(true);
 
-                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
-                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
+                            // ページを進める
+                            eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+
+                            // チュートリアル非表示
+                            if (stageNum == 1)
+                            {
+                                Point.SetActive(false);
+                                tutorialUI.SetActive(false);
+                            }
+
+                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
+                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
+                        }
                     }
                 }
+                else menuOperationCnt--;
 
                 // ステージクリア
                 if (stageManager.GetComponent<StageManager>().IsGameClear || Input.GetKeyDown(KeyCode.C))
@@ -435,9 +440,14 @@ public class StageUIManager : MonoBehaviour
                     {
                         StageBgm.bgmFlg = true;
                         missCnt = 0;
+                        menuOperationCnt = 240;
                     }
                     // ネクストを選択していたら失敗回数を加算
-                    else missCnt++;
+                    else
+                    {
+                        missCnt++;
+                        menuOperationCnt = 60;
+                    }
                 }
 
                 // 本のモデルを閉じる

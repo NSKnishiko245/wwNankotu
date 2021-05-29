@@ -25,7 +25,7 @@ public class TitleManager : MonoBehaviour
 
     [SerializeField] private int canvasAnimStartCnt;
     [SerializeField] private int cameraAnimStartCnt;
-
+    GameObject postprocess;
     private bool commandFlg = false;
 
     private void Awake()
@@ -33,6 +33,8 @@ public class TitleManager : MonoBehaviour
         canvasAnim = canvas.GetComponent<Animator>();
         cameraAnim = mainCamera.GetComponent<Animator>();
         pressAAnim = GameObject.Find("PressAImage").GetComponent<Animator>();
+        postprocess = GameObject.Find("PostProcess");
+
     }
 
     private void Update()
@@ -60,6 +62,27 @@ public class TitleManager : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 0"))
+        {
+            Debug.Log("メダル全解放コマンド");
+            commandSource.Play();
+            BookSelect.bonusFlg = true;
+
+            for (int i = 0; i < 6; i++)
+            {
+                StageClearManager.StageClear[i] = true;
+            }
+
+            for (int i = 1; i < StageSelectManager.stageMax + 1; i++)
+            {
+                StageSelectManager.score[i].isCopper = true;
+                StageSelectManager.score[i].isSilver = true;
+                StageSelectManager.score[i].isGold = true;
+
+                StageClearManager.m_isGetCopper[i] = true;
+            }
+        }
+
         // シーン遷移開始
         if (sceneChangeFlg)
         {
@@ -80,6 +103,7 @@ public class TitleManager : MonoBehaviour
             if (cameraAnimStartCnt == 0)
             {
                 cameraAnim.SetBool("isAnim", true);
+                postprocess.GetComponent<PostEffectController>().SetVigFlg(false);
             }
             else cameraAnimStartCnt--;
 

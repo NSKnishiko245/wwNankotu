@@ -17,6 +17,8 @@ public class EndRoll : MonoBehaviour
     //　シーン移動用コルーチン
     private Coroutine endRollCoroutine;
 
+    private bool speedUpFlg = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -30,24 +32,31 @@ public class EndRoll : MonoBehaviour
             //　エンドロール用テキストがリミットを越えるまで動かす
             if (transform.position.y <= limitPosition)
             {
-                transform.position = new Vector3(0, transform.position.y + textScrollSpeed * Time.deltaTime,-4);
+                transform.position = new Vector3(0, transform.position.y + textScrollSpeed * Time.deltaTime, -4);
             }
             else
             {
                 isStopEndRoll = true;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+        {
+            speedUpFlg = true;
+        }
+
+        if (speedUpFlg) textScrollSpeed += 0.3f;
     }
 
     IEnumerator GoToNextScene()
     {
         //　5秒間待つ
-        yield return new WaitForSeconds(5f);
+        //yield return new WaitForSeconds(5f);
 
-        if (Input.GetKeyDown("space")|| Input.GetKeyDown("joystick button 0"))
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
         {
             StopCoroutine(endRollCoroutine);
-            SceneManager.LoadScene("TitleScene");
+            SceneManager.LoadScene("BonusScene");
         }
 
         yield return null;
