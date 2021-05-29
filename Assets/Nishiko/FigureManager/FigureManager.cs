@@ -145,6 +145,16 @@ public class FigureManager : MonoBehaviour
         }
 
 
+        if ((Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0))
+        {
+            m_isStageClear[0] = true;
+            m_isStageClear[1] = true;
+            m_isStageClear[2] = true;
+            m_isStageClear[3] = true;
+            m_isStageClear[4] = true;
+            m_isStageClear[5] = true;
+        }
+
         if (Input.GetKeyDown(KeyCode.F1)) m_isStageClear[0] = true;
         if (Input.GetKeyDown(KeyCode.F2)) m_isStageClear[1] = true;
         if (Input.GetKeyDown(KeyCode.F3)) m_isStageClear[2] = true;
