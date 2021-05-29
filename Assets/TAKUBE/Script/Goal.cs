@@ -22,6 +22,5 @@ public class Goal : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         GoalText.SetActive(true);
-        Debug.Log("Goal");
     }
 }

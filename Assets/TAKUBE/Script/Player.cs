@@ -147,12 +147,12 @@ public class Player : MonoBehaviour
 
         if (moveDir == MOVEDIR.RIGHT)
         {
-            this.transform.DOMoveX(transform.position.x + 0.5f, 1.0f);
+            this.transform.DOMoveX(transform.position.x + 0.3f, 1.0f);
             moveDir = MOVEDIR.NEUTRAL;
         }
         else if (moveDir == MOVEDIR.LEFT)
         {
-            this.transform.DOMoveX(transform.position.x - 0.5f, 1.0f);
+            this.transform.DOMoveX(transform.position.x - 0.3f, 1.0f);
             moveDir = MOVEDIR.NEUTRAL;
         }
 

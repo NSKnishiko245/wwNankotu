@@ -228,7 +228,6 @@ public class MapEdit : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not found" + barPath + ".prefab");
         }
     }
     private GameObject CreateTile(Vector3 pos, Vector3 scale)
@@ -242,7 +241,6 @@ public class MapEdit : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not found Tile.prefab");
             return null;
         }
     }

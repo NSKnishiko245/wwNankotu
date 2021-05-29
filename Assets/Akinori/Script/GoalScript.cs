@@ -37,6 +37,9 @@ public class GoalScript : MonoBehaviour
     [SerializeField] private ParticleSystem.MinMaxGradient silverColor;
     [SerializeField] private ParticleSystem.MinMaxGradient bronzeColor;
     [SerializeField] private ParticleSystem particle;
+
+    private Vector3 pPos;
+
     // Color color;
     // Start is called before the first frame update
     void Start()
@@ -51,7 +54,6 @@ public class GoalScript : MonoBehaviour
         //Assign the color to the particle
         ParticleSystem.MainModule main = particle.main;
         main.startColor = bronzeColor;
-
         startFlg = false;
     }
 
@@ -60,12 +62,17 @@ public class GoalScript : MonoBehaviour
     {
         //ê∂ê¨ä‘äu
         particleFrame--;
-        Vector3 pos = Gear.transform.position;
         if (particleFrame <= 0 && isPlayEffect)
         {
-            Debug.Log("on");
             particleFrame = initParticleFrame;
-            particleList.Add(Instantiate(rayParticle, pos, this.transform.rotation).gameObject);
+            if (startFlg)
+            {
+                particleList.Add(Instantiate(rayParticle, pPos, this.transform.rotation).gameObject);
+            }
+            else
+            {
+                particleList.Add(Instantiate(rayParticle, Gear.transform.position, this.transform.rotation).gameObject);
+            }
         }
 
         for (int i = particleList.Count-1; i >= 0; i--)
@@ -79,6 +86,7 @@ public class GoalScript : MonoBehaviour
         
         if (startFlg)
         {
+
             if (playFrame < openFrame)
             {
                 playFrame++;
@@ -113,6 +121,7 @@ public class GoalScript : MonoBehaviour
 
     public bool SetStartFlg(bool _flg)
     {
+        if (!startFlg) pPos = Gear.transform.position;
         return startFlg = _flg;
     }
     public bool SetPlayEffectFlg(bool _flg)
@@ -126,7 +135,6 @@ public class GoalScript : MonoBehaviour
         ParticleSystem.MainModule main = particle.main;
         if (_col == E_ParticleColor.GOLD)
         {
-            Debug.Log("GoldColor");
             main.startColor = goldColor;
         }
         else if (_col == E_ParticleColor.SILVER)

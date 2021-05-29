@@ -28,7 +28,6 @@ public class CollisionDelete : MonoBehaviour
     {
         if (collision.transform.tag == "ClimbBlock")
         {
-            Debug.Log("HIT");
             //this.gameObject.GetComponent<BoxCollider>().isTrigger = true;
             this.gameObject.SetActive(false);
             m_addCnt = m_nowCnt;

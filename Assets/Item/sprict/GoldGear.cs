@@ -48,7 +48,6 @@ public class GoldGear : MonoBehaviour
             float present_Locatoin = (Time.time * speed) / distance_two;
             //transform.position = Vector3.Lerp(_startPos, _targetPos, CalcMoveRatio());
             this.transform.position = Vector3.Lerp(transform.position, m_objPlayer.transform.position, present_Locatoin);
-            Debug.Log(m_objPlayer.transform.position);
         }
     }
 
@@ -90,7 +89,6 @@ public class GoldGear : MonoBehaviour
     {
         if (other.transform.tag == "Player")
         {
-            Debug.Log("ã‡ÇÃéïé‘éÊÇ¡ÇΩÅIÅI");
             //m_getflg = true;
            // m_anim.SetBool("GetFlg", m_getflg);
             //if (m_animend)

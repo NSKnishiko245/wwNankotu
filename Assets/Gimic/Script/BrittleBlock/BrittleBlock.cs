@@ -33,7 +33,6 @@ public class BrittleBlock : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        Debug.Log(collision.transform.tag);
         if (collision.transform.tag == "ClimbBlock"||collision.transform.tag=="GimicMoveBlock")
         {
             

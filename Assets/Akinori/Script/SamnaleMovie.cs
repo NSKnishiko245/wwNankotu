@@ -54,7 +54,6 @@ public class SamnaleMovie : MonoBehaviour
             if (!playMovie.isPlaying)
             {
                 playMovie.Play();
-                Debug.Log("çƒê∂");
             }
         }
 

@@ -45,7 +45,6 @@ public class PlayerHitTest : MonoBehaviour
             else
             {
                 tag = hit.transform.tag;
-                Debug.Log(tag);
                 if (tag != "ClimbBlock")
                 {
                     if (tag == "GimicClearBlock")

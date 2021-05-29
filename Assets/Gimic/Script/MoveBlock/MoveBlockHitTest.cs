@@ -38,7 +38,6 @@ public class MoveBlockHitTest : MonoBehaviour
         }
         else
         {
-            Debug.Log("ik");
         }
         return false;
     }

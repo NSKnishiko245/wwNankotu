@@ -305,6 +305,11 @@ public class StageManager : MonoBehaviour
         {
             L_Smoke.SetActive(false);
             R_Smoke.SetActive(false);
+
+            for (int i = 0; i < Tile_List.Count; i++)
+            {
+                Tile_List[i].transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+            }
         }
 
         // 右スティックからの入力情報を取得

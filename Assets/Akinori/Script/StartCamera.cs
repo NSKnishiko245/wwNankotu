@@ -35,14 +35,10 @@ public class StartCamera : MonoBehaviour
 
         startPos = transform.position;
 
-        Debug.Log(StageBgm.bgmFlg);
         if (StageBgm.bgmFlg) isMoving = true;
         else isMoving = false;
 
         mode = E_CameraMode.ZOOM_IN;
-        Debug.Log("StartCamera::Start()");
-
-        Debug.Log(startPos);
 
         //if (GameObject.Find("StageUIManager").GetComponent<StageUIManager>().retryFlg)
         //{
@@ -85,11 +81,8 @@ public class StartCamera : MonoBehaviour
 
         if (mode == E_CameraMode.ZOOM_IN)
         {
-            Debug.Log(purposePos);
             this.transform.DOMove(new Vector3(purposePos.x, purposePos.y, purposePos.z), 0.8f).SetDelay(0.8f).OnComplete(() =>
              {
-
-                 Debug.Log("OnComplete!/StartCamera.cs");
                  mode = E_CameraMode.ZOOM_OUT;
              });
         }
@@ -97,7 +90,6 @@ public class StartCamera : MonoBehaviour
         {
             this.transform.DOMove(new Vector3(startPos.x, startPos.y, startPos.z), 1f).SetDelay(1.5f).OnComplete(() =>
             {
-                Debug.Log("OnComplete!/StartCamera.cs");
                 isMoving = false;
                 mode = E_CameraMode.ZOOM_IN;
                 this.transform.DOKill();
