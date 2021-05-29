@@ -75,6 +75,9 @@ public class StageUIManager : MonoBehaviour
     private int gameOverCnt;
 
     public static int menuOperationCnt = 240;
+    private int menuBufferCntInit = 75;
+    private int menuBufferCnt;
+    private bool menuBufferFlg = true;
 
     private int startPageCnt = 45;  // 開始時のページがめくれるまでの時間
     private int endBookCnt;    // 終了時の本が閉じるまでの時間
@@ -172,7 +175,6 @@ public class StageUIManager : MonoBehaviour
         }
 
 
-
         // ヒント画像をセット
         hintImage.sprite = Resources.Load("Sprite/Hint/" + stageNum, typeof(Sprite)) as Sprite;
 
@@ -188,6 +190,7 @@ public class StageUIManager : MonoBehaviour
         stageDisplayCnt = stageDisplayCntInit;
         clearCommandOperationCnt = clearCommandOperationCntInit;
         gameOverCnt = gameOverCntInit;
+        menuBufferCnt = menuBufferCntInit;
 
         bookLAnim = bookL.GetComponent<Animator>();
         bookLAnim.SetBool("isAnim", true);
@@ -268,29 +271,41 @@ public class StageUIManager : MonoBehaviour
                     }
                     else gameOverCnt--;
                 }
+
+                if (menuBufferCnt == 0)
+                {
+                    menuBufferFlg = false;
+                    menuBufferCnt = menuBufferCntInit;
+                }
+                else menuBufferCnt--;
+
                 // メニューを開く
                 if (menuOperationCnt == 0)
                 {
                     if (stageNum == 1) { }
                     else if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                     {
-                        if (!stageManager.GetComponent<StageManager>().isMove)
+                        if (!menuBufferFlg)
                         {
-                            status = STATUS.MENU;
-                            stageImage.SetActive(true);
-
-                            // ページを進める
-                            eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-
-                            // チュートリアル非表示
-                            if (stageNum == 1)
+                            if (!stageManager.GetComponent<StageManager>().isMove)
                             {
-                                Point.SetActive(false);
-                                tutorialUI.SetActive(false);
-                            }
+                                menuBufferFlg = true;
+                                status = STATUS.MENU;
+                                stageImage.SetActive(true);
 
-                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
-                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
+                                // ページを進める
+                                eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+
+                                // チュートリアル非表示
+                                if (stageNum == 1)
+                                {
+                                    Point.SetActive(false);
+                                    tutorialUI.SetActive(false);
+                                }
+
+                                stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
+                                stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
+                            }
                         }
                     }
                 }
@@ -324,6 +339,13 @@ public class StageUIManager : MonoBehaviour
                 // メニューコマンド更新処理
                 MenuCommandOperation();
 
+                if (menuBufferCnt == 0)
+                {
+                    menuBufferFlg = false;
+                    menuBufferCnt = menuBufferCntInit;
+                }
+                else menuBufferCnt--;
+
                 // コマンド決定
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                 {
@@ -334,24 +356,28 @@ public class StageUIManager : MonoBehaviour
                 }
 
                 // メニューを閉じる
-                if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
+                if (!menuBufferFlg)
                 {
-                    status = STATUS.PLAY;
-
-                    // ページを戻す
-                    eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
-
-                    // ステージを表示するまでの時間をセット
-                    stageDisplayCnt = stageDisplayCntInit;
-
-                    stageManager.GetComponent<StageManager>().FixPlayerPos();
-                    stageManager.GetComponent<StageManager>().SetModeGoalEffect(3);
-
-                    // チュートリアル表示
-                    if (stageNum == 1)
+                    if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
                     {
-                        Point.SetActive(true);
-                        tutorialUI.SetActive(true);
+                        status = STATUS.PLAY;
+                        menuBufferFlg = true;
+
+                        // ページを戻す
+                        eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
+
+                        // ステージを表示するまでの時間をセット
+                        stageDisplayCnt = stageDisplayCntInit;
+
+                        stageManager.GetComponent<StageManager>().FixPlayerPos();
+                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(3);
+
+                        // チュートリアル表示
+                        if (stageNum == 1)
+                        {
+                            Point.SetActive(true);
+                            tutorialUI.SetActive(true);
+                        }
                     }
                 }
                 break;

@@ -62,7 +62,7 @@ public class TitleManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 0"))
+        if (Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 1"))
         {
             Debug.Log("メダル全解放コマンド");
             commandSource.Play();

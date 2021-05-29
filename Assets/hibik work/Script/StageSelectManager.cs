@@ -105,6 +105,11 @@ public class StageSelectManager : MonoBehaviour
             BookSelect.bonusFlg = true;
         }
 
+        if(!BookSelect.bonusFlg)
+        {
+            GameObject.Find("BookModel7").SetActive(false);
+        }
+
         //BookSelect.bookNum = bookNum - 1;
         for (int i = 0; i < bookMax; i++)
         {
