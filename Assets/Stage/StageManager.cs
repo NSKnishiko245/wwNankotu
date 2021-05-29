@@ -180,6 +180,8 @@ public class StageManager : MonoBehaviour
             CreateParticle();
         }
 
+        Debug.Log(Player.transform.GetChild((int)global::Player.PLAYERHITBOX.BOTTOM).gameObject.GetComponent<HitAction>().isHit);
+
         oriIntervalTimer -= Time.deltaTime;
 
         // 左スティックの入力値を取得
@@ -240,18 +242,18 @@ public class StageManager : MonoBehaviour
             }
             Player.transform.parent = null;
 
-            if (Player.transform.position.x - Bar_List[LeftBarIdx].transform.position.x < 1)
+            if (Player.transform.position.x - Bar_List[LeftBarIdx].transform.position.x <= 1)
             {
-                if (!isCopy && !rerotFlg && Player.transform.position.x > Bar_List[LeftBarIdx].transform.position.x && CanYouCopy)
+                if (!isCopy && !rerotFlg && Player.transform.position.x >= Bar_List[LeftBarIdx].transform.position.x && CanYouCopy)
                 {
                     CopyStage(WARPSTATE.TO_RIGHT);
                     isCopy = true;
                 }
             }
             // プレイヤーが右端のバーに接触した場合
-            else if (Bar_List[RightBarIdx].transform.position.x - Player.transform.position.x < 1)
+            else if (Bar_List[RightBarIdx].transform.position.x - Player.transform.position.x <= 1)
             {
-                if (!isCopy && !rerotFlg && Player.transform.position.x < Bar_List[RightBarIdx].transform.position.x && CanYouCopy)
+                if (!isCopy && !rerotFlg && Player.transform.position.x <= Bar_List[RightBarIdx].transform.position.x && CanYouCopy)
                 {
                     CopyStage(WARPSTATE.TO_LEFT);
                     isCopy = true;
@@ -322,7 +324,6 @@ public class StageManager : MonoBehaviour
         // ステージの状況を見て回転できるかどうかを判断
         if (CanYouRotate() && !IsGameClear && oriIntervalTimer <= 0.0f)
         {
-
             if (tutorialManager.GetComponent<tutorialManagaer>().IsRMove)
             {
                 // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
@@ -356,13 +357,11 @@ public class StageManager : MonoBehaviour
             }
         }
 
-
         if (rerotFlg)
         {
             if (flg)
             {
                 SecondFunc();
-
             }
             if (Tile_List[0].activeSelf)
             {
@@ -414,6 +413,8 @@ public class StageManager : MonoBehaviour
                             FirstFunc();
                             Player.GetComponent<Player>().TurnOffMove();
                             Player.GetComponent<Player>().FixPos();
+
+                            Player.GetComponent<Player>().PlayerFixEx();
                             break;
                         }
                     }
