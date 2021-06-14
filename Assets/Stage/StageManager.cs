@@ -158,6 +158,11 @@ public class StageManager : MonoBehaviour
 
 
         Grid.GetComponent<CreateGrid>().SetAlpha(0);
+
+        foreach (var bar in Tile_List)
+        {
+            bar.transform.Find("TileChild").GetComponent<ScreenShot>().ResetTexture();
+        }
     }
 
     void Update()
@@ -1185,12 +1190,43 @@ public class StageManager : MonoBehaviour
                 {
                     Bar_List[i].GetComponent<MeshRenderer>().enabled = false;
                 }
+
             }
             else
             {
-                Bar_List[i].GetComponent<MeshRenderer>().enabled = true;
+                if (RotateState != ROTATESTATE.NEUTRAL)
+                {
+                    Bar_List[i].GetComponent<MeshRenderer>().enabled = false;
+                }
+                else
+                {
+                    Bar_List[i].GetComponent<MeshRenderer>().enabled = true;
+                }
+            }
+
+            if (i == 0 || i == Bar_List.Count - 1)
+            {
+                if (!(isLeftBar(i) || isRightBar(i)))
+                {
+                    if (RotateState != ROTATESTATE.NEUTRAL)
+                    {
+                        Bar_List[i].GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    else
+                    {
+                        Bar_List[i].GetComponent<MeshRenderer>().enabled = false;
+                    }
+                }
             }
         }
+        if ((isLeftBar(0) || isRightBar(0)) && (isLeftBar(Bar_List.Count - 1) || isRightBar(Bar_List.Count - 1)))
+        {
+            if (RotateState != ROTATESTATE.NEUTRAL)
+            {
+                Bar_List[0].GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
+
     }
 
     public void CreateParticle()

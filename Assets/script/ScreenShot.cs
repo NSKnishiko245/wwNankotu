@@ -69,16 +69,40 @@ public class ScreenShot : MonoBehaviour
     // 初期テクスチャにリセット
     public void ResetTexture(bool isReverse = false)
     {
-        string texname;
+        string texname = "";
         if (isReverse)
         {
-            texname = "Prefabs/Material/tileTex2";
+            if (StageManager.stageNum <= 6)
+                texname = "Prefabs/Material/BG_L1ex";
+            else if (StageManager.stageNum <= 12)
+                texname = "Prefabs/Material/BG_L2ex";
+            else if (StageManager.stageNum <= 18)
+                texname = "Prefabs/Material/BG_L3ex";
+            else if (StageManager.stageNum <= 24)
+                texname = "Prefabs/Material/BG_L4ex";
+            else if (StageManager.stageNum <= 32)
+                texname = "Prefabs/Material/BG_L5ex";
+            else if (StageManager.stageNum <= 36)
+                texname = "Prefabs/Material/BG_L6ex";
+
             GetComponent<Renderer>().rendererPriority = 2;
             GetComponent<Renderer>().material.renderQueue = 2;
         }
         else
         {
-            texname = "Prefabs/Material/tileTex";
+            if (StageManager.stageNum <= 6)
+                texname = "Prefabs/Material/BG_L1";
+            else if (StageManager.stageNum <= 12)
+                texname = "Prefabs/Material/BG_L2";
+            else if (StageManager.stageNum <= 18)
+                texname = "Prefabs/Material/BG_L3";
+            else if (StageManager.stageNum <= 24)
+                texname = "Prefabs/Material/BG_L4";
+            else if (StageManager.stageNum <= 32)
+                texname = "Prefabs/Material/BG_L5";
+            else if (StageManager.stageNum <= 36)
+                texname = "Prefabs/Material/BG_L6";
+
             GetComponent<Renderer>().rendererPriority = 1;
             GetComponent<Renderer>().material.renderQueue = 1;
         }

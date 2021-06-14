@@ -134,7 +134,7 @@ public class BarRotate : MonoBehaviour
     }
 
     // プレイヤーに対する衝突検知
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {

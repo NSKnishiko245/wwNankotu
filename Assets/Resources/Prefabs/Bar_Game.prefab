@@ -133,6 +133,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6158317622466846008}
     m_Modifications:
+    - target: {fileID: 4684898334083059240, guid: fc4c8e2e49347f34bb026f22cb30ade8, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.16862746
+      objectReference: {fileID: 0}
     - target: {fileID: 4882335032627041542, guid: fc4c8e2e49347f34bb026f22cb30ade8, type: 3}
       propertyPath: m_Name
       value: Effect_Mist

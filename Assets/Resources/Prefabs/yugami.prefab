@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5508631499622308610}
   - component: {fileID: 5508631499622308609}
   - component: {fileID: 5508631499622308608}
+  - component: {fileID: 9053953725488571944}
   m_Layer: 6
   m_Name: yugami
   m_TagString: Untagged
@@ -97,6 +98,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &9053953725488571944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5508631499622308615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383a1f9adbe9f1c4ab711b956e00e983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5508631500379960610
 PrefabInstance:
   m_ObjectHideFlags: 0
