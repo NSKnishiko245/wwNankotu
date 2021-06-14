@@ -25,7 +25,8 @@ public class StageUIManager : MonoBehaviour
     private GameObject menuRetry;
     private Image hintImage;
     public static int missCnt = 0;  // 失敗した回数
-
+    public static float hintCnt = 0.0f;
+    private static float hintDispTime = 300.0f;
     // クリアのUI
     private GameObject clearSelectGear;
     private GameObject clearSelectGear2;
@@ -240,7 +241,7 @@ public class StageUIManager : MonoBehaviour
             // プレイ中
             //-----------------------------------
             case STATUS.PLAY:
-
+                hintCnt += Time.deltaTime;
                 if (stageNum == 1)
                 {
                     Point = GameObject.FindGameObjectWithTag("Point");
@@ -331,8 +332,8 @@ public class StageUIManager : MonoBehaviour
                     StageDisplay(false);
                     statusFirstFlg = false;
 
-                    // 三回リトライしたらヒント画像を表示する
-                    if (missCnt >= 3) hintImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    // 一定時間経過でヒント画像を表示する
+                    if (hintCnt >= hintDispTime) hintImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                     else hintImage.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 }
 
@@ -410,6 +411,10 @@ public class StageUIManager : MonoBehaviour
                         StageSelectManager.score[StageManager.stageNum].isGold = true;
                         this.GetComponent<ScoreAnimation>().GoldFlgOn();
                     }
+
+                    // メダルの取得状況を保存
+                    MedalDataSave();
+
                     // ネクストステージが選択可能か判定
                     if (StageManager.stageNum % 6 == 5)
                     {
@@ -466,6 +471,7 @@ public class StageUIManager : MonoBehaviour
                     {
                         StageBgm.bgmFlg = true;
                         missCnt = 0;
+                        hintCnt = 0.0f;
                         menuOperationCnt = 240;
                     }
                     // ネクストを選択していたら失敗回数を加算
@@ -684,6 +690,21 @@ public class StageUIManager : MonoBehaviour
             frontEffectCamera.SetActive(false);
         }
         stageDisplayFlg = sts;
+    }
+
+    //==============================================================
+    // メダルの取得状況を保存
+    //==============================================================
+    private void MedalDataSave()
+    {
+        int temp = System.Convert.ToInt32(StageSelectManager.score[stageNum].isCopper);
+        PlayerPrefs.SetInt("Copper" + stageNum, temp);
+        temp = System.Convert.ToInt32(StageSelectManager.score[stageNum].isSilver);
+        PlayerPrefs.SetInt("Silver" + stageNum, 1);
+        temp = System.Convert.ToInt32(StageSelectManager.score[stageNum].isGold);
+        PlayerPrefs.SetInt("Gold" + stageNum, 1);
+
+        Debug.Log("メダルデータ セーブ完了");
     }
 
     public bool GetStageDisplayFlg() { return stageDisplayFlg; }

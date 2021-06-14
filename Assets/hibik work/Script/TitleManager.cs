@@ -35,6 +35,8 @@ public class TitleManager : MonoBehaviour
         pressAAnim = GameObject.Find("PressAImage").GetComponent<Animator>();
         postprocess = GameObject.Find("PostProcess");
 
+        // メダル取得状況を読込
+        MedalDataLoad();
     }
 
     private void Update()
@@ -44,6 +46,17 @@ public class TitleManager : MonoBehaviour
             sceneChangeFlg = true;
             pressAAnim.SetFloat("speed", 5.0f);
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            for (int i = 0; i < StageSelectManager.stageMax; i++)
+            {
+                PlayerPrefs.DeleteKey("Copper" + (i + 1));
+                PlayerPrefs.DeleteKey("Silver" + (i + 1));
+                PlayerPrefs.DeleteKey("Gold" + (i + 1));
+            }
+        }
+
 
         // エクストラステージ解放コマンド
         if (!commandFlg)
@@ -115,5 +128,20 @@ public class TitleManager : MonoBehaviour
             }
             sceneChangeCnt++;
         }
+    }
+
+    // テキストファイルからメダル取得状況を取得
+    private void MedalDataLoad()
+    {
+        for (int i = 0; i < StageSelectManager.stageMax; i++)
+        {
+            int temp = PlayerPrefs.GetInt("Copper" + (i + 1));
+            StageSelectManager.score[i + 1].isCopper = System.Convert.ToBoolean(temp);
+            temp = PlayerPrefs.GetInt("Silver" + (i + 1));
+            StageSelectManager.score[i + 1].isSilver = System.Convert.ToBoolean(temp);
+            temp = PlayerPrefs.GetInt("Gold" + (i + 1));
+            StageSelectManager.score[i + 1].isGold = System.Convert.ToBoolean(temp);
+        }
+        Debug.Log("メダルデータ ロード完了");
     }
 }
