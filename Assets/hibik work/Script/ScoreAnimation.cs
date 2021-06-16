@@ -163,7 +163,7 @@ public class ScoreAnimation : MonoBehaviour
         // V‚ª‰ñ“]‚·‚é‚Ü‚Å‚ÌŠÔ‚ª‚O
         if (clearUiRotCnt == 0)
         {
-            if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
+            if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0")))
             {
                 if (StageUIManager.nextPossibleFlg) nextStageAnim.SetBool("isRot", true);
                 stageSelectAnim.SetBool("isRot", true);

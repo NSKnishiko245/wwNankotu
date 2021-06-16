@@ -235,7 +235,7 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void StageSceneChange()
     {
-        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")))
+        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0")))
         {
 
             // 現在のページ取得(ステージ番号)
@@ -280,7 +280,7 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void BookSelectChange()
     {
-        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown("joystick button 1")))
+        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 1")))
         {
             DecSource.Play();
 

@@ -41,7 +41,7 @@ public class TitleManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
         {
             sceneChangeFlg = true;
             pressAAnim.SetFloat("speed", 5.0f);

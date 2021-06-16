@@ -348,7 +348,7 @@ public class StageUIManager : MonoBehaviour
                 else menuBufferCnt--;
 
                 // コマンド決定
-                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+                if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
                 {
                     status = STATUS.COMMAND_DECISION;
                     selectDecSource.Play();
@@ -438,7 +438,7 @@ public class StageUIManager : MonoBehaviour
                         ClearCommandOperation();
 
                         // コマンド決定
-                        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+                        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
                         {
                             stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
                             stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
@@ -654,7 +654,7 @@ public class StageUIManager : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Z))
             {
                 StageManager.stageNum = int.Parse(inputField.text);
                 SceneManager.LoadScene("Stage1Scene");

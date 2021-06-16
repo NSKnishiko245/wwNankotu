@@ -123,7 +123,7 @@ public class BookSelect : MonoBehaviour
                     else bookSelectCnt--;
 
                     // –{‚ðŒˆ’è
-                    if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+                    if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
                     {
                         DecSource.Play();
                         // ‘I‘ð’†‚Ì–{‚ðŠ÷‚ÉˆÚ“®

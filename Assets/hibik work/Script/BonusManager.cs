@@ -82,7 +82,7 @@ public class BonusManager : MonoBehaviour
                 int pageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
                 if (pageNum == 3)
                 {
-                    if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+                    if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
                     {
                         // ‘JˆÚ
                         SceneManager.LoadScene("EndRoll");
@@ -123,7 +123,7 @@ public class BonusManager : MonoBehaviour
     //==============================================================
     private void BookSelectChange()
     {
-        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown("joystick button 1")))
+        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 1")))
         {
             DecSource.Play();
 

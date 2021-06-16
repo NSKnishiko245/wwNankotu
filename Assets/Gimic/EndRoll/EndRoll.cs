@@ -40,7 +40,7 @@ public class EndRoll : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
         {
             speedUpFlg = true;
         }
@@ -53,7 +53,7 @@ public class EndRoll : MonoBehaviour
         //Å@5ïbä‘ë“Ç¬
         //yield return new WaitForSeconds(5f);
 
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
         {
             StopCoroutine(endRollCoroutine);
             SceneManager.LoadScene("BonusScene");

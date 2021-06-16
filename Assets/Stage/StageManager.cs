@@ -196,10 +196,10 @@ public class StageManager : MonoBehaviour
         LeftBarIdx = GetLeftBarIndex();     // ステージの一番左のバーを取得
         RightBarIdx = GetRightBarIndex();   // ステージの一番右のバーを取得
         
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            ChangeTileTexture();
-        }
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    ChangeTileTexture();
+        //}
 
         if (HitBarIdx != -1)
         {
@@ -337,7 +337,7 @@ public class StageManager : MonoBehaviour
             if (tutorialManager.GetComponent<tutorialManagaer>().IsRMove)
             {
                 // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
-                if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.J))
+                if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.A))
                 {
                     SetModeGoalEffect(0);
                     SetModeGoalEffect(2);
@@ -352,7 +352,7 @@ public class StageManager : MonoBehaviour
             }
             if (tutorialManager.GetComponent<tutorialManagaer>().IsLMove)
             {
-                if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.L))
+                if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.D))
                 {
                     SetModeGoalEffect(0);
                     SetModeGoalEffect(2);
@@ -407,7 +407,7 @@ public class StageManager : MonoBehaviour
         if (tutorialManager.GetComponent<tutorialManagaer>().IsRotateMove && oriIntervalTimer <= 0.0f)
         {
             // 回転済みのステージを戻す処理
-            if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.S))
             {
                 IsRotate = false;
                 if (!Camera.main.GetComponent<MoveCamera>().isMoveEx && !IsGameClear)

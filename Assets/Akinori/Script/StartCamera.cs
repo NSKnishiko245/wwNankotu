@@ -63,7 +63,7 @@ public class StartCamera : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0") || Input.GetKeyDown("joystick button 7"))
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") || Input.GetKeyDown("joystick button 7"))
         {
             isMoving = false;
             mode = E_CameraMode.ZOOM_IN;
