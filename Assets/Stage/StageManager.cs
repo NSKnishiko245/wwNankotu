@@ -337,7 +337,7 @@ public class StageManager : MonoBehaviour
             if (tutorialManager.GetComponent<tutorialManagaer>().IsRMove)
             {
                 // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
-                if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.A))
+                if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.D))
                 {
                     SetModeGoalEffect(0);
                     SetModeGoalEffect(2);
@@ -352,7 +352,7 @@ public class StageManager : MonoBehaviour
             }
             if (tutorialManager.GetComponent<tutorialManagaer>().IsLMove)
             {
-                if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.D))
+                if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.A))
                 {
                     SetModeGoalEffect(0);
                     SetModeGoalEffect(2);
