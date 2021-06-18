@@ -73,17 +73,17 @@ public class ScreenShot : MonoBehaviour
         if (isReverse)
         {
             if (StageManager.stageNum <= 6)
-                texname = "Prefabs/Material/BG_L1ex";
+                texname = "Prefabs/Material/bG_L1ex";
             else if (StageManager.stageNum <= 12)
-                texname = "Prefabs/Material/BG_L2ex";
+                texname = "Prefabs/Material/bG_L2ex";
             else if (StageManager.stageNum <= 18)
-                texname = "Prefabs/Material/BG_L3ex";
+                texname = "Prefabs/Material/bG_L3ex";
             else if (StageManager.stageNum <= 24)
-                texname = "Prefabs/Material/BG_L4ex";
+                texname = "Prefabs/Material/bG_L4ex";
             else if (StageManager.stageNum <= 32)
-                texname = "Prefabs/Material/BG_L5ex";
+                texname = "Prefabs/Material/bG_L5ex";
             else if (StageManager.stageNum <= 36)
-                texname = "Prefabs/Material/BG_L6ex";
+                texname = "Prefabs/Material/bG_L6ex";
 
             GetComponent<Renderer>().rendererPriority = 2;
             GetComponent<Renderer>().material.renderQueue = 2;
@@ -91,17 +91,17 @@ public class ScreenShot : MonoBehaviour
         else
         {
             if (StageManager.stageNum <= 6)
-                texname = "Prefabs/Material/BG_L1";
+                texname = "Prefabs/Material/bG_L1";
             else if (StageManager.stageNum <= 12)
-                texname = "Prefabs/Material/BG_L2";
+                texname = "Prefabs/Material/bG_L2";
             else if (StageManager.stageNum <= 18)
-                texname = "Prefabs/Material/BG_L3";
+                texname = "Prefabs/Material/bG_L3";
             else if (StageManager.stageNum <= 24)
-                texname = "Prefabs/Material/BG_L4";
+                texname = "Prefabs/Material/bG_L4";
             else if (StageManager.stageNum <= 32)
-                texname = "Prefabs/Material/BG_L5";
+                texname = "Prefabs/Material/bG_L5";
             else if (StageManager.stageNum <= 36)
-                texname = "Prefabs/Material/BG_L6";
+                texname = "Prefabs/Material/bG_L6";
 
             GetComponent<Renderer>().rendererPriority = 1;
             GetComponent<Renderer>().material.renderQueue = 1;
