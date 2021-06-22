@@ -100,13 +100,13 @@ public class Player : MonoBehaviour
             {
                 //ˆÚ“®ˆ—
                 moveValue = transform.right * Speed * Time.deltaTime;
-                if (inputValue_x > 0)
+                if (inputValue_x > 0.5f)
                 {
                     transform.position += moveValue;
                     // transform.rotation = Quaternion.Euler(0, 0, 0);
                     IsMove = true;
                 }
-                else if (inputValue_x < 0)
+                else if (inputValue_x < -0.5f)
                 {
                     transform.position -= moveValue;
                     //transform.rotation = Quaternion.Euler(0, 180, 0);

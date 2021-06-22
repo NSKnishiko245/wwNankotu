@@ -703,6 +703,7 @@ public class StageUIManager : MonoBehaviour
         PlayerPrefs.SetInt("Silver" + stageNum, temp);
         temp = System.Convert.ToInt32(StageSelectManager.score[stageNum].isGold);
         PlayerPrefs.SetInt("Gold" + stageNum, temp);
+        
 
         Debug.Log("メダルデータ セーブ完了");
     }

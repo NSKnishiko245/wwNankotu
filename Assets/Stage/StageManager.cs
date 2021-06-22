@@ -982,6 +982,10 @@ public class StageManager : MonoBehaviour
         if (is3D == false && activeFlg == true)
         {
             Grid.GetComponent<MeshRenderer>().enabled = true;
+            if (RotateState == ROTATESTATE.NEUTRAL)
+            {
+                // Ç±Ç±ÇßÇßÇ®Ç¡ÅIÅIÅI
+            }
         }
         if (is3D != activeFlg)
         {
