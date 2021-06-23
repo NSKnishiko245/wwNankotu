@@ -74,6 +74,8 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void Awake()
     {
+        //LoadClearDate();
+
         this.GetComponent<CreateStageSelect>().Create();
 
         StageSelectManager.selectPageMoveFlg = true;
@@ -90,6 +92,8 @@ public class StageSelectManager : MonoBehaviour
         mist = GameObject.Find("Mist");
         mist.SetActive(false);
         command = COMMAND.EMPTY;
+
+
 
         for (int i = 1; i < stageMax + 1; i++)
         {
@@ -122,8 +126,8 @@ public class StageSelectManager : MonoBehaviour
         }
 
         SilverConditionsSet();
-
         this.GetComponent<PostEffectController>().SetVigFlg(false);
+        //SaveClearDate();
     }
 
     //==============================================================
@@ -176,6 +180,11 @@ public class StageSelectManager : MonoBehaviour
         BookClearCheck(19, 23, 3);
         BookClearCheck(25, 29, 4);
         BookClearCheck(31, 35, 5);
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SaveClearDate();
+        }
     }
 
     //==============================================================
@@ -386,6 +395,43 @@ public class StageSelectManager : MonoBehaviour
         for (int i = 1; i < stageMax + 1; i++)
         {
             silverConditions[i] = int.Parse(SilverConditionsString[i]);
+        }
+    }
+
+    
+    public static void SaveClearDate()
+    {
+        List<int> date = new List<int>();
+        for (int i = 0; i < 37; i++)
+        {
+            if (score[i].isGold) date.Add(1);
+            else date.Add(0);
+
+            if (score[i].isSilver) date.Add(1);
+            else date.Add(0);
+
+            if (score[i].isCopper) date.Add(1);
+            else date.Add(0);
+        }
+        CsvWrite cw = new CsvWrite();
+        cw.SetFileInputFolderName();
+        cw.WriteBarMapFromCsv(date, "clear");
+    }
+
+    public static void LoadClearDate()
+    {
+        List<int> clearDate = new List<int>(new int[37 * 3]);
+        CsvWrite cw = new CsvWrite();
+        cw.SetFileInputFolderName();
+        cw.ReadBarMapFromCsv(clearDate, "clear");
+        for (int i = 0; i < 37; i++)
+        {
+            if (clearDate[i * 3] != 0) score[i].isGold = true;
+            else score[i].isGold = false;
+            if (clearDate[i * 3 + 1] != 0) score[i].isSilver = true;
+            else score[i].isSilver = false;
+            if (clearDate[i * 3 + 2] != 0) score[i].isCopper = true;
+            else score[i].isCopper = false;
         }
     }
 }

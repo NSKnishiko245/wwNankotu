@@ -36,7 +36,18 @@ public class TitleManager : MonoBehaviour
         postprocess = GameObject.Find("PostProcess");
 
         // メダル取得状況を読込
-        MedalDataLoad();
+        StageSelectManager.LoadClearDate();
+        for (int i = 1; i < StageSelectManager.stageMax + 1; i++)
+        {
+            if (!(StageSelectManager.score[i].isCopper == true && StageSelectManager.score[i].isSilver == true && StageSelectManager.score[i].isGold == true))
+            {
+                return;
+            }
+        }
+        // ここまで来たということは全ステージの全メダルを取得しているということ
+        
+
+
     }
 
     private void Update()

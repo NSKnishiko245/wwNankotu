@@ -9,6 +9,11 @@ public class CsvWrite : MonoBehaviour
 
     void Start()
     {
+        SetFileInputFolderName();
+    }
+
+    public void SetFileInputFolderName()
+    {
         stageDataPath = Application.dataPath + "/Resources/StageData/";
     }
 
@@ -74,6 +79,7 @@ public class CsvWrite : MonoBehaviour
         string rowData = streamReader.ReadLine();
         // ','‚²‚Æ‚É‹æØ‚Á‚Ä”z—ñ‚ÖŠi”[
         string[] rowArray = (rowData.Split(','));
+
         for (int x = 0; x < map.Count; x++)
         {
             map[x] = int.Parse(rowArray[x]);
