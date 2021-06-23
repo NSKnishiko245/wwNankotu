@@ -8,6 +8,7 @@ public class tutorialManagaer : MonoBehaviour
     [SerializeField] private Player Player;
     [SerializeField] private GameObject Bar;
     [SerializeField] private StageManager stagemanager;
+    
 
     public Text Text;
 
@@ -35,6 +36,7 @@ public class tutorialManagaer : MonoBehaviour
     [SerializeField] private GameObject Lstick;
     [SerializeField] private GameObject Rstick;
     [SerializeField] private GameObject Controller;
+    [SerializeField] private GameObject TutorialUI;
     [SerializeField] private GameObject Mobiusface;
     [SerializeField] private GameObject MobiusBody;
     [SerializeField] private GameObject Bord;
@@ -60,17 +62,20 @@ public class tutorialManagaer : MonoBehaviour
 
     public bool IsPoint { get; private set; }
 
+   
     // Start is called before the first frame update
     void Start()
     {
         BordNum = 5;
         LAnim = Lstick.GetComponent<Animator>();
         RAnim = Rstick.GetComponent<Animator>();
-        ControllerAnim = Controller.GetComponent<Animator>();
+        ControllerAnim = TutorialUI.GetComponent<Animator>();
         MobiusfaceAnim = Mobiusface.GetComponent<Animator>();
         MobiusBodyAnim = MobiusBody.GetComponent<Animator>();
         BordAnim = Bord.GetComponent<Animator>();
         BlackAnim = Black.GetComponent<Animator>();
+
+        
 
         //stagemanager = GameObject.Find("stageManager");
         IsPlayerMove = true;
@@ -87,7 +92,7 @@ public class tutorialManagaer : MonoBehaviour
 
         if (Stagenum != 1)
         {
-            TutorialNum = 7;
+            TutorialNum = 10;
             BordNum = 2;
             BordAnim.SetInteger("text", BordNum);
         }
@@ -103,6 +108,12 @@ public class tutorialManagaer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //if(ControllerCheck()==true)
+        //{
+        //    TutorialUI.SetActive(false);
+        //}
+
         //ステージ開始時のカメラワーク中は、操作しない
         if (mainCam.GetComponent<StartCamera>().isMoving)
         {
@@ -111,13 +122,7 @@ public class tutorialManagaer : MonoBehaviour
         }
 
         //時間をカウントダウンする
-        Controller.GetComponent<RectTransform>().SetAsLastSibling();
-
-        // 左スティックからの入力情報を取得
-        float input_x = Input.GetAxis("Horizontal");
-
-        // 右スティックからの入力情報を取得
-        float R_Stick_value = Input.GetAxis("tutorialStick");
+        TutorialUI.GetComponent<RectTransform>().SetAsLastSibling();
 
         switch (TutorialNum)
         {
@@ -132,7 +137,6 @@ public class tutorialManagaer : MonoBehaviour
                     BlackAnim.SetBool("Black", true);
                     BordNum = 3;
                     BordAnim.SetInteger("text", BordNum);
-                   
                 }
                 if (TextCount <= 0.0f)
                 {
@@ -235,9 +239,9 @@ public class tutorialManagaer : MonoBehaviour
                     if (Pushcount <= 0.0f)
                     {
                         PushFlg = true;
-                        //ControllerAnim.SetBool("FukidasiFlg", true);
-                        //LAnim.SetBool("LStick", false);
-                        //RAnim.SetBool("RStickPush", true);
+                        ControllerAnim.SetBool("FukidasiFlg", true);
+                        LAnim.SetBool("LStick", false);
+                        RAnim.SetBool("RStickPush", true);
                         CountFlg = true;
                         TutorialNum = 3;
                         Pushcount = 9999.0f;
@@ -294,18 +298,20 @@ public class tutorialManagaer : MonoBehaviour
                 Debug.Log(IsRotateMove);
                 IsPoint = false;
                 IsPlayerMove = true;
-                
-                //LAnim.SetBool("LStick", false);
-                //RAnim.SetBool("RStickPush", true);
 
                 Pushcount -= Time.deltaTime;
                 if (Pushcount <= 0.0f)
                 {
-                    
-                    //ControllerAnim.SetBool("FukidasiFlg", true);
-                    //LAnim.SetBool("LStick", false);
-                    //RAnim.SetBool("RStickPush", true);
                     CountFlg = true;
+                    //Text.text = "裏表の無い世界はいつでも解除が可能ビウス！\nスティック押し込んでみるビウス";
+                    //IsRotateMove = true;
+                    //IsPoint = true;
+                    //IsPlayerMove = false;
+                    //PushFlg = true;
+                    //BordNum = 0;
+                    //BordAnim.SetInteger("text", BordNum);
+                    //ControllerAnim.SetBool("FukidasiFlg", true);
+                    //RAnim.SetBool("RStickPush", true);
                     Pushcount = 9999.0f;
 
                 }
@@ -318,8 +324,8 @@ public class tutorialManagaer : MonoBehaviour
                     Point = Instantiate(Point_prefab, new Vector3(4.0f, -2.5f, 0.0f), Quaternion.identity);
 
                 }
-
-
+                LAnim.SetBool("LStick", false);
+                RAnim.SetBool("RStickPush", true);
                 {
                     if (Player.GetComponent<Player>().IsHitPoint)
                     {
@@ -338,8 +344,10 @@ public class tutorialManagaer : MonoBehaviour
 
                 if (PushFlg)
                 {
-                    if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.K))
+                    if (Input.GetKeyDown("joystick button 9") || Input.GetKeyDown(KeyCode.S))
                     {
+                        BordNum = 1;
+                        BordAnim.SetInteger("text", BordNum);
                         IsPlayerMove = true;
                         PushFlg = false;
                         TutorialNum = 4;
@@ -350,7 +358,6 @@ public class tutorialManagaer : MonoBehaviour
                 break;
 
             case 4:
-                
                 IsRotateMove = true;
                 IsLMove = true;
                 IsRMove = true;
@@ -381,9 +388,19 @@ public class tutorialManagaer : MonoBehaviour
                 {
                     Text.text = "蜃気楼の中に実際に入って\n目の前にあるゴールに向かって進むビウス！";
                     IsPlayerMove = true;
+                    Point = Instantiate(Point_prefab, new Vector3(5.5f, -1.5f, 0.0f), Quaternion.Euler(0,0,90));
                     TextCount = 1000.0f;
-                    
                 }
+               //if(stagemanager.GetComponent<StageManager>().IsSmog)
+               //{
+               //     Destroy(Point);
+               //     TutorialNum = 6;
+               //}
+                break;
+            case 6:
+
+                Text.text = "折り過ぎると銀の歯車が...！\n素早くゴールを目指すでビウス！";
+
                 break;
             default:
 
@@ -391,11 +408,25 @@ public class tutorialManagaer : MonoBehaviour
 
 
         }
-
-
     }
 
+    public bool ControllerCheck()
+    {
+        // 接続されているコントローラの名前を調べる
+        var controllerNames = Input.GetJoystickNames();
 
+        Debug.Log(controllerNames);
+        // 一台もコントローラが接続されていなければエラー
+        if (controllerNames[0] == "")
+        {
+            Debug.Log("Error");
+            return true;
+        }
+
+        return false;
+    }
+
+    
 
     private bool OriCheck()
     {
