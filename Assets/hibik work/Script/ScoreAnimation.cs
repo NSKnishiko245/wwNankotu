@@ -16,6 +16,7 @@ public class ScoreAnimation : MonoBehaviour
     private Animator nextStageAnim;
 
     [SerializeField] private GameObject[] medal = new GameObject[3];
+    [SerializeField] private GameObject[] medal_effect = new GameObject[3];
     private Animator[] medalAnim = new Animator[3];
 
     // クリア後のカメラの位置調整用(ゴールからの差をセットする)
@@ -230,7 +231,11 @@ public class ScoreAnimation : MonoBehaviour
                 StageSelectManager.score[StageManager.stageNum].isSilver &&
                 StageSelectManager.score[StageManager.stageNum].isGold)
             {
+                //for (int i = 0; i < 3; i++) medal[i].GetComponent<GearRotation>().SetRotFlg(true);
                 for (int i = 0; i < 3; i++) medal[i].GetComponent<GearRotation>().SetRotFlg(true);
+                medal_effect[0].transform.GetChild(0).gameObject.GetComponent<PerfectClear>().SetIsStart(true);
+                medal_effect[1].transform.GetChild(0).gameObject.GetComponent<PerfectClear>().SetIsStart(true);
+                //medal[1].GetComponent<PerfectClear>().SetIsStart(true);
             }
         }
         else medalRotationStartCnt--;

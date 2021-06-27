@@ -10,7 +10,8 @@ public class GearRotation : MonoBehaviour
    
     [SerializeField] private bool rotFlg = true; // true:‰ñ“]‚·‚é
 
-   
+    private int cnt = 0;
+    [SerializeField] private int lifeframe = 60;
 
     public float target_Rotate;
     private void Update()
@@ -19,6 +20,10 @@ public class GearRotation : MonoBehaviour
         if (rotFlg)
         {
             this.transform.Rotate(new Vector3(0.0f, 0.0f, rotSpeed));
+
+            if (cnt > lifeframe) rotSpeed = 0;
+            cnt++;
+
         }
 
         //if(tutorialrotFlg)
