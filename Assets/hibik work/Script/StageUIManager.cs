@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class StageUIManager : MonoBehaviour
 {
@@ -23,10 +24,22 @@ public class StageUIManager : MonoBehaviour
     private GameObject menuRetryGear;
     private GameObject menuSelect;
     private GameObject menuRetry;
-    private Image hintImage;
+    private GameObject menuBoard;
+    private GameObject menuStageNum;
+    private GameObject menuOperation;
+
     public static int missCnt = 0;  // 失敗した回数
     public static float hintCnt = 0.0f;
-    private static float hintDispTime = 300.0f;
+    private static float hintDispTime = 10.0f;
+    private bool hintFlg = false;
+    private bool hintFirstFlg = false;
+    private int hintOpenCnt = 0;
+
+    // ヒントのUI
+    private GameObject hintBoard;
+    private GameObject hintMovie;
+    private GameObject tv;
+
     // クリアのUI
     private GameObject clearSelectGear;
     private GameObject clearSelectGear2;
@@ -98,6 +111,7 @@ public class StageUIManager : MonoBehaviour
         START,
         PLAY,
         MENU,
+        HINT,
         CLEAR,
         COMMAND_DECISION,
     }
@@ -144,6 +158,9 @@ public class StageUIManager : MonoBehaviour
         bookL = GameObject.Find("book_L");
         menuSelectGear = GameObject.Find("SelectGearImage");
         menuRetryGear = GameObject.Find("RetryGearImage");
+        menuBoard = GameObject.Find("MenuBoard");
+        menuStageNum = GameObject.Find("StageNum");
+        menuOperation = GameObject.Find("OperationImage");
         clearSelectGear = GameObject.Find("C_SelectGearImage");
         clearSelectGear2 = GameObject.Find("SelectUnderGearImage");
         clearNextGear = GameObject.Find("NextGearImage");
@@ -152,12 +169,15 @@ public class StageUIManager : MonoBehaviour
         menuRetry = GameObject.Find("Retry");
         clearSelect = GameObject.Find("C_StageSelect");
         clearNext = GameObject.Find("NextStage");
-        hintImage = GameObject.Find("HintImage").GetComponent<Image>();
+        hintBoard = GameObject.Find("HintBoard");
+        hintMovie = GameObject.Find("SamnaleMovie");
+        tv = GameObject.Find("tv");
+        tv.SetActive(false);
 
         GameObject.Find("book_L2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
         GameObject.Find("book_R2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
 
-
+        hintMovie.GetComponent<VideoPlayer>().clip = Resources.Load<VideoClip>("StageSamnale/stage" + stageNum + "_thumbnail");
 
         // ステージ１はチュートリアルのBGM
         if (StageManager.stageNum == 1) bgmNum = 0;
@@ -174,10 +194,6 @@ public class StageUIManager : MonoBehaviour
             bgmSource.Play();
             //StageBgm.bgmFlg = false;
         }
-
-
-        // ヒント画像をセット
-        hintImage.sprite = Resources.Load("Sprite/Hint/" + stageNum, typeof(Sprite)) as Sprite;
 
         if (stageNum != 1) tutorialUI.SetActive(false);
 
@@ -242,6 +258,18 @@ public class StageUIManager : MonoBehaviour
             //-----------------------------------
             case STATUS.PLAY:
                 hintCnt += Time.deltaTime;
+                if (hintCnt > hintDispTime && hintOpenCnt == 0 && stageNum != 1)
+                {
+                    hintFlg = true;
+                    hintFirstFlg = true;
+                }
+
+                if (hintFirstFlg)
+                {
+                    tv.SetActive(true);
+                    hintFirstFlg = false;
+                }
+
                 if (stageNum == 1)
                 {
                     Point = GameObject.FindGameObjectWithTag("Point");
@@ -284,7 +312,7 @@ public class StageUIManager : MonoBehaviour
                 if (menuOperationCnt == 0)
                 {
                     if (stageNum == 1) { }
-                    else if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
+                    else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7"))
                     {
                         if (!menuBufferFlg)
                         {
@@ -312,6 +340,43 @@ public class StageUIManager : MonoBehaviour
                 }
                 else menuOperationCnt--;
 
+                // ヒントを開く
+                if (hintFlg)
+                {
+                    if (menuOperationCnt == 0)
+                    {
+                        if (stageNum == 1) { }
+                        else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 7"))
+                        {
+                            if (!menuBufferFlg)
+                            {
+                                if (!stageManager.GetComponent<StageManager>().isMove)
+                                {
+                                    menuBufferFlg = true;
+                                    status = STATUS.HINT;
+                                    tv.SetActive(false);
+                                    stageImage.SetActive(true);
+                                    hintOpenCnt++;
+
+                                    // ページを進める
+                                    eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+
+                                    // チュートリアル非表示
+                                    if (stageNum == 1)
+                                    {
+                                        Point.SetActive(false);
+                                        tutorialUI.SetActive(false);
+                                    }
+
+                                    stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
+                                    stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
+                                }
+                            }
+                        }
+                    }
+                    else menuOperationCnt--;
+                }
+
                 // ステージクリア
                 if (stageManager.GetComponent<StageManager>().IsGameClear || Input.GetKeyDown(KeyCode.C))
                 {
@@ -332,9 +397,13 @@ public class StageUIManager : MonoBehaviour
                     StageDisplay(false);
                     statusFirstFlg = false;
 
-                    // 一定時間経過でヒント画像を表示する
-                    if (hintCnt >= hintDispTime) hintImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                    else hintImage.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    menuRetry.SetActive(true);
+                    menuSelect.SetActive(true);
+                    menuBoard.SetActive(true);
+                    menuStageNum.SetActive(true);
+                    menuOperation.SetActive(true);
+                    hintBoard.SetActive(false);
+                    hintMovie.SetActive(false);
                 }
 
                 // メニューコマンド更新処理
@@ -359,7 +428,59 @@ public class StageUIManager : MonoBehaviour
                 // メニューを閉じる
                 if (!menuBufferFlg)
                 {
-                    if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown("joystick button 7"))
+                    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7"))
+                    {
+                        status = STATUS.PLAY;
+                        menuBufferFlg = true;
+
+                        // ページを戻す
+                        eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
+
+                        // ステージを表示するまでの時間をセット
+                        stageDisplayCnt = stageDisplayCntInit;
+
+                        stageManager.GetComponent<StageManager>().FixPlayerPos();
+                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(3);
+
+                        // チュートリアル表示
+                        if (stageNum == 1)
+                        {
+                            Point.SetActive(true);
+                            tutorialUI.SetActive(true);
+                        }
+                    }
+                }
+                break;
+
+            //-----------------------------------
+            // ヒント表示中
+            //-----------------------------------
+            case STATUS.HINT:
+                if (statusFirstFlg)
+                {
+                    StageDisplay(false);
+                    statusFirstFlg = false;
+
+                    menuRetry.SetActive(false);
+                    menuSelect.SetActive(false);
+                    menuBoard.SetActive(false);
+                    menuStageNum.SetActive(false);
+                    menuOperation.SetActive(false);
+                    hintBoard.SetActive(true);
+                    hintMovie.SetActive(true);
+                }
+
+                if (menuBufferCnt == 0)
+                {
+                    menuBufferFlg = false;
+                    menuBufferCnt = menuBufferCntInit;
+                }
+                else menuBufferCnt--;
+
+                // ヒントを閉じる
+                if (!menuBufferFlg)
+                {
+                    if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 7"))
                     {
                         status = STATUS.PLAY;
                         menuBufferFlg = true;
@@ -389,6 +510,8 @@ public class StageUIManager : MonoBehaviour
             case STATUS.CLEAR:
                 if (statusFirstFlg)
                 {
+                    tv.SetActive(false);
+
                     // スコアアニメーション開始
                     this.GetComponent<ScoreAnimation>().StartFlgOn();
 
@@ -577,7 +700,7 @@ public class StageUIManager : MonoBehaviour
                     clearNextGear.GetComponent<GearRotation>().SetRotFlg(false);
                     clearNextGear2.GetComponent<GearRotation>().SetRotFlg(false);
                     clearSelect.transform.localScale = new Vector3(1.3f, 1.3f, 1.0f);
-                    clearNext.transform.localScale = new Vector3(1.2f, 1.2f, 1.0f);
+                    clearNext.transform.localScale = new Vector3(1.1f, 1.1f, 1.0f);
 
                     clearCommandFirstFlg = false;
                 }
@@ -605,7 +728,7 @@ public class StageUIManager : MonoBehaviour
                     clearNextGear.GetComponent<GearRotation>().SetRotFlg(true);
                     clearNextGear2.GetComponent<GearRotation>().SetRotFlg(true);
                     clearNext.transform.localScale = new Vector3(1.3f, 1.3f, 1.0f);
-                    clearSelect.transform.localScale = new Vector3(1.2f, 1.2f, 1.0f);
+                    clearSelect.transform.localScale = new Vector3(1.1f, 1.1f, 1.0f);
 
                     clearCommandFirstFlg = false;
                 }
