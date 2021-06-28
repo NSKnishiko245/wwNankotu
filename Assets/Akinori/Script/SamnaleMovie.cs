@@ -38,7 +38,7 @@ public class SamnaleMovie : MonoBehaviour
             {
                 num = 1;
             }
-            playMovie.clip = Resources.Load<VideoClip>("StageSamnale/stage" + num + "_thumbnail");
+            playMovie.clip = Resources.Load<VideoClip>("Movie/StageSamnale/stage_" + num);
           //  Debug.Log(playMovie.clip.name + "ÉçÅ[Éh");
         }
         //if (initNum != num)

@@ -15,7 +15,7 @@ public class BookSelect : MonoBehaviour
     private int stageMax = 43;  // ステージの最大数
 
     public static int bookNum = 0;    // 本の番号
-    public static bool bonusFlg = false;
+    public static bool bonusFlg;
     private int bookSelectCntInit = 15;
     private int bookSelectCnt = 0;
     private bool bookSelectFlg = false;

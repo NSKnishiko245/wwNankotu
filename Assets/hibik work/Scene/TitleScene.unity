@@ -2764,6 +2764,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: -0.2
   rotFlg: 1
+  lifeframe: 60
   target_Rotate: 0
 --- !u!1 &1164440353
 GameObject:
@@ -4257,7 +4258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &1807395569
 Animator:
   serializedVersion: 3

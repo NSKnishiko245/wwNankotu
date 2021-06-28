@@ -41,13 +41,16 @@ public class TitleManager : MonoBehaviour
         {
             if (!(StageSelectManager.score[i].isCopper == true && StageSelectManager.score[i].isSilver == true && StageSelectManager.score[i].isGold == true))
             {
+                // 全メダルを獲得していなければボーナス本を非表示
+                GameObject bonusBook = GameObject.Find("BookModel7");
+                bonusBook.SetActive(false);
+                BookSelect.bonusFlg = false;
+
                 return;
             }
         }
         // ここまで来たということは全ステージの全メダルを取得しているということ
-        
-
-
+        BookSelect.bonusFlg = true;
     }
 
     private void Update()

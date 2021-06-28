@@ -353,7 +353,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: -0.4
   rotFlg: 1
-  lifeframe: 60
+  lifeframe: -1
   target_Rotate: 0
 --- !u!114 &49541674
 MonoBehaviour:
@@ -2583,7 +2583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: -0.4
   rotFlg: 1
-  lifeframe: 60
+  lifeframe: -1
   target_Rotate: 0
 --- !u!114 &659287058
 MonoBehaviour:
@@ -2844,7 +2844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 0.4
   rotFlg: 1
-  lifeframe: 60
+  lifeframe: -1
   target_Rotate: 0
 --- !u!114 &760638607
 MonoBehaviour:
@@ -6059,7 +6059,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 0.4
   rotFlg: 1
-  lifeframe: 60
+  lifeframe: -1
   target_Rotate: 0
 --- !u!114 &1764975051
 MonoBehaviour:
@@ -8557,6 +8557,14 @@ PrefabInstance:
     - target: {fileID: 5342644501577391075, guid: 147fa2b82cd55324bb845951af220f9f, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342644501835647993, guid: 147fa2b82cd55324bb845951af220f9f, type: 3}
+      propertyPath: lifeframe
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342644501996769227, guid: 147fa2b82cd55324bb845951af220f9f, type: 3}
+      propertyPath: lifeframe
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5342644502062671622, guid: 147fa2b82cd55324bb845951af220f9f, type: 3}
       propertyPath: m_LocalPosition.z

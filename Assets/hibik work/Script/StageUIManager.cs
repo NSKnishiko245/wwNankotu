@@ -30,7 +30,7 @@ public class StageUIManager : MonoBehaviour
 
     public static int missCnt = 0;  // 失敗した回数
     public static float hintCnt = 0.0f;
-    private static float hintDispTime = 10.0f;
+    private static float hintDispTime = 300.0f;
     private bool hintFlg = false;
     private bool hintFirstFlg = false;
     private int hintOpenCnt = 0;
@@ -38,7 +38,7 @@ public class StageUIManager : MonoBehaviour
     // ヒントのUI
     private GameObject hintBoard;
     private GameObject hintMovie;
-    private GameObject tv;
+    private GameObject hintUI;
 
     // クリアのUI
     private GameObject clearSelectGear;
@@ -171,13 +171,13 @@ public class StageUIManager : MonoBehaviour
         clearNext = GameObject.Find("NextStage");
         hintBoard = GameObject.Find("HintBoard");
         hintMovie = GameObject.Find("SamnaleMovie");
-        tv = GameObject.Find("tv");
-        tv.SetActive(false);
+        hintUI = GameObject.Find("UICanvas");
+        hintUI.SetActive(false);
 
         GameObject.Find("book_L2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
         GameObject.Find("book_R2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
 
-        hintMovie.GetComponent<VideoPlayer>().clip = Resources.Load<VideoClip>("StageSamnale/stage" + stageNum + "_thumbnail");
+        hintMovie.GetComponent<VideoPlayer>().clip = Resources.Load<VideoClip>("Movie/Hint/stage_" + stageNum + "_hint");
 
         // ステージ１はチュートリアルのBGM
         if (StageManager.stageNum == 1) bgmNum = 0;
@@ -266,7 +266,7 @@ public class StageUIManager : MonoBehaviour
 
                 if (hintFirstFlg)
                 {
-                    tv.SetActive(true);
+                    hintUI.SetActive(true);
                     hintFirstFlg = false;
                 }
 
@@ -354,7 +354,7 @@ public class StageUIManager : MonoBehaviour
                                 {
                                     menuBufferFlg = true;
                                     status = STATUS.HINT;
-                                    tv.SetActive(false);
+                                    hintUI.SetActive(false);
                                     stageImage.SetActive(true);
                                     hintOpenCnt++;
 
@@ -510,7 +510,7 @@ public class StageUIManager : MonoBehaviour
             case STATUS.CLEAR:
                 if (statusFirstFlg)
                 {
-                    tv.SetActive(false);
+                    hintUI.SetActive(false);
 
                     // スコアアニメーション開始
                     this.GetComponent<ScoreAnimation>().StartFlgOn();
@@ -640,6 +640,7 @@ public class StageUIManager : MonoBehaviour
                     changeSceneName = "StageSelectScene";
                     // 歯車回転
                     menuSelectGear.GetComponent<GearRotation>().SetRotFlg(true);
+                    Debug.Log("select");
                     menuSelect.transform.localScale = new Vector3(2.75f, 2.75f, 1.0f);
                     menuRetryGear.GetComponent<GearRotation>().SetRotFlg(false);
                     menuRetry.transform.localScale = new Vector3(2.5f, 2.5f, 1.0f);
