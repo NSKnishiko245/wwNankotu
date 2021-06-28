@@ -985,6 +985,25 @@ public class StageManager : MonoBehaviour
             if (RotateState != ROTATESTATE.NEUTRAL)
             {
                 // Ç±Ç±ÇßÇßÇ®Ç¡ÅIÅIÅI
+                //GameObject goal = GameObject.Find("2");
+                for (int i = 0; i < Tile_List.Count; i++)
+                {
+                    foreach (Transform child in Tile_List[i].GetComponentsInChildren<Transform>())
+                    {
+                        if (child.tag == "GoalBlock")
+                        {
+                            if (!child.transform.Find("GoalObj1").GetComponent<GoalScript>().GetIsNoSilverGear())
+                            {
+                                child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetGearVibrateTime(30);
+                                child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetGearVibrateTime(30);
+                                child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetSilverState(StageSelectManager.silverConditions[stageNum], rotateNum);
+                                child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetSilverState(StageSelectManager.silverConditions[stageNum], rotateNum);
+                                //Debug.Log(StageSelectManager.silverConditions[StageManager.stageNum]);
+                            }
+                        }
+                    }
+                }
+                        //Debug.Log(goal.name);
             }
         }
         if (is3D != activeFlg)
