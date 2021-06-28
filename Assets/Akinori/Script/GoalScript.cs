@@ -39,6 +39,7 @@ public class GoalScript : MonoBehaviour
     [SerializeField] private ParticleSystem.MinMaxGradient silverColor;
     [SerializeField] private ParticleSystem.MinMaxGradient bronzeColor;
     [SerializeField] private ParticleSystem particle;
+    [SerializeField] private ParticleSystem silverSand;
 
     public AudioClip sound1;
     AudioSource audioSource;
@@ -102,6 +103,7 @@ public class GoalScript : MonoBehaviour
             if (startFlg)
             {
                 particleList.Add(Instantiate(rayParticle, pPos, this.transform.rotation).gameObject);
+                
             }
             else
             {
@@ -250,5 +252,18 @@ public class GoalScript : MonoBehaviour
 
             Gear.GetComponent<VibrateController>().SetVibrateTime(time);
         }
+    }
+
+    /*
+     * ã‚ÇÃéïé‘Ç™óhÇÍÇΩç€SandPerticleÇê∂ê¨Ç∑ÇÈä÷êî
+     */
+    public void CreateSandPerticle()
+    {
+        perticlePos = transform.Find("door_huti/door 1").gameObject.transform.position;
+        Vector3 tokenPos = perticlePos;
+        tokenPos.z *= 3;
+        
+        Instantiate(silverSand, tokenPos, Quaternion.identity);
+
     }
 }

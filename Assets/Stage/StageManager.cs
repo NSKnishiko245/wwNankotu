@@ -993,6 +993,8 @@ public class StageManager : MonoBehaviour
                         {
                             if (!child.transform.Find("GoalObj1").GetComponent<GoalScript>().GetIsNoSilverGear())
                             {
+                                child.transform.Find("GoalObj1").GetComponent<GoalScript>().CreateSandPerticle();
+                                child.transform.Find("GoalObj2").GetComponent<GoalScript>().CreateSandPerticle();
                                 child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetGearVibrateTime(30);
                                 child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetGearVibrateTime(30);
                                 child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetSilverState(StageSelectManager.silverConditions[stageNum], rotateNum);

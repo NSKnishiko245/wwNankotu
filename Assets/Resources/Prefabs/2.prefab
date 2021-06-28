@@ -238,6 +238,7 @@ MonoBehaviour:
     m_ColorMin: {r: 0.8666667, g: 0.34901962, b: 0, a: 1}
     m_ColorMax: {r: 0.4509804, g: 0.30980393, b: 0.03137255, a: 1}
   particle: {fileID: 4750937289701597109, guid: 7d2df11a8a7c170439d5150c76239609, type: 3}
+  silverSand: {fileID: 3916131040992948941, guid: d61661968a67cb843bc12f296cca8c3b, type: 3}
   sound1: {fileID: 8300000, guid: aaee9bc928e9ef94caf12e761159e38b, type: 3}
 --- !u!82 &2126963251992700266
 AudioSource:
@@ -11209,6 +11210,7 @@ MonoBehaviour:
     m_ColorMin: {r: 0.8666667, g: 0.34901962, b: 0, a: 1}
     m_ColorMax: {r: 0.4509804, g: 0.30980393, b: 0.03137255, a: 1}
   particle: {fileID: 4750937289701597109, guid: 7d2df11a8a7c170439d5150c76239609, type: 3}
+  silverSand: {fileID: 3916131040992948941, guid: d61661968a67cb843bc12f296cca8c3b, type: 3}
   sound1: {fileID: 8300000, guid: aaee9bc928e9ef94caf12e761159e38b, type: 3}
 --- !u!82 &975565250388616711
 AudioSource:
