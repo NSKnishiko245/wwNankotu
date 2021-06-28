@@ -89,7 +89,7 @@ public class GoalScript : MonoBehaviour
             preGear.transform.DORotate(Vector3.right * 700f, 2f, mode: RotateMode.WorldAxisAdd);
             preGear.transform.DOJump(new Vector3(this.transform.position.x, -14f, this.transform.position.z * 75f), jumpPower: 4f, numJumps: 2, duration: 10f).OnComplete(() =>
             {
-                Gear.SetActive(false);
+               // Gear.SetActive(false);
             });
 
             testFlg = true;
@@ -126,6 +126,7 @@ public class GoalScript : MonoBehaviour
 
             if (playFrame < openFrame)
             {
+                
                 playFrame++;
                 if (turn == TURN.GEAR_TIME)
                 {

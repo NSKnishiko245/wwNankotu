@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using DG.Tweening;
 
 public class StageUIManager : MonoBehaviour
 {
@@ -30,7 +31,8 @@ public class StageUIManager : MonoBehaviour
 
     public static int missCnt = 0;  // é∏îsÇµÇΩâÒêî
     public static float hintCnt = 0.0f;
-    private static float hintDispTime = 300.0f;
+    private static float hintDispTime = 5.0f;
+    private static float hintDeleteTime = 10.0f;
     private bool hintFlg = false;
     private bool hintFirstFlg = false;
     private int hintOpenCnt = 0;
@@ -39,6 +41,8 @@ public class StageUIManager : MonoBehaviour
     private GameObject hintBoard;
     private GameObject hintMovie;
     private GameObject hintUI;
+    private GameObject tv;
+    private GameObject hukidasi;
 
     // ÉNÉäÉAÇÃUI
     private GameObject clearSelectGear;
@@ -171,8 +175,11 @@ public class StageUIManager : MonoBehaviour
         clearNext = GameObject.Find("NextStage");
         hintBoard = GameObject.Find("HintBoard");
         hintMovie = GameObject.Find("SamnaleMovie");
+        tv = GameObject.Find("tv");
+        hukidasi = GameObject.Find("HukidasiImage");
         hintUI = GameObject.Find("UICanvas");
         hintUI.SetActive(false);
+
 
         GameObject.Find("book_L2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
         GameObject.Find("book_R2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
@@ -262,6 +269,14 @@ public class StageUIManager : MonoBehaviour
                 {
                     hintFlg = true;
                     hintFirstFlg = true;
+                    tv.transform.DOScale(new Vector3(4000, 4000, 1100), 0.5f);
+                    hukidasi.transform.DOScale(new Vector3(2.5f, 2.5f, 1), 0.5f);
+                }
+
+                if (hintCnt > hintDeleteTime && stageNum != 1)
+                {
+                    hintUI.SetActive(false);
+                    hintOpenCnt++;
                 }
 
                 if (hintFirstFlg)
