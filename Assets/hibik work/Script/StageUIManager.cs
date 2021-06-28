@@ -27,7 +27,11 @@ public class StageUIManager : MonoBehaviour
     private GameObject menuRetry;
     private GameObject menuBoard;
     private GameObject menuStageNum;
-    private GameObject menuOperation;
+    private GameObject menuOperation1;
+    private GameObject menuOperation2;
+    private GameObject copper;
+    private GameObject silver;
+    private GameObject gold;
 
     public static int missCnt = 0;  // 失敗した回数
     public static float hintCnt = 0.0f;
@@ -164,7 +168,8 @@ public class StageUIManager : MonoBehaviour
         menuRetryGear = GameObject.Find("RetryGearImage");
         menuBoard = GameObject.Find("MenuBoard");
         menuStageNum = GameObject.Find("StageNum");
-        menuOperation = GameObject.Find("OperationImage");
+        menuOperation1 = GameObject.Find("OperationImage1");
+        menuOperation2 = GameObject.Find("OperationImage2");
         clearSelectGear = GameObject.Find("C_SelectGearImage");
         clearSelectGear2 = GameObject.Find("SelectUnderGearImage");
         clearNextGear = GameObject.Find("NextGearImage");
@@ -178,7 +183,31 @@ public class StageUIManager : MonoBehaviour
         tv = GameObject.Find("tv");
         hukidasi = GameObject.Find("HukidasiImage");
         hintUI = GameObject.Find("UICanvas");
+        copper = GameObject.Find("CopperImage");
+        silver = GameObject.Find("SilverImage");
+        gold = GameObject.Find("GoldImage");
+
         hintUI.SetActive(false);
+
+        // メダルを取得していたら色が付く
+        if (StageSelectManager.score[stageNum].isGold)
+        {
+            gold.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        else gold.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+
+        if (StageSelectManager.score[stageNum].isSilver)
+        {
+            silver.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        else silver.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+
+        if (StageSelectManager.score[stageNum].isCopper)
+        {
+            copper.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        else copper.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+
 
 
         GameObject.Find("book_L2").GetComponent<Renderer>().material = material[BookSelect.bookNum];
@@ -416,9 +445,13 @@ public class StageUIManager : MonoBehaviour
                     menuSelect.SetActive(true);
                     menuBoard.SetActive(true);
                     menuStageNum.SetActive(true);
-                    menuOperation.SetActive(true);
+                    menuOperation1.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    menuOperation2.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                     hintBoard.SetActive(false);
                     hintMovie.SetActive(false);
+                    copper.SetActive(true);
+                    silver.SetActive(true);
+                    gold.SetActive(true);
                 }
 
                 // メニューコマンド更新処理
@@ -480,7 +513,11 @@ public class StageUIManager : MonoBehaviour
                     menuSelect.SetActive(false);
                     menuBoard.SetActive(false);
                     menuStageNum.SetActive(false);
-                    menuOperation.SetActive(false);
+                    menuOperation1.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    menuOperation2.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    copper.SetActive(false);
+                    silver.SetActive(false);
+                    gold.SetActive(false);
                     hintBoard.SetActive(true);
                     hintMovie.SetActive(true);
                 }
