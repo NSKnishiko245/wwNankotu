@@ -17,6 +17,7 @@ public class ScoreAnimation : MonoBehaviour
 
     [SerializeField] private GameObject[] medal = new GameObject[3];
     [SerializeField] private GameObject[] medal_effect = new GameObject[3];
+    private bool[] medalflg = new bool[3];
     private Animator[] medalAnim = new Animator[3];
 
     // クリア後のカメラの位置調整用(ゴールからの差をセットする)
@@ -200,14 +201,17 @@ public class ScoreAnimation : MonoBehaviour
                     if (StageSelectManager.score[StageManager.stageNum].isCopper && medalNum == 0)
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
+                        medalflg[0] = true;
                     }
                     if (silverFlg && medalNum == 1)
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
+                        medalflg[1] = true;
                     }
                     if (goldFlg && medalNum == 2)
                     {
                         medalAnim[medalNum].SetBool("isMove", true);
+                        medalflg[2] = true;
                     }
                     medalInterval = medalIntervalCnt;
                     medalNum++;
@@ -227,9 +231,12 @@ public class ScoreAnimation : MonoBehaviour
         if (medalRotationStartCnt == 0)
         {
             // 全てのメダルを取得していると回転する
-            if (StageSelectManager.score[StageManager.stageNum].isCopper &&
-                StageSelectManager.score[StageManager.stageNum].isSilver &&
-                StageSelectManager.score[StageManager.stageNum].isGold)
+            //if (StageSelectManager.score[StageManager.stageNum].isCopper &&
+            //    StageSelectManager.score[StageManager.stageNum].isSilver &&
+            //    StageSelectManager.score[StageManager.stageNum].isGold)
+            if (medalflg[0] &&
+                medalflg[1] &&
+                medalflg[2])
             {
                 //for (int i = 0; i < 3; i++) medal[i].GetComponent<GearRotation>().SetRotFlg(true);
                 for (int i = 0; i < 3; i++) medal[i].GetComponent<GearRotation>().SetRotFlg(true);

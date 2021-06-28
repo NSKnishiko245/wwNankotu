@@ -817,6 +817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e199b28e5e108cb46bb7d651bd3eee05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  galiver: {fileID: 1241756814}
   canvas: {fileID: 418892845742373149}
   mainCamera: {fileID: 1276711463}
   titleBgmSource: {fileID: 299466703}
@@ -2850,6 +2851,11 @@ Transform:
   m_Father: {fileID: 79992519}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
+--- !u!1 &1241756814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2551333624988490509, guid: 03f62a2e54cd09b4795c858542a484a3, type: 3}
+  m_PrefabInstance: {fileID: 504963942127428908}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1275858325
 GameObject:
   m_ObjectHideFlags: 0

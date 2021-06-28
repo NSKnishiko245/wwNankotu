@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class TitleManager : MonoBehaviour
 {
+    [SerializeField] private GameObject galiver;
     [SerializeField] private GameObject canvas;
     [SerializeField] private GameObject mainCamera;
     private Animator canvasAnim;
@@ -37,6 +38,16 @@ public class TitleManager : MonoBehaviour
 
         // ƒƒ_ƒ‹æ“¾ó‹µ‚ğ“Ç
         StageSelectManager.LoadClearDate();
+        for (int i = 6; i < StageSelectManager.stageMax + 1; i += 6)
+        {
+            int stageCnt = i / 6 - 1;
+            if (StageSelectManager.score[i].isCopper == true)
+            {
+                {
+                    galiver.GetComponent<FigureManager>().FigurePositionInit(stageCnt);
+                }
+            }
+        }
         for (int i = 1; i < StageSelectManager.stageMax + 1; i++)
         {
             if (!(StageSelectManager.score[i].isCopper == true && StageSelectManager.score[i].isSilver == true && StageSelectManager.score[i].isGold == true))

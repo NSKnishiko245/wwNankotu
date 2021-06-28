@@ -569,7 +569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa7a00eea1f02e4480f3fd51e7dece4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_lifeFrame: 60
+  m_lifeFrame: 50
   m_intervalframe: 3
   m_particle: {fileID: 8689275963860205951, guid: 5fa970e5ebec6134183a9ce653fadc98, type: 3}
 --- !u!1 &125907279
@@ -6763,7 +6763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa7a00eea1f02e4480f3fd51e7dece4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_lifeFrame: 60
+  m_lifeFrame: 50
   m_intervalframe: 3
   m_particle: {fileID: 573462060506393160, guid: 97c49b686e1fdd84c8901d575b708d66, type: 3}
 --- !u!1 &2001717445

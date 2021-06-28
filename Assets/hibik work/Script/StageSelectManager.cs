@@ -277,7 +277,6 @@ public class StageSelectManager : MonoBehaviour
             // –{‚ª•Â‚¶I‚í‚Á‚½
             if (eventSystem.GetComponent<IgnoreMouseInputModule>().GetBookCloseFlg())
             {
-
                 // ‘JˆÚ
                 SceneManager.LoadScene("Stage1Scene");
             }

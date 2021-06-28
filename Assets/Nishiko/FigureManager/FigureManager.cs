@@ -72,6 +72,12 @@ public class FigureManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //foreach (var obj in m_objModelparts)
+        //{
+        //    obj.transform.position = m_objPoint[0].transform.position;
+        //}
+       
+
         //シーンを変えても残り続ける様に
         DontDestroyOnLoad(gameObject);
 
@@ -94,7 +100,6 @@ public class FigureManager : MonoBehaviour
             m_CoppernowPos[i] = m_objCopper.transform.position;
             distance_Copper[i] = Vector3.Distance(m_objCopper.transform.position, m_objModelparts[0].transform.position);
         }
-
     }
 
     // Update is called once per frame
@@ -360,5 +365,16 @@ public class FigureManager : MonoBehaviour
             //        }
             //    }
             //}
+    }
+
+    public void FigurePositionInit(int stageClearNum)
+    {
+        if (stageClearNum < 5)
+        {
+            m_objModelparts[stageClearNum].transform.position = m_objPoint[stageClearNum].transform.position;
+            m_objModelparts[stageClearNum].transform.rotation = m_objPoint[stageClearNum].transform.rotation;
+            m_isFinish[stageClearNum] = m_isCopperFinish[stageClearNum] = true;
+        }
+        m_isStageClear[stageClearNum] = true;
     }
 }
