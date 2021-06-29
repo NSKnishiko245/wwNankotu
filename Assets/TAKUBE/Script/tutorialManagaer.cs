@@ -31,7 +31,9 @@ public class tutorialManagaer : MonoBehaviour
     [SerializeField] public float Oricountdown = 1.0f;
     [SerializeField] public float TextCount = 5.0f;
     [SerializeField] public float Pushcount;
+    [SerializeField] public float Startcount;
     private bool CountFlg;
+    private bool StopFlg;
 
     [SerializeField] private GameObject Lstick;
     [SerializeField] private GameObject Rstick;
@@ -41,6 +43,8 @@ public class tutorialManagaer : MonoBehaviour
     [SerializeField] private GameObject MobiusBody;
     [SerializeField] private GameObject Bord;
     [SerializeField] private GameObject Black;
+    [SerializeField] private GameObject Stop;
+    [SerializeField] private GameObject StartImage;
 
     Animator LAnim;
     Animator RAnim;
@@ -87,8 +91,10 @@ public class tutorialManagaer : MonoBehaviour
         CountFlg = true;
         PushFlg = false;
         textFlg = false;
+        StopFlg = false;
         mainCam = Camera.main.gameObject;
         Stagenum = StageManager.stageNum;
+
 
         if (Stagenum != 1)
         {
@@ -101,8 +107,6 @@ public class tutorialManagaer : MonoBehaviour
             TutorialNum = 1;
         }
         Point_prefab = Resources.Load<GameObject>("Point");
-
-
     }
 
     // Update is called once per frame
@@ -114,11 +118,37 @@ public class tutorialManagaer : MonoBehaviour
         //    TutorialUI.SetActive(false);
         //}
 
+        //Controller.SetActive(false);
+
         //ステージ開始時のカメラワーク中は、操作しない
         if (mainCam.GetComponent<StartCamera>().isMoving)
         {
+            Stop.SetActive(false);
+            StartImage.SetActive(false);
             textFlg = true;
             return;
+        }
+
+        if(IsPlayerMove)
+        {
+            Stop.SetActive(false);
+            if (StopFlg)
+            {
+                //StartImage.SetActive(true);
+                Startcount -= Time.deltaTime;
+                if(Startcount<=0)
+                {
+                    //StartImage.SetActive(false);
+                    Startcount = 1.0f;
+                    StopFlg = false;
+                }
+            }
+        }
+        else
+        {
+            Stop.SetActive(true);
+            StartImage.SetActive(false);
+            StopFlg = true;
         }
 
         //時間をカウントダウンする
@@ -126,35 +156,41 @@ public class tutorialManagaer : MonoBehaviour
 
         switch (TutorialNum)
         {
+            //自機の移動方法
             case 1:
                 IsRotateMove = false;
                 IsLMove = false;
                 IsRMove = false;
-                Pointcountdown -= Time.deltaTime;
-                TextCount -= Time.deltaTime;
+                //自機ズーム終了後にTV・テキストのアニメーション開始＆TextCountの時間を減少させる
                 if (textFlg)
                 {
                     BlackAnim.SetBool("Black", true);
                     BordNum = 3;
                     BordAnim.SetInteger("text", BordNum);
+                    TextCount -= Time.deltaTime;
                 }
+                else { Pointcountdown -= Time.deltaTime; }          //textFlgがfalseになったらPointcountdownの時間を減少させる
+
+
+                //TextCountが０になったらテキストの切り替えとtextFlgをfalseにする
                 if (TextCount <= 0.0f)
                 {
-                    Text.text = "まずはこの世界の進め方の説明をするビウスよ！";
+                    Text.text = "まずはこの世界の進め方の\n説明をするビウスよ！";
                     TextCount = 1000.0f;
+                    textFlg = false;
                 }
-                else
-                {
-                    IsPlayerMove = false;
-                }
-                if(Pointcountdown <= 0.0f)
+                else { IsPlayerMove = false; }                      //自機の移動を禁止にする
+
+
+                //Pointcountdownが0になったら自機の移動を解禁して矢印を出現させテキストを変える
+                if (Pointcountdown <= 0.0f)
                 {
                     IsPlayerMove = true;
                     if (CountFlg)
                     {
                         CountFlg = false;
                         Point = Instantiate(Point_prefab, new Vector3(1.5f, -2.5f, 0.0f), Quaternion.identity);
-                        Text.text= "まずは矢印に向かって歩いてみるビウス！";
+                        Text.text = "まずは矢印に向かって\n歩いてみるビウス！";
                         MobiusBodyAnim.SetBool("Right", true);
                         MobiusfaceAnim.SetBool("Smile", true);
                         ControllerAnim.SetBool("FukidasiFlg", true);
@@ -163,22 +199,31 @@ public class tutorialManagaer : MonoBehaviour
                     }
                 }
 
+
+                //自機が矢印に当たれば矢印を消しテキストを変更してcase 2へ行く
                 if (Player.GetComponent<Player>().IsHitPoint)
                 {
-                    Text.text = "高い段差に阻まれて進むことが出来ないビウス";
+                    Text.text = "高い段差に阻まれて\n進むことが出来ないビウス";
                     ControllerAnim.SetBool("FukidasiFlg", false);
                     LAnim.SetBool("LStick", false);
                     IsPoint = true;
                     TutorialNum = 2;
-                    TextCount = 2.0f;
+                    TextCount = 2.0f;                            //ここでTextCountを設定して次の矢印が出現するまでのインターバルを作っている
                     Destroy(Point);
                 }
                 break;
+
+　　　　　　//ステージを折らせる
             case 2:
+                //RotateNum =>> 1：自機を矢印に誘導       2：ステージを右に折らせる
+
                 IsPoint = false;
                 if (RotateNum == 1)
                 {
                     TextCount -= Time.deltaTime;
+                    IsPlayerMove = true;
+
+                    //TextCountが0になるまでプレイヤーを自由に移動させる
                     if (TextCount <= 0.0f)
                     {
                         //BordNum = 1;
@@ -186,7 +231,7 @@ public class tutorialManagaer : MonoBehaviour
                         TextCount = 1000.0f;
                         CountFlg = true;
                     }
-                    IsPlayerMove = true;
+                    
 
                     if (CountFlg)
                     {
@@ -199,18 +244,15 @@ public class tutorialManagaer : MonoBehaviour
                     {
                         BordNum = 0;
                         BordAnim.SetInteger("text", BordNum);
-                        Text.text = "フィールドを折って世界を変えるビウス！！";
+                        Text.text = "フィールドを折って\n世界を変えるビウス！！";
                         IsPlayerMove = false;
                         IsPoint = true;
                         Destroy(Point);
                         RotateNum = 2;
                         TextCount = 10.0f;
                     }
-                    else
-                    {
-                        
-                    }
                 }
+
                 if (RotateNum == 2)
                 {
                     IsLMove = false;
@@ -220,7 +262,7 @@ public class tutorialManagaer : MonoBehaviour
                     RAnim.SetBool("RStickRMove", true);
                     if (stagemanager.GetComponent<StageManager>().IsRotate)
                     {
-                        Text.text = "フィールドを上手く折れたでビウス！\n裏表の無い世界に突入ビウス！";
+                        Text.text = "ステージを折れたビウス！\n裏表の無い世界に突入ビウス！";
                         Pointcountdown = 1.5f;
                         IsRMove = false;
                         TutorialNum = 3;
@@ -230,23 +272,24 @@ public class tutorialManagaer : MonoBehaviour
                     }
 
                 }
-                if (RotateNum == 3)
-                {
-                    Debug.Log(RotateNum);
-                    IsPlayerMove = true;
-                    IsRotateMove = false;
-                    Pushcount -= Time.deltaTime;
-                    if (Pushcount <= 0.0f)
-                    {
-                        PushFlg = true;
-                        ControllerAnim.SetBool("FukidasiFlg", true);
-                        LAnim.SetBool("LStick", false);
-                        RAnim.SetBool("RStickPush", true);
-                        CountFlg = true;
-                        TutorialNum = 3;
-                        Pushcount = 9999.0f;
+
+                //if (RotateNum == 3)
+                //{
+                //    Debug.Log(RotateNum);
+                //    IsPlayerMove = true;
+                //    IsRotateMove = false;
+                //    Pushcount -= Time.deltaTime;
+                //    if (Pushcount <= 0.0f)
+                //    {
+                //        PushFlg = true;
+                //        ControllerAnim.SetBool("FukidasiFlg", true);
+                //        LAnim.SetBool("LStick", false);
+                //        RAnim.SetBool("RStickPush", true);
+                //        CountFlg = true;
+                //        TutorialNum = 3;
+                //        Pushcount = 9999.0f;
                        
-                    }
+                //    }
 
                     //LAnim.SetBool("LStick", false);
                     //RAnim.SetBool("RStickPush", true);
@@ -292,8 +335,10 @@ public class tutorialManagaer : MonoBehaviour
                 //        RAnim.SetBool("RStickRMove", false);
                 //    }
 
-                }
+               // }
                 break;
+
+　　　　　　//ステージの戻し方
             case 3:
                 Debug.Log(IsRotateMove);
                 IsPoint = false;
@@ -303,15 +348,6 @@ public class tutorialManagaer : MonoBehaviour
                 if (Pushcount <= 0.0f)
                 {
                     CountFlg = true;
-                    //Text.text = "裏表の無い世界はいつでも解除が可能ビウス！\nスティック押し込んでみるビウス";
-                    //IsRotateMove = true;
-                    //IsPoint = true;
-                    //IsPlayerMove = false;
-                    //PushFlg = true;
-                    //BordNum = 0;
-                    //BordAnim.SetInteger("text", BordNum);
-                    //ControllerAnim.SetBool("FukidasiFlg", true);
-                    //RAnim.SetBool("RStickPush", true);
                     Pushcount = 9999.0f;
 
                 }
@@ -324,15 +360,16 @@ public class tutorialManagaer : MonoBehaviour
                     Point = Instantiate(Point_prefab, new Vector3(4.0f, -2.5f, 0.0f), Quaternion.identity);
 
                 }
+
                 LAnim.SetBool("LStick", false);
                 RAnim.SetBool("RStickPush", true);
+
                 {
                     if (Player.GetComponent<Player>().IsHitPoint)
                     {
-                        Text.text = "裏表の無い世界はいつでも解除が可能ビウス！\nスティック押し込んでみるビウス";
+                        Text.text = "このステージはいつでも解除が可能ビウス！\nスティック押し込んでみるビウス";
                         IsRotateMove = true;
                         IsPoint = true;
-                        IsPlayerMove = false;
                         PushFlg = true;
                         BordNum = 0;
                         BordAnim.SetInteger("text", BordNum);
@@ -348,7 +385,6 @@ public class tutorialManagaer : MonoBehaviour
                     {
                         BordNum = 1;
                         BordAnim.SetInteger("text", BordNum);
-                        IsPlayerMove = true;
                         PushFlg = false;
                         TutorialNum = 4;
                         CountFlg = true;
@@ -357,6 +393,7 @@ public class tutorialManagaer : MonoBehaviour
                 }
                 break;
 
+            //ゴールへ行く
             case 4:
                 IsRotateMove = true;
                 IsLMove = true;
@@ -386,20 +423,31 @@ public class tutorialManagaer : MonoBehaviour
                 TextCount -= Time.deltaTime;
                 if (TextCount <= 0.0f)
                 {
-                    Text.text = "蜃気楼の中に実際に入って\n目の前にあるゴールに向かって進むビウス！";
+                    Text.text = "蜃気楼の中に実際に入って進むビウス！";
                     IsPlayerMove = true;
                     Point = Instantiate(Point_prefab, new Vector3(5.5f, -1.5f, 0.0f), Quaternion.Euler(0,0,90));
                     TextCount = 1000.0f;
                 }
-               //if(stagemanager.GetComponent<StageManager>().IsSmog)
-               //{
-               //     Destroy(Point);
-               //     TutorialNum = 6;
-               //}
+
+                if (stagemanager.GetComponent<StageManager>().IsSmog)
+                {
+                    Destroy(Point);
+                    TutorialNum = 6;
+                    TextCount = 5.0f;
+                    IsPlayerMove = false;
+                }
+
                 break;
             case 6:
 
                 Text.text = "折り過ぎると銀の歯車が...！\n素早くゴールを目指すでビウス！";
+
+                TextCount -= Time.deltaTime;
+                if (TextCount <= 0.0f)
+                {
+                    IsPlayerMove = true;
+                }
+                    
 
                 break;
             default:
@@ -409,6 +457,8 @@ public class tutorialManagaer : MonoBehaviour
 
         }
     }
+
+    
 
     public bool ControllerCheck()
     {

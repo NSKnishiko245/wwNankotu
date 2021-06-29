@@ -71,6 +71,8 @@ public class StageManager : MonoBehaviour
 
     public bool IsRotate { get; private set; }
 
+    public bool IsSmog { get; private set; }
+
     bool flg = false;
     bool rerotFlg = false;
     bool resetFlg = false;
@@ -144,7 +146,7 @@ public class StageManager : MonoBehaviour
         //チュートリアルマネージャー取得
         tutorialManager = GameObject.Find("TutorialManager");
         // フラグ初期化
-        IsGameClear = IsGameOver = IsRotate = false;
+        IsGameClear = IsGameOver = IsRotate = IsSmog = false;
 
         Tile_subList = new List<GameObject>();
         Bar_subList = new List<GameObject>();
@@ -797,6 +799,7 @@ public class StageManager : MonoBehaviour
             }
             else
             {
+                IsSmog = true;
                 BigParent.transform.position = Vector3.left * (((Bar_List[RightBarIdx].transform.position.x - Bar_List[LeftBarIdx].transform.position.x)));
                 if (MapPos_Add.x < 0) MapPos_Add.x = -MapPos_Add.x;
             }
