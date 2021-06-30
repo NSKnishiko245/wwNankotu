@@ -45,6 +45,7 @@ public class tutorialManagaer : MonoBehaviour
     [SerializeField] private GameObject Black;
     [SerializeField] private GameObject Stop;
     [SerializeField] private GameObject StartImage;
+    [SerializeField] private GameObject KeyBord;
 
     Animator LAnim;
     Animator RAnim;
@@ -53,6 +54,7 @@ public class tutorialManagaer : MonoBehaviour
     Animator MobiusBodyAnim;
     Animator BordAnim;
     Animator BlackAnim;
+    Animator KeyBordAnim;
 
     public bool IsPlayerMove { get; private set; }
 
@@ -73,13 +75,13 @@ public class tutorialManagaer : MonoBehaviour
         BordNum = 5;
         LAnim = Lstick.GetComponent<Animator>();
         RAnim = Rstick.GetComponent<Animator>();
-        ControllerAnim = TutorialUI.GetComponent<Animator>();
+        ControllerAnim = Controller.GetComponent<Animator>();
         MobiusfaceAnim = Mobiusface.GetComponent<Animator>();
         MobiusBodyAnim = MobiusBody.GetComponent<Animator>();
         BordAnim = Bord.GetComponent<Animator>();
         BlackAnim = Black.GetComponent<Animator>();
+        KeyBordAnim = KeyBord.GetComponent<Animator>();
 
-        
 
         //stagemanager = GameObject.Find("stageManager");
         IsPlayerMove = true;
@@ -193,7 +195,8 @@ public class tutorialManagaer : MonoBehaviour
                         Text.text = "まずは矢印に向かって\n歩いてみるビウス！";
                         MobiusBodyAnim.SetBool("Right", true);
                         MobiusfaceAnim.SetBool("Smile", true);
-                        ControllerAnim.SetBool("FukidasiFlg", true);
+                        ControllerAnim.SetBool("CFlg", true);
+                        KeyBordAnim.SetBool("KeyBordFlg", true);
                         LAnim.SetBool("LStick", true);
                         RAnim.SetBool("RStickLMove", false);
                     }
@@ -204,7 +207,8 @@ public class tutorialManagaer : MonoBehaviour
                 if (Player.GetComponent<Player>().IsHitPoint)
                 {
                     Text.text = "高い段差に阻まれて\n進むことが出来ないビウス";
-                    ControllerAnim.SetBool("FukidasiFlg", false);
+                    ControllerAnim.SetBool("CFlg", false);
+                    KeyBordAnim.SetBool("KeyBordFlg", false);
                     LAnim.SetBool("LStick", false);
                     IsPoint = true;
                     TutorialNum = 2;
@@ -257,7 +261,8 @@ public class tutorialManagaer : MonoBehaviour
                 {
                     IsLMove = false;
                     IsRMove = true;
-                    ControllerAnim.SetBool("FukidasiFlg", true);
+                    ControllerAnim.SetBool("CFlg", true);
+                    KeyBordAnim.SetBool("KeyBordDFlg", true);
                     LAnim.SetBool("LStick", false);
                     RAnim.SetBool("RStickRMove", true);
                     if (stagemanager.GetComponent<StageManager>().IsRotate)
@@ -268,7 +273,8 @@ public class tutorialManagaer : MonoBehaviour
                         TutorialNum = 3;
                         MobiusBodyAnim.SetBool("Both", true);
                         RAnim.SetBool("RStickRMove", false);
-                        ControllerAnim.SetBool("FukidasiFlg", false);
+                        ControllerAnim.SetBool("CFlg", false);
+                        KeyBordAnim.SetBool("KeyBordDFlg", false);
                     }
 
                 }
@@ -282,7 +288,7 @@ public class tutorialManagaer : MonoBehaviour
                 //    if (Pushcount <= 0.0f)
                 //    {
                 //        PushFlg = true;
-                //        ControllerAnim.SetBool("FukidasiFlg", true);
+                //        ControllerAnim.SetBool("CFlg", true);
                 //        LAnim.SetBool("LStick", false);
                 //        RAnim.SetBool("RStickPush", true);
                 //        CountFlg = true;
@@ -301,7 +307,7 @@ public class tutorialManagaer : MonoBehaviour
                 //            BordNum = 1;
                 //            BordAnim.SetInteger("text", BordNum);
                 //            Point = Instantiate(Point_prefab, new Vector3(0.17f, -2.5f, 0.0f), Quaternion.identity);
-                //            ControllerAnim.SetBool("FukidasiFlg", false);
+                //            ControllerAnim.SetBool("CFlg", false);
                 //            RAnim.SetBool("RStickPush", false);
                 //        }
                 //    }
@@ -321,7 +327,7 @@ public class tutorialManagaer : MonoBehaviour
 
                 //    IsPlayerMove = false;
                 //    IsRMove = true;
-                //    ControllerAnim.SetBool("FukidasiFlg", true);
+                //    ControllerAnim.SetBool("CFlg", true);
                 //    LAnim.SetBool("LStick", false);
                 //    RAnim.SetBool("RStickPush", false);
                 //    RAnim.SetBool("RStickRMove", true);
@@ -330,7 +336,7 @@ public class tutorialManagaer : MonoBehaviour
                 //        IsRotateMove = false;
                 //        CountFlg = true;
                 //        TutorialNum = 3;
-                //        ControllerAnim.SetBool("FukidasiFlg", false);
+                //        ControllerAnim.SetBool("CFlg", false);
                 //        LAnim.SetBool("LStick", false);
                 //        RAnim.SetBool("RStickRMove", false);
                 //    }
@@ -367,13 +373,14 @@ public class tutorialManagaer : MonoBehaviour
                 {
                     if (Player.GetComponent<Player>().IsHitPoint)
                     {
-                        Text.text = "このステージはいつでも解除が可能ビウス！\nスティック押し込んでみるビウス";
+                        Text.text = "このステージはいつでも解除が可能ビウス！";
                         IsRotateMove = true;
                         IsPoint = true;
                         PushFlg = true;
                         BordNum = 0;
                         BordAnim.SetInteger("text", BordNum);
-                        ControllerAnim.SetBool("FukidasiFlg", true);
+                        ControllerAnim.SetBool("CFlg", true);
+                        KeyBordAnim.SetBool("KeyBordSFlg", true);
                         RAnim.SetBool("RStickPush", true);
                         Destroy(Point);
                     }
@@ -388,7 +395,8 @@ public class tutorialManagaer : MonoBehaviour
                         PushFlg = false;
                         TutorialNum = 4;
                         CountFlg = true;
-                        ControllerAnim.SetBool("FukidasiFlg", false);
+                        ControllerAnim.SetBool("CFlg", false);
+                        KeyBordAnim.SetBool("KeyBordSFlg", false);
                     }
                 }
                 break;
