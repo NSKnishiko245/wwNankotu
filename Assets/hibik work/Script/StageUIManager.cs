@@ -33,13 +33,6 @@ public class StageUIManager : MonoBehaviour
     private GameObject silver;
     private GameObject gold;
 
-    public static int missCnt = 0;  // 失敗した回数
-    public static float hintCnt = 0.0f;
-    private static float hintDispTime = 5.0f;
-    private static float hintDeleteTime = 10.0f;
-    private bool hintFlg = false;
-    private bool hintFirstFlg = false;
-    private int hintOpenCnt = 0;
 
     // ヒントのUI
     private GameObject hintBoard;
@@ -47,6 +40,16 @@ public class StageUIManager : MonoBehaviour
     private GameObject hintUI;
     private GameObject tv;
     private GameObject hukidasi;
+
+    public static int missCnt = 0;  // 失敗した回数
+    public static float hintCnt = 0.0f;
+    private static float hintDispTime = 5.0f;
+    private static float hintDeleteTime = 10.0f;
+    private bool hintFlg = false;
+    private bool hintFirstFlg = false;
+    private bool hintUIFlg = false;
+    private int hintOpenCnt = 0;
+
 
     // クリアのUI
     private GameObject clearSelectGear;
@@ -180,14 +183,15 @@ public class StageUIManager : MonoBehaviour
         clearNext = GameObject.Find("NextStage");
         hintBoard = GameObject.Find("HintBoard");
         hintMovie = GameObject.Find("SamnaleMovie");
-        tv = GameObject.Find("tv");
+        tv = GameObject.Find("UiTv");
         hukidasi = GameObject.Find("HukidasiImage");
         hintUI = GameObject.Find("UICanvas");
         copper = GameObject.Find("CopperImage");
         silver = GameObject.Find("SilverImage");
         gold = GameObject.Find("GoldImage");
 
-        hintUI.SetActive(false);
+        tv.transform.localScale = (new Vector3(0, 0, 0));
+        hukidasi.transform.localScale = (new Vector3(0, 0, 0));
 
         // メダルを取得していたら色が付く
         if (StageSelectManager.score[stageNum].isGold)
@@ -231,8 +235,12 @@ public class StageUIManager : MonoBehaviour
             //StageBgm.bgmFlg = false;
         }
 
-        if (stageNum != 1) tutorialUI.SetActive(false);
-
+        if (stageNum != 1)
+        {
+            tutorialUI.SetActive(false);
+            GameObject tutorialTV = GameObject.Find("TVCanvas");
+            tutorialTV.SetActive(false);
+        }
         // エディットを非表示
         if (!editFlg) editCanvas.SetActive(false);
 
@@ -294,24 +302,31 @@ public class StageUIManager : MonoBehaviour
             //-----------------------------------
             case STATUS.PLAY:
                 hintCnt += Time.deltaTime;
+                // ヒント表示
                 if (hintCnt > hintDispTime && hintOpenCnt == 0 && stageNum != 1)
                 {
-                    hintFlg = true;
                     hintFirstFlg = true;
-                    tv.transform.DOScale(new Vector3(4000, 4000, 1100), 0.5f);
-                    hukidasi.transform.DOScale(new Vector3(2.5f, 2.5f, 1), 0.5f);
                 }
-
+                // ヒント非表示
                 if (hintCnt > hintDeleteTime && stageNum != 1)
                 {
-                    hintUI.SetActive(false);
                     hintOpenCnt++;
+                    hintUIFlg = false;
                 }
 
                 if (hintFirstFlg)
                 {
-                    hintUI.SetActive(true);
+                    hintFlg = true;
+                    hintUIFlg = true;
+                    tv.transform.DOScale(new Vector3(4000, 4000, 1100), 0.5f);
+                    hukidasi.transform.DOScale(new Vector3(2.5f, 2.5f, 1), 0.5f);
                     hintFirstFlg = false;
+                }
+
+                if (hintFlg && !hintUIFlg)
+                {
+                    tv.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
+                    hukidasi.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
                 }
 
                 if (stageNum == 1)
@@ -398,7 +413,6 @@ public class StageUIManager : MonoBehaviour
                                 {
                                     menuBufferFlg = true;
                                     status = STATUS.HINT;
-                                    hintUI.SetActive(false);
                                     stageImage.SetActive(true);
                                     hintOpenCnt++;
 
@@ -562,8 +576,6 @@ public class StageUIManager : MonoBehaviour
             case STATUS.CLEAR:
                 if (statusFirstFlg)
                 {
-                    hintUI.SetActive(false);
-
                     // スコアアニメーション開始
                     this.GetComponent<ScoreAnimation>().StartFlgOn();
 
