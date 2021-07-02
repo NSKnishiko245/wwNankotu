@@ -5,6 +5,7 @@ using UnityEngine;
 public class PerfectClear : MonoBehaviour
 {
     public int m_lifeFrame = 60;
+    private bool m_life = true;
     public int m_intervalframe=3;
     private bool m_isStart=false;
     private int m_cnt = 0;
@@ -22,15 +23,15 @@ public class PerfectClear : MonoBehaviour
     {
         if (m_isStart)
         {
-            if (m_cnt % m_intervalframe==0)
+            if (m_cnt % m_intervalframe==0&&m_life)
             {
                 Instantiate(m_particle, this.transform.position, Quaternion.identity);//きらきらエフェクト
                 
             }
 
 
-            if (m_cnt > m_lifeFrame) Destroy(this.gameObject);
-            Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            if (m_cnt > m_lifeFrame) m_life = false;
+            
             m_cnt++;
         }
     }
