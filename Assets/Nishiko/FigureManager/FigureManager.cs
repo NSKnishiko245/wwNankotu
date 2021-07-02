@@ -374,7 +374,21 @@ public class FigureManager : MonoBehaviour
             m_objModelparts[stageClearNum].transform.position = m_objPoint[stageClearNum].transform.position;
             m_objModelparts[stageClearNum].transform.rotation = m_objPoint[stageClearNum].transform.rotation;
             m_isFinish[stageClearNum] = m_isCopperFinish[stageClearNum] = true;
+            //for (int i = (stageClearNum*6); i < stageClearNum * 6+6; i++)
+            //{
+            //    m_isCopperFinish[i] = true;
+            //}
+
         }
+        
+        //for(int i = 0; i < 36; i++)
+        //{
+        //    m_isCopperFinish[i]=true;
+        //}
         m_isStageClear[stageClearNum] = true;
+    }
+    public void FigureInitCopper(int stagenum)
+    {
+        m_isCopperFinish[stagenum] = true;
     }
 }

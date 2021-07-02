@@ -48,6 +48,16 @@ public class TitleManager : MonoBehaviour
                 }
             }
         }
+
+        for (int i = 1; i < StageSelectManager.stageMax + 1; i++)
+        {
+            if (StageSelectManager.score[i].isCopper)
+            {
+                Debug.Log(i);
+                galiver.GetComponent<FigureManager>().FigureInitCopper(i);
+            }
+        }
+
         for (int i = 1; i < StageSelectManager.stageMax + 1; i++)
         {
             if (!(StageSelectManager.score[i].isCopper == true && StageSelectManager.score[i].isSilver == true && StageSelectManager.score[i].isGold == true))
