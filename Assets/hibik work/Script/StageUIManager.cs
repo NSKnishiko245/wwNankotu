@@ -40,16 +40,19 @@ public class StageUIManager : MonoBehaviour
     private GameObject hintUI;
     private GameObject tv;
     private GameObject hukidasi;
+    private GameObject eIcon;
 
     public static int missCnt = 0;  // 失敗した回数
     public static float hintCnt = 0.0f;
-    private static float hintDispTime = 5.0f;
-    private static float hintDeleteTime = 10.0f;
+    private float hintDispTime = 5.0f;
+    private float hintDeleteTime = 10.0f;
     private bool hintFlg = false;
     private bool hintFirstFlg = false;
     private bool hintUIFlg = false;
-    private int hintOpenCnt = 0;
-
+    public static int hintOpenCnt = 0;
+    private int eIconTime = 0;
+    private int eIconTimeInit = 20;
+    private int eIconNum = 0;
 
     // クリアのUI
     private GameObject clearSelectGear;
@@ -76,9 +79,10 @@ public class StageUIManager : MonoBehaviour
     // デバック用テキスト
     GameObject debug;
     Text stageNumText;
+    Text hintTimeText;
     Text rotateNumText;
     Text silverMedalNumText;
-    InputField inputField;
+    //InputField inputField;
 
     // ステージ画像用
     GameObject stageImage;
@@ -189,9 +193,10 @@ public class StageUIManager : MonoBehaviour
         copper = GameObject.Find("CopperImage");
         silver = GameObject.Find("SilverImage");
         gold = GameObject.Find("GoldImage");
+        eIcon = GameObject.Find("Eicon");
 
-        tv.transform.localScale = (new Vector3(0, 0, 0));
-        hukidasi.transform.localScale = (new Vector3(0, 0, 0));
+        tv.transform.localScale = new Vector3(0, 0, 0);
+        hukidasi.transform.localScale = new Vector3(0, 0, 0);
 
         // メダルを取得していたら色が付く
         if (StageSelectManager.score[stageNum].isGold)
@@ -261,12 +266,14 @@ public class StageUIManager : MonoBehaviour
             stageNumText = GameObject.Find("StageNumText").GetComponent<Text>();
             stageNumText.text = "ステージ番号:" + StageManager.stageNum;
 
+            hintTimeText = GameObject.Find("HintTimeText").GetComponent<Text>();
+
             rotateNumText = GameObject.Find("RotateNumText").GetComponent<Text>();
 
             silverMedalNumText = GameObject.Find("SilverMedalNumText").GetComponent<Text>();
             silverMedalNumText.text = "銀メダルの回数:" + StageSelectManager.silverConditions[StageManager.stageNum];
 
-            inputField = GameObject.Find("InputField").GetComponent<InputField>();
+            //inputField = GameObject.Find("InputField").GetComponent<InputField>();
         }
         else
         {
@@ -301,33 +308,6 @@ public class StageUIManager : MonoBehaviour
             // プレイ中
             //-----------------------------------
             case STATUS.PLAY:
-                hintCnt += Time.deltaTime;
-                // ヒント表示
-                if (hintCnt > hintDispTime && hintOpenCnt == 0 && stageNum != 1)
-                {
-                    hintFirstFlg = true;
-                }
-                // ヒント非表示
-                if (hintCnt > hintDeleteTime && stageNum != 1)
-                {
-                    hintOpenCnt++;
-                    hintUIFlg = false;
-                }
-
-                if (hintFirstFlg)
-                {
-                    hintFlg = true;
-                    hintUIFlg = true;
-                    tv.transform.DOScale(new Vector3(4000, 4000, 1100), 0.5f);
-                    hukidasi.transform.DOScale(new Vector3(2.5f, 2.5f, 1), 0.5f);
-                    hintFirstFlg = false;
-                }
-
-                if (hintFlg && !hintUIFlg)
-                {
-                    tv.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
-                    hukidasi.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
-                }
 
                 if (stageNum == 1)
                 {
@@ -652,13 +632,22 @@ public class StageUIManager : MonoBehaviour
                     if (command == COMMAND.NEXT) StageSelectManager.selectPageNum++;
 
                     statusFirstFlg = false;
+                }
 
+                // 本のモデルを閉じる
+                if (endBookCnt == 0) eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+                else endBookCnt--;
+
+                // 一定時間経過すると遷移する
+                if (sceneChangeCnt == 0)
+                {
                     // ネクスト以外を選択していたらBGMをセットしなおして、失敗回数を初期化する
                     if (command != COMMAND.RETRY)
                     {
                         StageBgm.bgmFlg = true;
                         missCnt = 0;
                         hintCnt = 0.0f;
+                        hintOpenCnt = 0;
                         menuOperationCnt = 240;
                     }
                     // ネクストを選択していたら失敗回数を加算
@@ -667,14 +656,9 @@ public class StageUIManager : MonoBehaviour
                         missCnt++;
                         menuOperationCnt = 60;
                     }
+
+                    SceneManager.LoadScene(changeSceneName);
                 }
-
-                // 本のモデルを閉じる
-                if (endBookCnt == 0) eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-                else endBookCnt--;
-
-                // 一定時間経過すると遷移する
-                if (sceneChangeCnt == 0) SceneManager.LoadScene(changeSceneName);
                 else sceneChangeCnt--;
                 break;
 
@@ -686,6 +670,9 @@ public class StageUIManager : MonoBehaviour
 
         // デバッグ用テキスト更新処理
         if (debugFlg) DebugUpdate();
+
+        // ヒント通知UI更新処理
+        HintUIUpdate();
     }
 
     //==============================================================
@@ -830,24 +817,26 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     private void DebugUpdate()
     {
+        hintTimeText.text = "タイマー:" + hintCnt.ToString("f2");
+
         rotateNumText.text = "折った回数:" + stageManager.GetComponent<StageManager>().rotateNum;
 
-        if (!inputFlg)
-        {
-            if (Input.GetKeyDown(KeyCode.F1))
-            {
-                inputField.ActivateInputField();
-                inputFlg = true;
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                StageManager.stageNum = int.Parse(inputField.text);
-                SceneManager.LoadScene("Stage1Scene");
-            }
-        }
+        //if (!inputFlg)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.F1))
+        //    {
+        //        inputField.ActivateInputField();
+        //        inputFlg = true;
+        //    }
+        //}
+        //else
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Return))
+        //    {
+        //        StageManager.stageNum = int.Parse(inputField.text);
+        //        SceneManager.LoadScene("Stage1Scene");
+        //    }
+        //}
     }
 
     //==============================================================
@@ -896,6 +885,56 @@ public class StageUIManager : MonoBehaviour
 
         Debug.Log("メダルデータ セーブ完了");
     }
+
+    //==============================================================
+    // ヒント通知UI更新処理
+    //==============================================================
+    private void HintUIUpdate()
+    {
+        hintCnt += Time.deltaTime;
+
+        // ヒント通知UI表示
+        if (hintCnt > hintDispTime && hintOpenCnt == 0 && stageNum != 1)
+        {
+            hintFirstFlg = true;
+            hintOpenCnt++;
+        }
+
+        // ヒント通知UI非表示
+        if (hintCnt > hintDeleteTime && stageNum != 1)
+        {
+            hintUIFlg = false;
+        }
+
+        if (hintFlg)
+        {
+            if (eIconTime == 0)
+            {
+                if (eIconNum == 0) eIconNum = 1;
+                else eIconNum = 0;
+                eIcon.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/e_" + eIconNum);
+                eIconTime = eIconTimeInit;
+            }
+            else eIconTime--;
+        }
+
+        if (hintFirstFlg)
+        {
+            hintFlg = true;
+            hintUIFlg = true;
+            tv.transform.DOScale(new Vector3(4000, 4000, 1100), 0.5f);
+            hukidasi.transform.DOScale(new Vector3(2.5f, 2.5f, 1), 0.5f);
+            hintFirstFlg = false;
+        }
+
+        if (hintFlg && !hintUIFlg)
+        {
+            tv.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
+            hukidasi.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
+        }
+    }
+
+
 
     public bool GetStageDisplayFlg() { return stageDisplayFlg; }
 
