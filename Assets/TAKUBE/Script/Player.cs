@@ -5,6 +5,10 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
+    private bool exploedFlg = false;
+    private int inputFrame = 4;
+    private int inputNum = 0;
+    public bool deadFlg;
     [Header("プレイヤーの移動速度")]
     public float Speed;
     [Header("プレイヤーのジャンプ力")]
@@ -148,6 +152,48 @@ public class Player : MonoBehaviour
         //}
         // Debug.Log(transform.rotation);
         //prev=transform.position;
+
+        if (tutorialManager.GetComponent<tutorialManagaer>().IsPlayerMove && StageManager.stageNum != 1)
+        {
+            if (exploedFlg)
+            {
+                inputFrame--;
+                if (inputFrame < 0)
+                {
+                    exploedFlg = false;
+                    inputNum = 0;
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                inputFrame = 7;
+                exploedFlg = true;
+                if (inputFrame > 0)
+                {
+                    inputNum++;
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                inputFrame = 7;
+                if (exploedFlg && inputFrame > 0)
+                {
+                    //Debug.Log("左");
+                    inputNum++;
+                }
+            }
+
+            if (inputNum >= 30)
+            {
+                //爆発
+                Debug.Log("爆発");
+                deadFlg = true;
+                this.gameObject.GetComponent<HitCreateEffect>().Bakuhatu(this.gameObject);
+                //Destroy(this.gameObject);
+                //this.gameObject.SetActive(false);
+            }
+        }
+
 
         if (moveDir == MOVEDIR.RIGHT)
         {

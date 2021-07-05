@@ -80,7 +80,7 @@ public class GoalScript : MonoBehaviour
         //    SetSilverState(5, testNum);
         //}
 
-        if (!testFlg && (isNoSilverGear || Input.GetKeyDown(KeyCode.U)) && Gear.GetComponent<VibrateController>().vibrateTime <= 0)
+        if (!testFlg && isNoSilverGear  && Gear.GetComponent<VibrateController>().vibrateTime <= 0)
         {
 
             GameObject preGear = transform.Find("door_L/door_L/Gear").gameObject;

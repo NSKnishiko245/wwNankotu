@@ -468,7 +468,7 @@ public class StageManager : MonoBehaviour
             SetModeGoalEffect(1);
         }
         // ゲームオーバー検知
-        else if (UnderBorder.GetComponent<HitAction>().isHit || waitTime <= waitTimer)
+        else if (UnderBorder.GetComponent<HitAction>().isHit || waitTime <= waitTimer || Player.GetComponent<Player>().deadFlg)
         {
             DeleteCopyForMenu();
             IsGameOver = true;
