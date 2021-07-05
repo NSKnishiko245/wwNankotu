@@ -135,56 +135,56 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void Update()
     {
-        // １ページ目をめくる
-        if (operationCnt == 1) eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+            // １ページ目をめくる
+            if (operationCnt == 1) eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
 
-        // 操作可能
-        if (operationCnt == 0)
-        {
-            if (selectPageMoveFlg)
+            // 操作可能
+            if (operationCnt == 0)
             {
-                if (pageInterval == 0)
+                if (selectPageMoveFlg)
                 {
-                    // 次のページへ進む
-                    eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-                    pageInterval = pageIntervalInit;
-                }
-                else pageInterval--;
+                    if (pageInterval == 0)
+                    {
+                        // 次のページへ進む
+                        eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+                        pageInterval = pageIntervalInit;
+                    }
+                    else pageInterval--;
 
-                if (selectPageNum == eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum())
+                    if (selectPageNum == eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum())
+                    {
+                        selectPageMoveFlg = false;
+                    }
+                }
+                else
                 {
-                    selectPageMoveFlg = false;
+                    // 本が閉じるときは操作不能にする
+                    if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
+                    {
+                        PageOperation(); // ページをめくる操作
+                    }
                 }
             }
-            else
+            else operationCnt--;
+
+            if (!selectPageMoveFlg)
             {
-                // 本が閉じるときは操作不能にする
-                if (!eventSystem.GetComponent<IgnoreMouseInputModule>().GetAllBackFlg())
-                {
-                    PageOperation(); // ページをめくる操作
-                }
+                ExtraConditions();  // エクストラステージに入れるかチェック
+                StageSceneChange(); // ステージ画面への遷移
+                BookSelectChange(); // 本の選択画面への遷移
             }
-        }
-        else operationCnt--;
 
-        if (!selectPageMoveFlg)
-        {
-            ExtraConditions();  // エクストラステージに入れるかチェック
-            StageSceneChange(); // ステージ画面への遷移
-            BookSelectChange(); // 本の選択画面への遷移
-        }
+            BookClearCheck(1, 5, 0);
+            BookClearCheck(7, 11, 1);
+            BookClearCheck(13, 17, 2);
+            BookClearCheck(19, 23, 3);
+            BookClearCheck(25, 29, 4);
+            BookClearCheck(31, 35, 5);
 
-        BookClearCheck(1, 5, 0);
-        BookClearCheck(7, 11, 1);
-        BookClearCheck(13, 17, 2);
-        BookClearCheck(19, 23, 3);
-        BookClearCheck(25, 29, 4);
-        BookClearCheck(31, 35, 5);
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            SaveClearDate();
-        }
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                SaveClearDate();
+            }
     }
 
     //==============================================================
@@ -223,17 +223,20 @@ public class StageSelectManager : MonoBehaviour
 
         if (pageInterval == 0)
         {
-            // 次のページへ進む
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
+            if (!FinshManager.escFlg)
             {
-                eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-                pageInterval = pageIntervalInit;
-            }
-            // 前のページに戻る
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
-            {
-                eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
-                pageInterval = pageIntervalInit;
+                // 次のページへ進む
+                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
+                {
+                    eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+                    pageInterval = pageIntervalInit;
+                }
+                // 前のページに戻る
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
+                {
+                    eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
+                    pageInterval = pageIntervalInit;
+                }
             }
         }
         else pageInterval--;
@@ -244,25 +247,28 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void StageSceneChange()
     {
-        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0")))
+        if (!FinshManager.escFlg)
         {
-
-            // 現在のページ取得(ステージ番号)
-            StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum() + firstStageNum - 1;
-
-            // シーン遷移開始
-            if (StageManager.stageNum > 0)
+            if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0")))
             {
-                if (stageEnterFlg)
-                {
-                    DecSource.Play();
 
-                    command = COMMAND.STAGE;
-                    selectPageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
-                }
-                else
+                // 現在のページ取得(ステージ番号)
+                StageManager.stageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum() + firstStageNum - 1;
+
+                // シーン遷移開始
+                if (StageManager.stageNum > 0)
                 {
-                    BuSource.Play();
+                    if (stageEnterFlg)
+                    {
+                        DecSource.Play();
+
+                        command = COMMAND.STAGE;
+                        selectPageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
+                    }
+                    else
+                    {
+                        BuSource.Play();
+                    }
                 }
             }
         }
@@ -288,14 +294,17 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void BookSelectChange()
     {
-        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 1")))
+        if (!FinshManager.escFlg)
         {
-            DecSource.Play();
+            if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 1")))
+            {
+                DecSource.Play();
 
-            // 本を閉じる
-            eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-            mist.SetActive(false);
-            command = COMMAND.BOOK_SELECT;
+                // 本を閉じる
+                eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+                mist.SetActive(false);
+                command = COMMAND.BOOK_SELECT;
+            }
         }
 
         // 本が閉じ終わった

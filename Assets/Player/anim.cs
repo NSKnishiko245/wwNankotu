@@ -26,14 +26,17 @@ public class anim : MonoBehaviour
     void Update()
     {
         //Œü‚«‚ð•Ï‚¦‚é
-        if (m_playobj.GetComponent<Player>().GetInputValue() > 0)
+        if (!FinshManager.escFlg)
         {
-            transform.rotation = Quaternion.Euler(0, 90, 0);
-        }else if(m_playobj.GetComponent<Player>().GetInputValue() < 0)
-        {
-            transform.rotation = Quaternion.Euler(0, -90, 0);
+            if (m_playobj.GetComponent<Player>().GetInputValue() > 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 90, 0);
+            }
+            else if (m_playobj.GetComponent<Player>().GetInputValue() < 0)
+            {
+                transform.rotation = Quaternion.Euler(0, -90, 0);
+            }
         }
-
 
 
 

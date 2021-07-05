@@ -45,7 +45,7 @@ public class StageUIManager : MonoBehaviour
     public static int missCnt = 0;  // 失敗した回数
     public static float hintCnt = 0.0f;
     private float hintDispTime = 5.0f;
-    private float hintDeleteTime = 10.0f;
+    private float hintDeleteTime = 190.0f;
     private bool hintFlg = false;
     private bool hintFirstFlg = false;
     private bool hintUIFlg = false;
@@ -287,114 +287,78 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     private void Update()
     {
+            STATUS tempStatus = status;
 
-        STATUS tempStatus = status;
-
-        switch (status)
-        {
-            //-----------------------------------
-            // 開始後
-            //-----------------------------------
-            case STATUS.START:
-                if (startPageCnt == 0)
-                {
-                    eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-                    status = STATUS.PLAY;
-                }
-                else startPageCnt--;
-                break;
-
-            //-----------------------------------
-            // プレイ中
-            //-----------------------------------
-            case STATUS.PLAY:
-
-                if (stageNum == 1)
-                {
-                    Point = GameObject.FindGameObjectWithTag("Point");
-
-                }
-                // カウントが０になるとプレイヤーとステージを表示する
-                if (stageDisplayCnt == 0)
-                {
-                    if (StageBgm.bgmFlg) StageBgm.bgmFlg = false;
-                    StageDisplay(true);
-                    stageImage.SetActive(false);
-                    if (stageNum == 1) tutorialUI.SetActive(true);
-                }
-                else stageDisplayCnt--;
-
-                // プレイヤーが落ちたらリトライ
-                if (stageManager.GetComponent<StageManager>().IsGameOver)
-                {
-                    if (gameOverCnt == 0)
+            switch (status)
+            {
+                //-----------------------------------
+                // 開始後
+                //-----------------------------------
+                case STATUS.START:
+                    if (startPageCnt == 0)
                     {
-                        if (stageNum == 1) tutorialUI.SetActive(false);
-                        stageManager.SetActive(false);
-                        changeSceneName = "Stage1Scene";
-                        status = STATUS.COMMAND_DECISION;
-                        command = COMMAND.RETRY;
-                        sceneChangeCnt = 120;
-                        endBookCnt = 0;
+                        eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+                        status = STATUS.PLAY;
                     }
-                    else gameOverCnt--;
-                }
+                    else startPageCnt--;
+                    break;
 
-                if (menuBufferCnt == 0)
-                {
-                    menuBufferFlg = false;
-                    menuBufferCnt = menuBufferCntInit;
-                }
-                else menuBufferCnt--;
+                //-----------------------------------
+                // プレイ中
+                //-----------------------------------
+                case STATUS.PLAY:
 
-                // メニューを開く
-                if (menuOperationCnt == 0)
-                {
-                    if (stageNum == 1) { }
-                    else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7"))
+                    if (stageNum == 1)
                     {
-                        if (!menuBufferFlg)
+                        Point = GameObject.FindGameObjectWithTag("Point");
+
+                    }
+                    // カウントが０になるとプレイヤーとステージを表示する
+                    if (stageDisplayCnt == 0)
+                    {
+                        if (StageBgm.bgmFlg) StageBgm.bgmFlg = false;
+                        StageDisplay(true);
+                        stageImage.SetActive(false);
+                        if (stageNum == 1) tutorialUI.SetActive(true);
+                    }
+                    else stageDisplayCnt--;
+
+                    // プレイヤーが落ちたらリトライ
+                    if (stageManager.GetComponent<StageManager>().IsGameOver)
+                    {
+                        if (gameOverCnt == 0)
                         {
-                            if (!stageManager.GetComponent<StageManager>().isMove)
-                            {
-                                menuBufferFlg = true;
-                                status = STATUS.MENU;
-                                stageImage.SetActive(true);
-
-                                // ページを進める
-                                eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-
-                                // チュートリアル非表示
-                                if (stageNum == 1)
-                                {
-                                    Point.SetActive(false);
-                                    tutorialUI.SetActive(false);
-                                }
-
-                                stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
-                                stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
-                            }
+                            if (stageNum == 1) tutorialUI.SetActive(false);
+                            stageManager.SetActive(false);
+                            changeSceneName = "Stage1Scene";
+                            status = STATUS.COMMAND_DECISION;
+                            command = COMMAND.RETRY;
+                            sceneChangeCnt = 120;
+                            endBookCnt = 0;
                         }
+                        else gameOverCnt--;
                     }
-                }
-                else menuOperationCnt--;
 
-                // ヒントを開く
-                if (hintFlg)
-                {
+                    if (menuBufferCnt == 0)
+                    {
+                        menuBufferFlg = false;
+                        menuBufferCnt = menuBufferCntInit;
+                    }
+                    else menuBufferCnt--;
+
+                    // メニューを開く
                     if (menuOperationCnt == 0)
                     {
                         if (stageNum == 1) { }
-                        else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 7"))
+                        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7") && !FinshManager.escFlg)
                         {
                             if (!menuBufferFlg)
                             {
                                 if (!stageManager.GetComponent<StageManager>().isMove)
                                 {
                                     menuBufferFlg = true;
-                                    status = STATUS.HINT;
+                                    status = STATUS.MENU;
                                     stageImage.SetActive(true);
-                                    hintOpenCnt++;
 
                                     // ページを進める
                                     eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
@@ -413,266 +377,303 @@ public class StageUIManager : MonoBehaviour
                         }
                     }
                     else menuOperationCnt--;
-                }
 
-                // ステージクリア
-                if (stageManager.GetComponent<StageManager>().IsGameClear || Input.GetKeyDown(KeyCode.C))
-                {
-                    status = STATUS.CLEAR;
-                }
-                if (goldMedalFlg)
-                {
-                    stageManager.GetComponent<StageManager>().SetModeGoalEffect(4);
-                }
-                break;
-
-            //-----------------------------------
-            // メニュー表示中
-            //-----------------------------------
-            case STATUS.MENU:
-                if (statusFirstFlg)
-                {
-                    StageDisplay(false);
-                    statusFirstFlg = false;
-
-                    menuRetry.SetActive(true);
-                    menuSelect.SetActive(true);
-                    menuBoard.SetActive(true);
-                    menuStageNum.SetActive(true);
-                    menuOperation1.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                    menuOperation2.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                    hintBoard.SetActive(false);
-                    hintMovie.SetActive(false);
-                    copper.SetActive(true);
-                    silver.SetActive(true);
-                    gold.SetActive(true);
-                }
-
-                // メニューコマンド更新処理
-                MenuCommandOperation();
-
-                if (menuBufferCnt == 0)
-                {
-                    menuBufferFlg = false;
-                    menuBufferCnt = menuBufferCntInit;
-                }
-                else menuBufferCnt--;
-
-                // コマンド決定
-                if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
-                {
-                    status = STATUS.COMMAND_DECISION;
-                    selectDecSource.Play();
-                    sceneChangeCnt = 120;
-                    endBookCnt = 0;
-                }
-
-                // メニューを閉じる
-                if (!menuBufferFlg)
-                {
-                    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7"))
+                    // ヒントを開く
+                    if (hintFlg)
                     {
-                        status = STATUS.PLAY;
-                        menuBufferFlg = true;
-
-                        // ページを戻す
-                        eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
-
-                        // ステージを表示するまでの時間をセット
-                        stageDisplayCnt = stageDisplayCntInit;
-
-                        stageManager.GetComponent<StageManager>().FixPlayerPos();
-                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(3);
-
-                        // チュートリアル表示
-                        if (stageNum == 1)
+                        if (menuOperationCnt == 0)
                         {
-                            Point.SetActive(true);
-                            tutorialUI.SetActive(true);
+                            if (stageNum == 1) { }
+                            else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 6") && !FinshManager.escFlg)
+                            {
+                                if (!menuBufferFlg)
+                                {
+                                    if (!stageManager.GetComponent<StageManager>().isMove)
+                                    {
+                                        menuBufferFlg = true;
+                                        status = STATUS.HINT;
+                                        stageImage.SetActive(true);
+                                        hintOpenCnt++;
+
+                                        // ページを進める
+                                        eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+
+                                        // チュートリアル非表示
+                                        if (stageNum == 1)
+                                        {
+                                            Point.SetActive(false);
+                                            tutorialUI.SetActive(false);
+                                        }
+
+                                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
+                                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
+                                    }
+                                }
+                            }
                         }
+                        else menuOperationCnt--;
                     }
-                }
-                break;
 
-            //-----------------------------------
-            // ヒント表示中
-            //-----------------------------------
-            case STATUS.HINT:
-                if (statusFirstFlg)
-                {
-                    StageDisplay(false);
-                    statusFirstFlg = false;
-
-                    menuRetry.SetActive(false);
-                    menuSelect.SetActive(false);
-                    menuBoard.SetActive(false);
-                    menuStageNum.SetActive(false);
-                    menuOperation1.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-                    menuOperation2.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-                    copper.SetActive(false);
-                    silver.SetActive(false);
-                    gold.SetActive(false);
-                    hintBoard.SetActive(true);
-                    hintMovie.SetActive(true);
-                }
-
-                if (menuBufferCnt == 0)
-                {
-                    menuBufferFlg = false;
-                    menuBufferCnt = menuBufferCntInit;
-                }
-                else menuBufferCnt--;
-
-                // ヒントを閉じる
-                if (!menuBufferFlg)
-                {
-                    if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 7"))
+                    // ステージクリア
+                    if (stageManager.GetComponent<StageManager>().IsGameClear || Input.GetKeyDown(KeyCode.C))
                     {
-                        status = STATUS.PLAY;
-                        menuBufferFlg = true;
-
-                        // ページを戻す
-                        eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
-
-                        // ステージを表示するまでの時間をセット
-                        stageDisplayCnt = stageDisplayCntInit;
-
-                        stageManager.GetComponent<StageManager>().FixPlayerPos();
-                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(3);
-
-                        // チュートリアル表示
-                        if (stageNum == 1)
-                        {
-                            Point.SetActive(true);
-                            tutorialUI.SetActive(true);
-                        }
+                        status = STATUS.CLEAR;
                     }
-                }
-                break;
-
-            //-----------------------------------
-            // クリア後
-            //-----------------------------------
-            case STATUS.CLEAR:
-                if (statusFirstFlg)
-                {
-                    // スコアアニメーション開始
-                    this.GetComponent<ScoreAnimation>().StartFlgOn();
-
-                    // チュートリアル非表示
-                    if (stageNum == 1) tutorialUI.SetActive(false);
-
-                    AudioSource bgm = GameObject.Find("StageBGM").GetComponent<AudioSource>();
-                    bgm.Stop();
-                    resultSource.Play();
-
-                    // 銅メダル取得
-                    StageSelectManager.score[StageManager.stageNum].isCopper = true;
-
-                    // 銀メダル取得
-                    SilverMedalConditions();
-
-                    // 金メダル取得
                     if (goldMedalFlg)
                     {
-                        StageSelectManager.score[StageManager.stageNum].isGold = true;
-                        this.GetComponent<ScoreAnimation>().GoldFlgOn();
+                        stageManager.GetComponent<StageManager>().SetModeGoalEffect(4);
+                    }
+                    break;
+
+                //-----------------------------------
+                // メニュー表示中
+                //-----------------------------------
+                case STATUS.MENU:
+                    if (statusFirstFlg)
+                    {
+                        StageDisplay(false);
+                        statusFirstFlg = false;
+
+                        menuRetry.SetActive(true);
+                        menuSelect.SetActive(true);
+                        menuBoard.SetActive(true);
+                        menuStageNum.SetActive(true);
+                        menuOperation1.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                        menuOperation2.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                        hintBoard.SetActive(false);
+                        hintMovie.SetActive(false);
+                        copper.SetActive(true);
+                        silver.SetActive(true);
+                        gold.SetActive(true);
                     }
 
-                    // メダルの取得状況を保存
-                    MedalDataSave();
+                    // メニューコマンド更新処理
+                    MenuCommandOperation();
 
-                    // ネクストステージが選択可能か判定
-                    if (StageManager.stageNum % 6 == 5)
+                    if (menuBufferCnt == 0)
                     {
-                        if (StageSelectManager.enterExtraFlg[BookSelect.bookNum] == true) nextPossibleFlg = true;
-                        else nextPossibleFlg = false;
+                        menuBufferFlg = false;
+                        menuBufferCnt = menuBufferCntInit;
                     }
-                    else nextPossibleFlg = true;
-                    if (StageManager.stageNum % 6 == 0) nextPossibleFlg = false;
+                    else menuBufferCnt--;
 
-                    if (nextPossibleFlg) command = COMMAND.NEXT;
-                    else command = COMMAND.STAGE_SELECT;
-
-                    statusFirstFlg = false;
-                }
-
-                if (clearCommandOperationCnt == 0)
-                {
-                    if (this.GetComponent<ScoreAnimation>().GetOperationFlg())
+                    // コマンド決定
+                    if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") && !FinshManager.escFlg)
                     {
-                        // クリアコマンド更新処理
-                        ClearCommandOperation();
+                        status = STATUS.COMMAND_DECISION;
+                        selectDecSource.Play();
+                        sceneChangeCnt = 120;
+                        endBookCnt = 0;
+                    }
 
-                        // コマンド決定
-                        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
+                    // メニューを閉じる
+                    if (!menuBufferFlg)
+                    {
+                        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7") && !FinshManager.escFlg)
                         {
-                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
-                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
-                            status = STATUS.COMMAND_DECISION;
-                            selectDecSource.Play();
-                            this.GetComponent<ScoreAnimation>().EndFlgOn();
-                            sceneChangeCnt = 180;
-                            endBookCnt = 90;
+                            status = STATUS.PLAY;
+                            menuBufferFlg = true;
+
+                            // ページを戻す
+                            eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
+
+                            // ステージを表示するまでの時間をセット
+                            stageDisplayCnt = stageDisplayCntInit;
+
+                            stageManager.GetComponent<StageManager>().FixPlayerPos();
+                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(3);
+
+                            // チュートリアル表示
+                            if (stageNum == 1)
+                            {
+                                Point.SetActive(true);
+                                tutorialUI.SetActive(true);
+                            }
                         }
                     }
-                }
-                else clearCommandOperationCnt--;
+                    break;
 
-                break;
-
-            //-----------------------------------
-            // コマンド決定後
-            //-----------------------------------
-            case STATUS.COMMAND_DECISION:
-                if (statusFirstFlg)
-                {
-                    // ランタンの火を消す
-                    this.GetComponent<PostEffectController>().SetFireFlg(false);
-                    if (command == COMMAND.NEXT) StageSelectManager.selectPageNum++;
-
-                    statusFirstFlg = false;
-                }
-
-                // 本のモデルを閉じる
-                if (endBookCnt == 0) eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-                else endBookCnt--;
-
-                // 一定時間経過すると遷移する
-                if (sceneChangeCnt == 0)
-                {
-                    // ネクスト以外を選択していたらBGMをセットしなおして、失敗回数を初期化する
-                    if (command != COMMAND.RETRY)
+                //-----------------------------------
+                // ヒント表示中
+                //-----------------------------------
+                case STATUS.HINT:
+                    if (statusFirstFlg)
                     {
-                        StageBgm.bgmFlg = true;
-                        missCnt = 0;
-                        hintCnt = 0.0f;
-                        hintOpenCnt = 0;
-                        menuOperationCnt = 240;
-                    }
-                    // ネクストを選択していたら失敗回数を加算
-                    else
-                    {
-                        missCnt++;
-                        menuOperationCnt = 60;
+                        StageDisplay(false);
+                        statusFirstFlg = false;
+
+                        menuRetry.SetActive(false);
+                        menuSelect.SetActive(false);
+                        menuBoard.SetActive(false);
+                        menuStageNum.SetActive(false);
+                        menuOperation1.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                        menuOperation2.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                        copper.SetActive(false);
+                        silver.SetActive(false);
+                        gold.SetActive(false);
+                        hintBoard.SetActive(true);
+                        hintMovie.SetActive(true);
+
+                        hintCnt = 999;
                     }
 
-                    SceneManager.LoadScene(changeSceneName);
-                }
-                else sceneChangeCnt--;
-                break;
+                    if (menuBufferCnt == 0)
+                    {
+                        menuBufferFlg = false;
+                        menuBufferCnt = menuBufferCntInit;
+                    }
+                    else menuBufferCnt--;
 
-            default:
-                break;
-        }
+                    // ヒントを閉じる
+                    if (!menuBufferFlg)
+                    {
+                        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 6") && !FinshManager.escFlg)
+                        {
+                            status = STATUS.PLAY;
+                            menuBufferFlg = true;
 
-        if (tempStatus != status) statusFirstFlg = true;
+                            // ページを戻す
+                            eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
 
-        // デバッグ用テキスト更新処理
-        if (debugFlg) DebugUpdate();
+                            // ステージを表示するまでの時間をセット
+                            stageDisplayCnt = stageDisplayCntInit;
 
-        // ヒント通知UI更新処理
-        HintUIUpdate();
+                            stageManager.GetComponent<StageManager>().FixPlayerPos();
+                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(3);
+
+                            // チュートリアル表示
+                            if (stageNum == 1)
+                            {
+                                Point.SetActive(true);
+                                tutorialUI.SetActive(true);
+                            }
+                        }
+                    }
+                    break;
+
+                //-----------------------------------
+                // クリア後
+                //-----------------------------------
+                case STATUS.CLEAR:
+                    if (statusFirstFlg)
+                    {
+                        // スコアアニメーション開始
+                        this.GetComponent<ScoreAnimation>().StartFlgOn();
+
+                        // チュートリアル非表示
+                        if (stageNum == 1) tutorialUI.SetActive(false);
+
+                        AudioSource bgm = GameObject.Find("StageBGM").GetComponent<AudioSource>();
+                        bgm.Stop();
+                        resultSource.Play();
+
+                        // 銅メダル取得
+                        StageSelectManager.score[StageManager.stageNum].isCopper = true;
+
+                        // 銀メダル取得
+                        SilverMedalConditions();
+
+                        // 金メダル取得
+                        if (goldMedalFlg)
+                        {
+                            StageSelectManager.score[StageManager.stageNum].isGold = true;
+                            this.GetComponent<ScoreAnimation>().GoldFlgOn();
+                        }
+
+                        // メダルの取得状況を保存
+                        MedalDataSave();
+
+                        // ネクストステージが選択可能か判定
+                        if (StageManager.stageNum % 6 == 5)
+                        {
+                            if (StageSelectManager.enterExtraFlg[BookSelect.bookNum] == true) nextPossibleFlg = true;
+                            else nextPossibleFlg = false;
+                        }
+                        else nextPossibleFlg = true;
+                        if (StageManager.stageNum % 6 == 0) nextPossibleFlg = false;
+
+                        if (nextPossibleFlg) command = COMMAND.NEXT;
+                        else command = COMMAND.STAGE_SELECT;
+
+                        statusFirstFlg = false;
+                    }
+
+                    if (clearCommandOperationCnt == 0)
+                    {
+                        if (this.GetComponent<ScoreAnimation>().GetOperationFlg())
+                        {
+                            // クリアコマンド更新処理
+                            ClearCommandOperation();
+
+                            // コマンド決定
+                            if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") && !FinshManager.escFlg)
+                            {
+                                stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
+                                stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
+                                status = STATUS.COMMAND_DECISION;
+                                selectDecSource.Play();
+                                this.GetComponent<ScoreAnimation>().EndFlgOn();
+                                sceneChangeCnt = 180;
+                                endBookCnt = 90;
+                            }
+                        }
+                    }
+                    else clearCommandOperationCnt--;
+
+                    break;
+
+                //-----------------------------------
+                // コマンド決定後
+                //-----------------------------------
+                case STATUS.COMMAND_DECISION:
+                    if (statusFirstFlg)
+                    {
+                        // ランタンの火を消す
+                        this.GetComponent<PostEffectController>().SetFireFlg(false);
+                        if (command == COMMAND.NEXT) StageSelectManager.selectPageNum++;
+
+                        statusFirstFlg = false;
+                    }
+
+                    // 本のモデルを閉じる
+                    if (endBookCnt == 0) eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+                    else endBookCnt--;
+
+                    // 一定時間経過すると遷移する
+                    if (sceneChangeCnt == 0)
+                    {
+                        // ネクスト以外を選択していたらBGMをセットしなおして、失敗回数を初期化する
+                        if (command != COMMAND.RETRY)
+                        {
+                            StageBgm.bgmFlg = true;
+                            missCnt = 0;
+                            hintCnt = 0.0f;
+                            hintOpenCnt = 0;
+                            menuOperationCnt = 240;
+                        }
+                        // ネクストを選択していたら失敗回数を加算
+                        else
+                        {
+                            missCnt++;
+                            menuOperationCnt = 60;
+                        }
+
+                        SceneManager.LoadScene(changeSceneName);
+                    }
+                    else sceneChangeCnt--;
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (tempStatus != status) statusFirstFlg = true;
+
+            // デバッグ用テキスト更新処理
+            if (debugFlg) DebugUpdate();
+
+            // ヒント通知UI更新処理
+            HintUIUpdate();
     }
 
     //==============================================================
@@ -698,7 +699,7 @@ public class StageUIManager : MonoBehaviour
                     menuCommandFirstFlg = false;
                 }
 
-                if (Input.GetAxis("Vertical") < 0)
+                if (Input.GetAxis("Vertical") < 0 && !FinshManager.escFlg)
                 {
                     command = COMMAND.RETRY;
                     menuCommandFirstFlg = true;
@@ -720,7 +721,7 @@ public class StageUIManager : MonoBehaviour
                     menuCommandFirstFlg = false;
                 }
 
-                if (Input.GetAxis("Vertical") > 0)
+                if (Input.GetAxis("Vertical") > 0 && !FinshManager.escFlg)
                 {
                     command = COMMAND.STAGE_SELECT;
                     menuCommandFirstFlg = true;
@@ -758,7 +759,7 @@ public class StageUIManager : MonoBehaviour
                 }
                 if (nextPossibleFlg)
                 {
-                    if (Input.GetAxis("Horizontal") > 0)
+                    if (Input.GetAxis("Horizontal") > 0 && !FinshManager.escFlg)
                     {
                         command = COMMAND.NEXT;
                         clearCommandFirstFlg = true;
@@ -785,7 +786,7 @@ public class StageUIManager : MonoBehaviour
                     clearCommandFirstFlg = false;
                 }
 
-                if (Input.GetAxis("Horizontal") < 0)
+                if (Input.GetAxis("Horizontal") < 0 && !FinshManager.escFlg)
                 {
                     command = COMMAND.STAGE_SELECT;
                     clearCommandFirstFlg = true;
@@ -891,7 +892,10 @@ public class StageUIManager : MonoBehaviour
     //==============================================================
     private void HintUIUpdate()
     {
-        hintCnt += Time.deltaTime;
+        if (status != STATUS.MENU)
+        {
+            hintCnt += Time.deltaTime;
+        }
 
         // ヒント通知UI表示
         if (hintCnt > hintDispTime && hintOpenCnt == 0 && stageNum != 1)

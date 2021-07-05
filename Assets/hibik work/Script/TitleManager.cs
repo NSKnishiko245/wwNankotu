@@ -76,7 +76,17 @@ public class TitleManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
+        if (!FinshManager.escFlg && (Input.anyKey 
+            || Input.GetKeyDown("joystick button 0")
+            || Input.GetKeyDown("joystick button 1")
+            || Input.GetKeyDown("joystick button 2")
+            || Input.GetKeyDown("joystick button 3")
+            || Input.GetKeyDown("joystick button 4")
+            || Input.GetKeyDown("joystick button 5")
+            || Input.GetKeyDown("joystick button 6")
+            || Input.GetKeyDown("joystick button 7")
+            || Input.GetKeyDown("joystick button 8")
+            || Input.GetKeyDown("joystick button 9")))
         {
             sceneChangeFlg = true;
             pressAAnim.SetFloat("speed", 5.0f);
@@ -96,7 +106,7 @@ public class TitleManager : MonoBehaviour
         // エクストラステージ解放コマンド
         if (!commandFlg)
         {
-            if (Input.GetKeyDown(KeyCode.C) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0))
+            if (FinshManager.escFlg && Input.GetKeyDown(KeyCode.C) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0))
             {
                 Debug.Log("エクストラステージ解放コマンド");
                 commandSource.Play();
@@ -110,7 +120,7 @@ public class TitleManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 1"))
+        if (FinshManager.escFlg && Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 1"))
         {
             Debug.Log("メダル全解放コマンド");
             commandSource.Play();
@@ -132,7 +142,7 @@ public class TitleManager : MonoBehaviour
         }
 
         // シーン遷移開始
-        if (sceneChangeFlg)
+        if (sceneChangeFlg && !FinshManager.escFlg)
         {
             // シーン遷移開始後に１度だけ通る処理
             if (sceneChangeFirstFlg)

@@ -82,10 +82,13 @@ public class BonusManager : MonoBehaviour
                 int pageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
                 if (pageNum == 3)
                 {
-                    if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
+                    if (!FinshManager.escFlg)
                     {
-                        // 遷移
-                        SceneManager.LoadScene("EndRoll");
+                        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
+                        {
+                            // 遷移
+                            SceneManager.LoadScene("EndRoll");
+                        }
                     }
                 }
             }
@@ -102,17 +105,20 @@ public class BonusManager : MonoBehaviour
     {
         if (pageInterval == 0)
         {
-            // 次のページへ進む
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
+            if (!FinshManager.escFlg)
             {
-                eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
-                pageInterval = pageIntervalInit;
-            }
-            // 前のページに戻る
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
-            {
-                eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
-                pageInterval = pageIntervalInit;
+                // 次のページへ進む
+                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
+                {
+                    eventSystem.GetComponent<IgnoreMouseInputModule>().NextPage();
+                    pageInterval = pageIntervalInit;
+                }
+                // 前のページに戻る
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
+                {
+                    eventSystem.GetComponent<IgnoreMouseInputModule>().BackPage();
+                    pageInterval = pageIntervalInit;
+                }
             }
         }
         else pageInterval--;
@@ -123,13 +129,16 @@ public class BonusManager : MonoBehaviour
     //==============================================================
     private void BookSelectChange()
     {
-        if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 1")))
+        if (!FinshManager.escFlg)
         {
-            DecSource.Play();
+            if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 1")))
+            {
+                DecSource.Play();
 
-            // 本を閉じる
-            eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
-            command = COMMAND.BOOK_SELECT;
+                // 本を閉じる
+                eventSystem.GetComponent<IgnoreMouseInputModule>().AllBackPage();
+                command = COMMAND.BOOK_SELECT;
+            }
         }
 
         // 本が閉じ終わった

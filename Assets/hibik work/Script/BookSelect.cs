@@ -95,41 +95,47 @@ public class BookSelect : MonoBehaviour
 
                     if (bookSelectCnt == 0)
                     {
-                        // 左の本を選択
-                        if (Input.GetAxis("Horizontal") < 0)
+                        if (!FinshManager.escFlg)
                         {
-                            if (bookNum > 0)
+                            // 左の本を選択
+                            if (Input.GetAxis("Horizontal") < 0)
                             {
-                                bookNum--;
-                                bookSelectCnt = bookSelectCntInit;
-                                // 選択中の本が上に上がる
-                                bookAnim[bookNum].SetBool("isUp", true);
-                                bookAnim[bookNum + 1].SetBool("isUp", false);
+                                if (bookNum > 0)
+                                {
+                                    bookNum--;
+                                    bookSelectCnt = bookSelectCntInit;
+                                    // 選択中の本が上に上がる
+                                    bookAnim[bookNum].SetBool("isUp", true);
+                                    bookAnim[bookNum + 1].SetBool("isUp", false);
+                                }
                             }
-                        }
-                        // 右の本を選択
-                        if (Input.GetAxis("Horizontal") > 0)
-                        {
-                            if (bookNum < bookMax - 1)
+                            // 右の本を選択
+                            if (Input.GetAxis("Horizontal") > 0)
                             {
-                                bookNum++;
-                                bookSelectCnt = bookSelectCntInit;
-                                // 選択中の本が上に上がる
-                                bookAnim[bookNum].SetBool("isUp", true);
-                                bookAnim[bookNum - 1].SetBool("isUp", false);
+                                if (bookNum < bookMax - 1)
+                                {
+                                    bookNum++;
+                                    bookSelectCnt = bookSelectCntInit;
+                                    // 選択中の本が上に上がる
+                                    bookAnim[bookNum].SetBool("isUp", true);
+                                    bookAnim[bookNum - 1].SetBool("isUp", false);
+                                }
                             }
                         }
                     }
                     else bookSelectCnt--;
 
                     // 本を決定
-                    if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
+                    if (!FinshManager.escFlg)
                     {
-                        DecSource.Play();
-                        // 選択中の本を机に移動
-                        bookAnim[bookNum].SetBool("isRemove", true);
-                        cameraAnim.SetBool("isAnim", true);
-                        bookSelectFlg = true;
+                        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
+                        {
+                            DecSource.Play();
+                            // 選択中の本を机に移動
+                            bookAnim[bookNum].SetBool("isRemove", true);
+                            cameraAnim.SetBool("isAnim", true);
+                            bookSelectFlg = true;
+                        }
                     }
                 }
 
