@@ -25,13 +25,13 @@ public class PerfectClear : MonoBehaviour
         {
             if (m_cnt % m_intervalframe==0&&m_life)
             {
+
                 Instantiate(m_particle, this.transform.position, Quaternion.identity);//きらきらエフェクト
                 
             }
 
 
-            if (m_cnt > m_lifeFrame) m_life = false;
-            
+            if (m_cnt > m_lifeFrame) m_life=false;
             m_cnt++;
         }
     }

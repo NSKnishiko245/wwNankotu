@@ -76,7 +76,7 @@ public class TitleManager : MonoBehaviour
 
     private void Update()
     {
-        if (!FinshManager.escFlg && (Input.anyKey 
+        if (!DeletePanel.Flg&&!FinshManager.escFlg && (Input.anyKey 
             || Input.GetKeyDown("joystick button 0")
             || Input.GetKeyDown("joystick button 1")
             || Input.GetKeyDown("joystick button 2")

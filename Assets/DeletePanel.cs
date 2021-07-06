@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class FinshManager : MonoBehaviour
+using UnityEngine.SceneManagement;
+public class DeletePanel : MonoBehaviour
 {
     public GameObject panel;
     public GameObject yes;
     public GameObject no;
 
-    public static bool escFlg = false;
+    public GameObject galiver;
+    public static bool Flg = false;
     private int num = 0;
 
     // Start is called before the first frame update
@@ -25,17 +26,17 @@ public class FinshManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)&&!DeletePanel.Flg)
+        if (Input.GetKeyDown(KeyCode.K) && !FinshManager.escFlg)
         {
-            if (!escFlg)
+            if (!Flg)
             {
                 panel.SetActive(true);
-                escFlg = true;
+                Flg = true;
             }
             else
             {
                 panel.SetActive(false);
-                escFlg = false;
+                Flg = false;
             }
         }
 
@@ -53,16 +54,20 @@ public class FinshManager : MonoBehaviour
             no.transform.localScale = new Vector3(3, 3, 1);
         }
 
-        if (escFlg && Input.GetKeyUp(KeyCode.Z))
+        if (Flg && Input.GetKeyUp(KeyCode.Z))
         {
             if (num == 1)
             {
-                Application.Quit();
+                StageSelectManager.DeleteSaveDate();
+                panel.SetActive(false);
+                Flg = false;
+                Destroy(galiver.gameObject);
+                SceneManager.LoadScene("Op");
             }
             else
             {
                 panel.SetActive(false);
-                escFlg = false;
+                Flg = false;
             }
         }
     }

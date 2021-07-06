@@ -44,7 +44,7 @@ public class StageUIManager : MonoBehaviour
 
     public static int missCnt = 0;  // ¸”s‚µ‚½‰ñ”
     public static float hintCnt = 0.0f;
-    private float hintDispTime = 5.0f;
+    private float hintDispTime = 180.0f;
     private float hintDeleteTime = 190.0f;
     private bool hintFlg = false;
     private bool hintFirstFlg = false;

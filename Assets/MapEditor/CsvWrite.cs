@@ -44,6 +44,11 @@ public class CsvWrite : MonoBehaviour
         file.WriteLine(rowData);
         file.Close();
     }
+    public void DeleteSaveDate(string fileName)
+    {
+        //StreamWriter file = new StreamWriter(stageDataPath + fileName + ".csv", false, System.Text.Encoding.UTF8);
+        File.Delete(stageDataPath + fileName + ".csv");
+    }
 
     public bool ReadMapFromCsv(int[,] map, string fileName)
     {

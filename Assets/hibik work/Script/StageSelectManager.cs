@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.IO;
 
 public class StageSelectManager : MonoBehaviour
 {
@@ -424,6 +425,14 @@ public class StageSelectManager : MonoBehaviour
         CsvWrite cw = new CsvWrite();
         cw.SetFileInputFolderName();
         cw.WriteBarMapFromCsv(date, "clear");
+    }
+
+
+    public static void DeleteSaveDate()
+    {
+        CsvWrite cw = new CsvWrite();
+        cw.SetFileInputFolderName();
+        cw.DeleteSaveDate("clear");
     }
 
     public static void LoadClearDate()
