@@ -82,7 +82,7 @@ public class BonusManager : MonoBehaviour
                 int pageNum = eventSystem.GetComponent<IgnoreMouseInputModule>().GetPageNum();
                 if (pageNum == 3)
                 {
-                    if (!FinshManager.escFlg)
+                    if (!FinishManager.menuFlg)
                     {
                         if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
                         {
@@ -105,7 +105,7 @@ public class BonusManager : MonoBehaviour
     {
         if (pageInterval == 0)
         {
-            if (!FinshManager.escFlg)
+            if (!FinishManager.menuFlg)
             {
                 // 次のページへ進む
                 if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
@@ -129,7 +129,7 @@ public class BonusManager : MonoBehaviour
     //==============================================================
     private void BookSelectChange()
     {
-        if (!FinshManager.escFlg)
+        if (!FinishManager.menuFlg)
         {
             if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 1")))
             {

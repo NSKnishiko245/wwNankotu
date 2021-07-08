@@ -224,7 +224,7 @@ public class StageSelectManager : MonoBehaviour
 
         if (pageInterval == 0)
         {
-            if (!FinshManager.escFlg)
+            if (!FinishManager.menuFlg)
             {
                 // 次のページへ進む
                 if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
@@ -248,7 +248,7 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void StageSceneChange()
     {
-        if (!FinshManager.escFlg)
+        if (!FinishManager.menuFlg)
         {
             if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0")))
             {
@@ -295,7 +295,7 @@ public class StageSelectManager : MonoBehaviour
     //==============================================================
     private void BookSelectChange()
     {
-        if (!FinshManager.escFlg)
+        if (!FinishManager.menuFlg)
         {
             if (command == COMMAND.EMPTY && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 1")))
             {

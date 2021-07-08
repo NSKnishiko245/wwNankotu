@@ -350,7 +350,7 @@ public class StageUIManager : MonoBehaviour
                     if (menuOperationCnt == 0)
                     {
                         if (stageNum == 1) { }
-                        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7") && !FinshManager.escFlg)
+                        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7") && !FinishManager.menuFlg)
                         {
                             if (!menuBufferFlg)
                             {
@@ -384,7 +384,7 @@ public class StageUIManager : MonoBehaviour
                         if (menuOperationCnt == 0)
                         {
                             if (stageNum == 1) { }
-                            else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 6") && !FinshManager.escFlg)
+                            else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 6") && !FinishManager.menuFlg)
                             {
                                 if (!menuBufferFlg)
                                 {
@@ -458,7 +458,7 @@ public class StageUIManager : MonoBehaviour
                     else menuBufferCnt--;
 
                     // コマンド決定
-                    if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") && !FinshManager.escFlg)
+                    if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") && !FinishManager.menuFlg)
                     {
                         status = STATUS.COMMAND_DECISION;
                         selectDecSource.Play();
@@ -469,7 +469,7 @@ public class StageUIManager : MonoBehaviour
                     // メニューを閉じる
                     if (!menuBufferFlg)
                     {
-                        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7") && !FinshManager.escFlg)
+                        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7") && !FinishManager.menuFlg)
                         {
                             status = STATUS.PLAY;
                             menuBufferFlg = true;
@@ -527,7 +527,7 @@ public class StageUIManager : MonoBehaviour
                     // ヒントを閉じる
                     if (!menuBufferFlg)
                     {
-                        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 6") && !FinshManager.escFlg)
+                        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 6") && !FinishManager.menuFlg)
                         {
                             status = STATUS.PLAY;
                             menuBufferFlg = true;
@@ -606,7 +606,7 @@ public class StageUIManager : MonoBehaviour
                             ClearCommandOperation();
 
                             // コマンド決定
-                            if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") && !FinshManager.escFlg)
+                            if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") && !FinishManager.menuFlg)
                             {
                                 stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
                                 stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
@@ -699,7 +699,7 @@ public class StageUIManager : MonoBehaviour
                     menuCommandFirstFlg = false;
                 }
 
-                if (Input.GetAxis("Vertical") < 0 && !FinshManager.escFlg)
+                if (Input.GetAxis("Vertical") < 0 && !FinishManager.menuFlg)
                 {
                     command = COMMAND.RETRY;
                     menuCommandFirstFlg = true;
@@ -721,7 +721,7 @@ public class StageUIManager : MonoBehaviour
                     menuCommandFirstFlg = false;
                 }
 
-                if (Input.GetAxis("Vertical") > 0 && !FinshManager.escFlg)
+                if (Input.GetAxis("Vertical") > 0 && !FinishManager.menuFlg)
                 {
                     command = COMMAND.STAGE_SELECT;
                     menuCommandFirstFlg = true;
@@ -759,7 +759,7 @@ public class StageUIManager : MonoBehaviour
                 }
                 if (nextPossibleFlg)
                 {
-                    if (Input.GetAxis("Horizontal") > 0 && !FinshManager.escFlg)
+                    if (Input.GetAxis("Horizontal") > 0 && !FinishManager.menuFlg)
                     {
                         command = COMMAND.NEXT;
                         clearCommandFirstFlg = true;
@@ -786,7 +786,7 @@ public class StageUIManager : MonoBehaviour
                     clearCommandFirstFlg = false;
                 }
 
-                if (Input.GetAxis("Horizontal") < 0 && !FinshManager.escFlg)
+                if (Input.GetAxis("Horizontal") < 0 && !FinishManager.menuFlg)
                 {
                     command = COMMAND.STAGE_SELECT;
                     clearCommandFirstFlg = true;

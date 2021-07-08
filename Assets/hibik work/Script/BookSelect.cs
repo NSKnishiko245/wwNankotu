@@ -95,7 +95,7 @@ public class BookSelect : MonoBehaviour
 
                     if (bookSelectCnt == 0)
                     {
-                        if (!FinshManager.escFlg)
+                        if (!FinishManager.menuFlg)
                         {
                             // ç∂ÇÃñ{ÇëIë
                             if (Input.GetAxis("Horizontal") < 0)
@@ -126,7 +126,7 @@ public class BookSelect : MonoBehaviour
                     else bookSelectCnt--;
 
                     // ñ{ÇåàíË
-                    if (!FinshManager.escFlg)
+                    if (!FinishManager.menuFlg)
                     {
                         if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
                         {

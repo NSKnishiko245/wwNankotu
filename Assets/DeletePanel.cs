@@ -26,7 +26,7 @@ public class DeletePanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K) && !FinshManager.escFlg)
+        if (Input.GetKeyDown(KeyCode.K) && !FinishManager.menuFlg)
         {
             if (!Flg)
             {

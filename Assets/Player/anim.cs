@@ -26,7 +26,7 @@ public class anim : MonoBehaviour
     void Update()
     {
         //Œü‚«‚ð•Ï‚¦‚é
-        if (!FinshManager.escFlg)
+        if (!FinishManager.menuFlg)
         {
             if (m_playobj.GetComponent<Player>().GetInputValue() > 0)
             {

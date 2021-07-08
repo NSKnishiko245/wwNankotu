@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
                 //ˆÚ“®ˆ—
                 moveValue = transform.right * Speed * Time.deltaTime;
 
-                if (!FinshManager.escFlg)
+                if (!FinishManager.menuFlg)
                 {
                     if (inputValue_x > 0.5f)
                     {

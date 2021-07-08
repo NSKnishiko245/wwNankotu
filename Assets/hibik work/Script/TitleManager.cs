@@ -76,7 +76,7 @@ public class TitleManager : MonoBehaviour
 
     private void Update()
     {
-        if (!DeletePanel.Flg&&!FinshManager.escFlg && (Input.anyKey 
+        if (!DeletePanel.Flg&&!FinishManager.menuFlg && (Input.GetKeyDown(KeyCode.Z) 
             || Input.GetKeyDown("joystick button 0")
             || Input.GetKeyDown("joystick button 1")
             || Input.GetKeyDown("joystick button 2")
@@ -106,7 +106,7 @@ public class TitleManager : MonoBehaviour
         // エクストラステージ解放コマンド
         if (!commandFlg)
         {
-            if (FinshManager.escFlg && Input.GetKeyDown(KeyCode.C) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0))
+            if (FinishManager.menuFlg && Input.GetKeyDown(KeyCode.C) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0))
             {
                 Debug.Log("エクストラステージ解放コマンド");
                 commandSource.Play();
@@ -120,7 +120,7 @@ public class TitleManager : MonoBehaviour
             }
         }
 
-        if (FinshManager.escFlg && Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 1"))
+        if (FinishManager.menuFlg && Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 1"))
         {
             Debug.Log("メダル全解放コマンド");
             commandSource.Play();
@@ -142,7 +142,7 @@ public class TitleManager : MonoBehaviour
         }
 
         // シーン遷移開始
-        if (sceneChangeFlg && !FinshManager.escFlg)
+        if (sceneChangeFlg && !FinishManager.menuFlg)
         {
             // シーン遷移開始後に１度だけ通る処理
             if (sceneChangeFirstFlg)

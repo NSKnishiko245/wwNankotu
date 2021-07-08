@@ -114,7 +114,7 @@ public class tutorialManagaer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!FinshManager.escFlg)
+        if (!FinishManager.menuFlg)
         {
             //if(ControllerCheck()==true)
             //{
