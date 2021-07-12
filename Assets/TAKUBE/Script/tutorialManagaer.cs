@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class tutorialManagaer : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class tutorialManagaer : MonoBehaviour
     private GameObject Point_prefab;
     private GameObject Point;
     private GameObject mainCam;
+    private GameObject tv;
 
     private bool PushFlg;
     private bool textFlg;
@@ -68,7 +70,11 @@ public class tutorialManagaer : MonoBehaviour
 
     public bool IsPoint { get; private set; }
 
-
+    private void Awake()
+    {
+        tv = GameObject.Find("tv");
+        tv.transform.localScale = new Vector3(0, 0, 0);
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -81,7 +87,9 @@ public class tutorialManagaer : MonoBehaviour
         BordAnim = Bord.GetComponent<Animator>();
         BlackAnim = Black.GetComponent<Animator>();
         KeyBordAnim = KeyBord.GetComponent<Animator>();
+        
 
+        
 
         //stagemanager = GameObject.Find("stageManager");
         IsPlayerMove = true;
@@ -129,6 +137,7 @@ public class tutorialManagaer : MonoBehaviour
                 Stop.SetActive(false);
                 StartImage.SetActive(false);
                 textFlg = true;
+                
                 return;
             }
 
@@ -167,6 +176,7 @@ public class tutorialManagaer : MonoBehaviour
                     //自機ズーム終了後にTV・テキストのアニメーション開始＆TextCountの時間を減少させる
                     if (textFlg)
                     {
+                        tv.transform.DOScale(new Vector3(4000, 4000, 1100), 0.5f);
                         BlackAnim.SetBool("Black", true);
                         BordNum = 3;
                         BordAnim.SetInteger("text", BordNum);
@@ -452,7 +462,8 @@ public class tutorialManagaer : MonoBehaviour
                     {
                         Destroy(Point);
                         TutorialNum = 6;
-                        TextCount = 5.0f;
+                        TextCount = 10.0f;
+                        Pointcountdown = 5.0f;
                         IsPlayerMove = false;
                     }
 
@@ -462,9 +473,17 @@ public class tutorialManagaer : MonoBehaviour
                     Text.text = "折り過ぎると銀の歯車が...！\n素早くゴールを目指すでビウス！";
 
                     TextCount -= Time.deltaTime;
+                    Pointcountdown -= Time.deltaTime;
+                    if(Pointcountdown<=0.0f)
+                    {
+                        Text.text = "説明はこれで終わりビウス\n壊れた仲間を救うために頑張るでビウス！！";
+                    }
                     if (TextCount <= 0.0f)
                     {
                         IsPlayerMove = true;
+                        tv.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
+                        BordNum = 1;
+                        BordAnim.SetInteger("text", BordNum);
                     }
 
 
