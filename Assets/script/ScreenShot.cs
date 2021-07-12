@@ -80,7 +80,7 @@ public class ScreenShot : MonoBehaviour
                 texname = "Prefabs/Material/bG_L3ex";
             else if (StageManager.stageNum <= 24)
                 texname = "Prefabs/Material/bG_L4ex";
-            else if (StageManager.stageNum <= 32)
+            else if (StageManager.stageNum <= 30)
                 texname = "Prefabs/Material/bG_L5ex";
             else if (StageManager.stageNum <= 36)
                 texname = "Prefabs/Material/bG_L6ex";
@@ -98,7 +98,7 @@ public class ScreenShot : MonoBehaviour
                 texname = "Prefabs/Material/bG_L3";
             else if (StageManager.stageNum <= 24)
                 texname = "Prefabs/Material/bG_L4";
-            else if (StageManager.stageNum <= 32)
+            else if (StageManager.stageNum <= 30)
                 texname = "Prefabs/Material/bG_L5";
             else if (StageManager.stageNum <= 36)
                 texname = "Prefabs/Material/bG_L6";
