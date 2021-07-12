@@ -6,7 +6,7 @@ MonoImporter:
   defaultReferences:
   - m_playobj: {instanceID: 0}
   - m_moveAudio: {fileID: 8300000, guid: 830fd4e9a851ddd47aa53b2ad737fd59, type: 3}
-  executionOrder: 0
+  executionOrder: 200
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

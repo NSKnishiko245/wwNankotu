@@ -121,7 +121,7 @@ public class StageUIManager : MonoBehaviour
     public static bool nextPossibleFlg = true;
 
     // シーンの状態
-    private enum STATUS
+    public enum STATUS
     {
         START,
         PLAY,
@@ -130,7 +130,7 @@ public class StageUIManager : MonoBehaviour
         CLEAR,
         COMMAND_DECISION,
     }
-    private STATUS status;
+    public static STATUS status;
 
     // 選択中のコマンド
     private enum COMMAND
@@ -608,15 +608,18 @@ public class StageUIManager : MonoBehaviour
                         ClearCommandOperation();
 
                         // コマンド決定
-                        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") && !FinishManager.menuFlg)
+                        //if (!FinishManager.menuFlg)
                         {
-                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
-                            stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
-                            status = STATUS.COMMAND_DECISION;
-                            selectDecSource.Play();
-                            this.GetComponent<ScoreAnimation>().EndFlgOn();
-                            sceneChangeCnt = 180;
-                            endBookCnt = 90;
+                            if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0") && !FinishManager.menuFlg)
+                            {
+                                stageManager.GetComponent<StageManager>().SetModeGoalEffect(0);
+                                stageManager.GetComponent<StageManager>().SetModeGoalEffect(2);
+                                status = STATUS.COMMAND_DECISION;
+                                selectDecSource.Play();
+                                this.GetComponent<ScoreAnimation>().EndFlgOn();
+                                sceneChangeCnt = 180;
+                                endBookCnt = 90;
+                            }
                         }
                     }
                 }

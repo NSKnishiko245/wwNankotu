@@ -47,7 +47,7 @@ public class FinishManager : MonoBehaviour
     //==============================================================
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !(StageUIManager.status == StageUIManager.STATUS.CLEAR))
         {
             status = STATUS.ESCAPE;
             text.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/Finish/FinishText");

@@ -231,6 +231,7 @@ public class Player : MonoBehaviour
 
     public void FixPos()
     {
+        
         Vector3 hoge = transform.right * (Speed*1.1f) * Time.deltaTime;
         if (inputValue_x > 0)
         {

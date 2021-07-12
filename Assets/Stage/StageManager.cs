@@ -339,32 +339,38 @@ public class StageManager : MonoBehaviour
             if (tutorialManager.GetComponent<tutorialManagaer>().IsRMove)
             {
                 // プレイヤーに衝突しているバーがあった場合、トリガーの入力値を参照し回転させる
-                if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.D))
+                if (!FinishManager.menuFlg)
                 {
-                    SetModeGoalEffect(0);
-                    SetModeGoalEffect(2);
-                    RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_LEFT);
-                    RotateState = ROTATESTATE.L_ROTATE;
-                    ScreenShot();
-                    rotateNum++;
-                    Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.RIGHT;
-                    IsRotate = true;
-                    oriBarNum = HitBarIdx;
+                    if (R_Stick_Value == (int)CONTROLLERSTATE.R_TRIGGER || Input.GetKeyDown(KeyCode.D))
+                    {
+                        SetModeGoalEffect(0);
+                        SetModeGoalEffect(2);
+                        RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_LEFT);
+                        RotateState = ROTATESTATE.L_ROTATE;
+                        ScreenShot();
+                        rotateNum++;
+                        Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.RIGHT;
+                        IsRotate = true;
+                        oriBarNum = HitBarIdx;
+                    }
                 }
             }
             if (tutorialManager.GetComponent<tutorialManagaer>().IsLMove)
             {
-                if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.A))
+                if (!FinishManager.menuFlg)
                 {
-                    SetModeGoalEffect(0);
-                    SetModeGoalEffect(2);
-                    RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_RIGHT);
-                    RotateState = ROTATESTATE.R_ROTATE;
-                    ScreenShot();
-                    rotateNum++;
-                    Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.LEFT;
-                    IsRotate = true;
-                    oriBarNum = HitBarIdx;
+                    if (R_Stick_Value == (int)CONTROLLERSTATE.L_TRIGGER || Input.GetKeyDown(KeyCode.A))
+                    {
+                        SetModeGoalEffect(0);
+                        SetModeGoalEffect(2);
+                        RotateBar(HitBarIdx, BarRotate.ROTSTATEOUTERDATA.ROTATE_RIGHT);
+                        RotateState = ROTATESTATE.R_ROTATE;
+                        ScreenShot();
+                        rotateNum++;
+                        Player.GetComponent<Player>().moveDir = global::Player.MOVEDIR.LEFT;
+                        IsRotate = true;
+                        oriBarNum = HitBarIdx;
+                    }
                 }
             }
         }
