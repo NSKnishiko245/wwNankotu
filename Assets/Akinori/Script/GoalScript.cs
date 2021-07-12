@@ -16,7 +16,7 @@ public class GoalScript : MonoBehaviour
 
     private bool startFlg = false;
     private bool isPlayEffect = true;
-    private bool isNoSilverGear = false;        //true:銀の歯車がない。false:銀の歯車がまだある
+    private bool isNoSilverGear;        //true:銀の歯車がない。false:銀の歯車がまだある
     enum TURN
     {
         GEAR_TIME,
@@ -49,8 +49,14 @@ public class GoalScript : MonoBehaviour
 
     int testNum = 0;
     bool testFlg = false;   //一度きり
+    bool hogeFLg = false;
     private Vector3 pPos;
     private Vector3 perticlePos;
+
+    private void Awake()
+    {
+        Gear = transform.Find("door_L/door_L/Gear/Gear2").gameObject;
+    }
     // Color color;
     // Start is called before the first frame update
     void Start()
@@ -60,7 +66,12 @@ public class GoalScript : MonoBehaviour
         turn = TURN.GEAR_TIME;
         Rdoor = transform.Find("door_R/door_R").gameObject;
         Ldoor = transform.Find("door_L/door_L").gameObject;
-        Gear = transform.Find("door_L/door_L/Gear/Gear2").gameObject;
+
+        //if (!isNoSilverGear)
+        //{
+        //    Gear = transform.Find("door_L/door_L/Gear/Gear2").gameObject;
+        //}
+        
         perticlePos = transform.Find("door_huti/door 1").gameObject.transform.position;
         //Assign the color to the particle
         ParticleSystem.MainModule main = particle.main;
@@ -79,21 +90,22 @@ public class GoalScript : MonoBehaviour
         //    testNum++;
         //    SetSilverState(5, testNum);
         //}
-
-        if (!testFlg && isNoSilverGear  && Gear.GetComponent<VibrateController>().vibrateTime <= 0)
+        
+        if (!testFlg && isNoSilverGear && Gear.GetComponent<VibrateController>().vibrateTime <= 0)
         {
 
             GameObject preGear = transform.Find("door_L/door_L/Gear").gameObject;
             float z = this.transform.position.z;
-
+            Vector3 hoge = this.transform.TransformPoint(this.transform.position);
             audioSource.PlayOneShot(sound1);
             preGear.transform.DORotate(Vector3.right * 700f, 2f, mode: RotateMode.WorldAxisAdd);
             preGear.transform.DOJump(new Vector3(this.transform.position.x, -14f, this.transform.position.z * 75f), jumpPower: 4f, numJumps: 2, duration: 10f).OnComplete(() =>
             {
                // Gear.SetActive(false);
             });
-
+           // /Debug.Log("DoTo入っていない");
             testFlg = true;
+           // hogeFLg = true;
         }
         //生成間隔
         particleFrame--;
@@ -102,13 +114,15 @@ public class GoalScript : MonoBehaviour
             particleFrame = initParticleFrame;
             if (startFlg)
             {
-                particleList.Add(Instantiate(rayParticle, pPos, this.transform.rotation).gameObject);
+                Vector3 hoge= transform.Find("door_huti/door 1").gameObject.transform.position; 
+                
+                particleList.Add(Instantiate(rayParticle, hoge, this.transform.rotation).gameObject);
                 
             }
             else
             {
-                perticlePos = transform.Find("door_huti/door 1").gameObject.transform.position;
-                particleList.Add(Instantiate(rayParticle, perticlePos, this.transform.rotation).gameObject);
+                Vector3 hoge = transform.Find("door_huti/door 1").gameObject.transform.position;
+                particleList.Add(Instantiate(rayParticle, hoge, this.transform.rotation).gameObject);
             }
         }
 
@@ -181,7 +195,10 @@ public class GoalScript : MonoBehaviour
 
     public void SetGearVibrateTime(float _time)
     {
-        Gear.GetComponent<VibrateController>().SetVibrateTime(_time);
+        if (!isNoSilverGear)
+        {
+            Gear.GetComponent<VibrateController>().SetVibrateTime(_time);
+        }
     }
 
     //EnumのE_ParticleColorから変更する色を引数に入れる
@@ -236,7 +253,7 @@ public class GoalScript : MonoBehaviour
         nowRotateNum = _nowRotate;
         if (silverLimit < nowRotateNum)
         {
-
+            //Gear.transform.parent = null;
             isNoSilverGear = true;
         }
         else

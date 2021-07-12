@@ -764,6 +764,38 @@ public class StageManager : MonoBehaviour
                         child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetPlayEffectFlg(false);
                         child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetPlayEffectFlg(false);
                     }
+
+                }
+                for (int j = 0; j < Tile_List.Count; j++)
+                {
+                    foreach (Transform child2 in Tile_List[j].GetComponentsInChildren<Transform>())
+                    {
+                        if (child.tag == "GoalBlock")
+                        {
+                            if (child2.tag=="GoalBlock")
+                            {
+                                //child.transform.Find("GoalObj1").GetComponent<GoalScript>().CreateSandPerticle();
+                                //child.transform.Find("GoalObj2").GetComponent<GoalScript>().CreateSandPerticle();
+                                //child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetGearVibrateTime(30);
+                                //child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetGearVibrateTime(30);
+                                //child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetSilverState(StageSelectManager.silverConditions[stageNum], rotateNum);
+                                //child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetSilverState(StageSelectManager.silverConditions[stageNum], rotateNum);
+                                //Debug.Log(StageSelectManager.silverConditions[StageManager.stageNum]);
+                                //
+                                if (child2.transform.Find("GoalObj1").GetComponent<GoalScript>().GetIsNoSilverGear())
+                                {
+                                    child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetIsNoSilverGear(true);
+                                    child.transform.Find("GoalObj1").GetComponent<GoalScript>().GetGear().GetComponent<MeshRenderer>().enabled = false;
+                                }
+                                if (child2.transform.Find("GoalObj2").GetComponent<GoalScript>().GetIsNoSilverGear())
+                                {
+                                    child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetIsNoSilverGear(true);
+                                    //child.transform.Find("GoalObj2").GetComponent<GoalScript>().GetGear().SetActive(false);
+                                    child.transform.Find("GoalObj2").GetComponent<GoalScript>().GetGear().GetComponent<MeshRenderer>().enabled = false;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

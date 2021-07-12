@@ -22,6 +22,7 @@ public class VibrateController : MonoBehaviour
     [SerializeField] private float vibrateSpeed;               //振動速度
 
     private float initPosition;   //初期ポジション
+    private float testPosition;   //テスト用
     private float newPosition;    //新規ポジション
     private float minPosition;    //ポジションの下限
     private float maxPosition;    //ポジションの上限
@@ -45,9 +46,11 @@ public class VibrateController : MonoBehaviour
         {
             case VibrateType.VERTICAL:
                 this.initPosition = transform.localPosition.y;
+                testPosition = transform.localPosition.y;
                 break;
             case VibrateType.HORIZONTAL:
                 this.initPosition = transform.localPosition.x;
+                testPosition = transform.localPosition.x;
                 break;
         }
 
@@ -71,10 +74,10 @@ public class VibrateController : MonoBehaviour
             switch (this.vibrateType)
             {
                 case VibrateType.VERTICAL:
-                    this.transform.localPosition = new Vector3(0, this.initPosition, 0);
+                    this.transform.localPosition = new Vector3(0, testPosition, 0);
                     break;
                 case VibrateType.HORIZONTAL:
-                    this.transform.localPosition = new Vector3(this.initPosition, 0, 0);
+                    this.transform.localPosition = new Vector3(testPosition, 0, 0);
                     break;
             }
         }

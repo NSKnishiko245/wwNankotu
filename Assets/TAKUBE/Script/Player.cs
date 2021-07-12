@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
         // Debug.Log(transform.rotation);
         //prev=transform.position;
 
-        if (tutorialManager.GetComponent<tutorialManagaer>().IsPlayerMove && StageManager.stageNum != 1)
+        if (tutorialManager.GetComponent<tutorialManagaer>().IsPlayerMove && StageManager.stageNum != 1 && !IsHitGoalBlock && !FinishManager.menuFlg)
         {
             if (exploedFlg)
             {
