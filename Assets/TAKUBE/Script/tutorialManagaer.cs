@@ -72,8 +72,7 @@ public class tutorialManagaer : MonoBehaviour
 
     private void Awake()
     {
-        tv = GameObject.Find("tv");
-        tv.transform.localScale = new Vector3(0, 0, 0);
+        
     }
     // Start is called before the first frame update
     void Start()
@@ -115,6 +114,8 @@ public class tutorialManagaer : MonoBehaviour
         else
         {
             TutorialNum = 1;
+            tv = GameObject.Find("tv");
+            tv.transform.localScale = new Vector3(0, 0, 0);
         }
         Point_prefab = Resources.Load<GameObject>("Point");
     }
