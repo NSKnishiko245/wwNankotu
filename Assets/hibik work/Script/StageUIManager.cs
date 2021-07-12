@@ -44,8 +44,8 @@ public class StageUIManager : MonoBehaviour
 
     public static int missCnt = 0;  // ¸”s‚µ‚½‰ñ”
     public static float hintCnt = 0.0f;
-    private float hintDispTime = 180.0f;
-    private float hintDeleteTime = 190.0f;
+    private float hintDispTime = 5.0f;    // ƒqƒ“ƒg•\¦‚·‚é‚Ü‚Å‚ÌŠÔ
+    private float hintDeleteTime = 190.0f;  // ƒqƒ“ƒgÁ‚·‚Ü‚Å‚ÌŠÔ
     private bool hintFlg = false;
     private bool hintFirstFlg = false;
     private bool hintUIFlg = false;
@@ -469,7 +469,7 @@ public class StageUIManager : MonoBehaviour
                     // ƒƒjƒ…[‚ğ•Â‚¶‚é
                     if (!menuBufferFlg)
                     {
-                        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7") && !FinishManager.menuFlg)
+                        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown("joystick button 7") || Input.GetKeyDown("joystick button 1") && !FinishManager.menuFlg)
                         {
                             status = STATUS.PLAY;
                             menuBufferFlg = true;
@@ -527,7 +527,7 @@ public class StageUIManager : MonoBehaviour
                     // ƒqƒ“ƒg‚ğ•Â‚¶‚é
                     if (!menuBufferFlg)
                     {
-                        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 6") && !FinishManager.menuFlg)
+                        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 6") || Input.GetKeyDown("joystick button 1") && !FinishManager.menuFlg)
                         {
                             status = STATUS.PLAY;
                             menuBufferFlg = true;

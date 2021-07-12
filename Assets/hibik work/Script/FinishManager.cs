@@ -30,8 +30,8 @@ public class FinishManager : MonoBehaviour
     }
     private SELECT select;
 
-    private float selectSize = 4.5f;    // 選択時のUIのサイズ
-    private float unselectSize = 4.0f;  // 非選択時のUIのサイズ
+    private float selectSize = 3.5f;    // 選択時のUIのサイズ
+    private float unselectSize = 3.0f;  // 非選択時のUIのサイズ
 
 
     //==============================================================
@@ -101,13 +101,13 @@ public class FinishManager : MonoBehaviour
     private void MenuOperetion()
     {
         // 左キー押下でYESを選択
-        if (select != SELECT.YES && Input.GetKeyDown(KeyCode.LeftArrow))
+        if (select != SELECT.YES && Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
         {
             select = SELECT.YES;
         }
 
         // 右キー押下でNOを選択
-        if (select != SELECT.NO && Input.GetKeyDown(KeyCode.RightArrow))
+        if (select != SELECT.NO && Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
         {
             select = SELECT.NO;
         }
@@ -124,7 +124,7 @@ public class FinishManager : MonoBehaviour
             no.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/finish/no_off");
 
             // Zキー押上で決定
-            if (Input.GetKeyUp(KeyCode.Z))
+            if (Input.GetKeyUp(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
             {
                 // 終了画面の処理
                 if (status == STATUS.ESCAPE)
@@ -156,7 +156,7 @@ public class FinishManager : MonoBehaviour
             no.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/finish/no_on");
 
             // Zキー押上で決定
-            if (Input.GetKeyUp(KeyCode.Z))
+            if (Input.GetKeyUp(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
             {
                 // ウインドウ表示切替
                 ChangeMenuDisplay();
