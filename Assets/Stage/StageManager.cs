@@ -18,7 +18,7 @@ public class StageManager : MonoBehaviour
     public GameObject MapManager;
 
     private GameObject tutorialManager;
-
+    private List<GameObject> yugamiList = new List<GameObject>();
     public GameObject Effect;
 
     private int[,] BlockNum_Map;
@@ -310,6 +310,9 @@ public class StageManager : MonoBehaviour
 
         if (IsGameClear)
         {
+        Destroy(yugami);
+
+            yugamiList.Clear();
             L_Smoke.SetActive(false);
             R_Smoke.SetActive(false);
 
@@ -862,6 +865,7 @@ public class StageManager : MonoBehaviour
         {
             yugami = Resources.Load("Prefabs/yugami") as GameObject;
             yugami = GameObject.Instantiate(yugami);
+            yugamiList.Add(yugami);
             yugami.transform.localScale = new Vector3(Mathf.Abs(MapPos_Add.x) * 0.1f, Block_Map.GetLength(0), 1.0f);
 
             float addPos;
@@ -936,7 +940,7 @@ public class StageManager : MonoBehaviour
 
         //Destroy(BigParent);
         //BigParent = new GameObject();
-
+        yugamiList.Remove(yugami);
         Destroy(yugami);
 
         CopyStage(state, true);
@@ -971,7 +975,7 @@ public class StageManager : MonoBehaviour
             BigParent.GetComponent<InvisibleBlock>().AlphaState = InvisibleBlock.ALPHASTATE.DECREASE;
         }
         //Destroy(BigParent);
-
+        yugamiList.Remove(yugami);
         Destroy(yugami);
     }
 
@@ -983,6 +987,7 @@ public class StageManager : MonoBehaviour
             Bar_subList.Clear();
         }
         Destroy(BigParent);
+        yugamiList.Remove(yugami);
         Destroy(yugami);
 
         isCopy = false;
