@@ -1027,9 +1027,17 @@ public class StageManager : MonoBehaviour
 
         if (is3D == false && activeFlg == true)
         {
+
+
             Grid.GetComponent<MeshRenderer>().enabled = true;
             if (RotateState != ROTATESTATE.NEUTRAL)
             {
+                Destroy(BigParent);
+                //CopyStage(WARPSTATE.TO_LEFT);
+                isCopy = false;
+                Destroy(yugami);
+
+
                 // Ç±Ç±ÇßÇßÇ®Ç¡ÅIÅIÅI
                 for (int i = 0; i < Tile_List.Count; i++)
                 {
