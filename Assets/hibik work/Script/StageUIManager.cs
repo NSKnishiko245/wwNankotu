@@ -382,10 +382,10 @@ public class StageUIManager : MonoBehaviour
                 }
 
                 // ステージクリア
-                //if (stageManager.GetComponent<StageManager>().IsGameClear || Input.GetKeyDown(KeyCode.C))
-                //{
-                //    status = STATUS.CLEAR;
-                //}
+                if (stageManager.GetComponent<StageManager>().IsGameClear)
+                {
+                    status = STATUS.CLEAR;
+                }
                 if (goldMedalFlg)
                 {
                     stageManager.GetComponent<StageManager>().SetModeGoalEffect(4);
