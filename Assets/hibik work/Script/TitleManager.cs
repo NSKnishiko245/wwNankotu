@@ -92,15 +92,15 @@ public class TitleManager : MonoBehaviour
             pressAAnim.SetFloat("speed", 5.0f);
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            for (int i = 0; i < StageSelectManager.stageMax; i++)
-            {
-                PlayerPrefs.DeleteKey("Copper" + (i + 1));
-                PlayerPrefs.DeleteKey("Silver" + (i + 1));
-                PlayerPrefs.DeleteKey("Gold" + (i + 1));
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    for (int i = 0; i < StageSelectManager.stageMax; i++)
+        //    {
+        //        PlayerPrefs.DeleteKey("Copper" + (i + 1));
+        //        PlayerPrefs.DeleteKey("Silver" + (i + 1));
+        //        PlayerPrefs.DeleteKey("Gold" + (i + 1));
+        //    }
+        //}
 
 
         // エクストラステージ解放コマンド
