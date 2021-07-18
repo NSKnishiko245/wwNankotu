@@ -794,11 +794,13 @@ public class StageManager : MonoBehaviour
                                 if (child2.transform.Find("GoalObj1").GetComponent<GoalScript>().GetIsNoSilverGear())
                                 {
                                     child.transform.Find("GoalObj1").GetComponent<GoalScript>().SetIsNoSilverGear(true);
+                                    child.transform.Find("GoalObj1").GetComponent<GoalScript>().isPlaySound = false;
                                     child.transform.Find("GoalObj1").GetComponent<GoalScript>().GetGear().GetComponent<MeshRenderer>().enabled = false;
                                 }
                                 if (child2.transform.Find("GoalObj2").GetComponent<GoalScript>().GetIsNoSilverGear())
                                 {
                                     child.transform.Find("GoalObj2").GetComponent<GoalScript>().SetIsNoSilverGear(true);
+                                    child.transform.Find("GoalObj2").GetComponent<GoalScript>().isPlaySound = false;
                                     //child.transform.Find("GoalObj2").GetComponent<GoalScript>().GetGear().SetActive(false);
                                     child.transform.Find("GoalObj2").GetComponent<GoalScript>().GetGear().GetComponent<MeshRenderer>().enabled = false;
                                 }

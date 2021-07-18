@@ -53,6 +53,8 @@ public class GoalScript : MonoBehaviour
     private Vector3 pPos;
     private Vector3 perticlePos;
 
+    public bool isPlaySound { private get; set; } = true;
+
     private void Awake()
     {
         Gear = transform.Find("door_L/door_L/Gear/Gear2").gameObject;
@@ -97,7 +99,7 @@ public class GoalScript : MonoBehaviour
             GameObject preGear = transform.Find("door_L/door_L/Gear").gameObject;
             float z = this.transform.position.z;
             Vector3 hoge = this.transform.TransformPoint(this.transform.position);
-            audioSource.PlayOneShot(sound1);
+            if (isPlaySound) audioSource.PlayOneShot(sound1);
             preGear.transform.DORotate(Vector3.right * 700f, 2f, mode: RotateMode.WorldAxisAdd);
             preGear.transform.DOJump(new Vector3(this.transform.position.x, -14f, this.transform.position.z * 75f), jumpPower: 4f, numJumps: 2, duration: 10f).OnComplete(() =>
             {
