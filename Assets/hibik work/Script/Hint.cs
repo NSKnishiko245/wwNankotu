@@ -21,9 +21,9 @@ public class Hint : MonoBehaviour
     public Text hintTimeText;
 
     [SerializeField]
-    private float hintDispTime = 180.0f;    // ヒント通知UIが現れる時間
+    private float hintDispTime = 120.0f;    // ヒント通知UIが現れる時間
     [SerializeField]
-    private float hintDeleteTime = 190.0f;  // ヒント通知UIが消える時間
+    private float hintDeleteTime = 130.0f;  // ヒント通知UIが消える時間
 
     public static bool hintFlg = false;         // ヒント表示可能か
 

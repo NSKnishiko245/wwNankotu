@@ -104,42 +104,42 @@ public class TitleManager : MonoBehaviour
 
 
         // エクストラステージ解放コマンド
-        if (!commandFlg)
-        {
-            if (FinishManager.menuFlg && Input.GetKeyDown(KeyCode.C) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0))
-            {
-                Debug.Log("エクストラステージ解放コマンド");
-                commandSource.Play();
+        //if (!commandFlg)
+        //{
+        //    if (FinishManager.menuFlg && Input.GetKeyDown(KeyCode.C) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0))
+        //    {
+        //        Debug.Log("エクストラステージ解放コマンド");
+        //        commandSource.Play();
 
-                for (int i = 0; i < 6; i++)
-                {
-                    StageSelectManager.enterExtraFlg[i] = true;
-                }
+        //        for (int i = 0; i < 6; i++)
+        //        {
+        //            StageSelectManager.enterExtraFlg[i] = true;
+        //        }
 
-                commandFlg = true;
-            }
-        }
+        //        commandFlg = true;
+        //    }
+        //}
 
-        if (FinishManager.menuFlg && Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 1"))
-        {
-            Debug.Log("メダル全解放コマンド");
-            commandSource.Play();
-            BookSelect.bonusFlg = true;
+        //if (FinishManager.menuFlg && Input.GetKeyDown(KeyCode.M) || (Input.GetAxis("LTrigger") > 0 && Input.GetAxis("RTrigger") > 0) && Input.GetKeyDown("joystick button 1"))
+        //{
+        //    Debug.Log("メダル全解放コマンド");
+        //    commandSource.Play();
+        //    BookSelect.bonusFlg = true;
 
-            for (int i = 0; i < 6; i++)
-            {
-                StageClearManager.StageClear[i] = true;
-            }
+        //    for (int i = 0; i < 6; i++)
+        //    {
+        //        StageClearManager.StageClear[i] = true;
+        //    }
 
-            for (int i = 1; i < StageSelectManager.stageMax + 1; i++)
-            {
-                StageSelectManager.score[i].isCopper = true;
-                StageSelectManager.score[i].isSilver = true;
-                StageSelectManager.score[i].isGold = true;
+        //    for (int i = 1; i < StageSelectManager.stageMax + 1; i++)
+        //    {
+        //        StageSelectManager.score[i].isCopper = true;
+        //        StageSelectManager.score[i].isSilver = true;
+        //        StageSelectManager.score[i].isGold = true;
 
-                StageClearManager.m_isGetCopper[i] = true;
-            }
-        }
+        //        StageClearManager.m_isGetCopper[i] = true;
+        //    }
+        //}
 
         // シーン遷移開始
         if (sceneChangeFlg && !FinishManager.menuFlg)
